@@ -1,0 +1,338 @@
+<include file="Public/header" />
+<div class="wrap">
+     <div class="container" > <!-- 导航↓ -->
+
+
+		 <if condition="($Think.session.type gt 9 or $Think.session.type eq 9) ">
+			 <div class="but"><input type="button" value="添加分公司" onclick="adddiv()"></div>
+		 </if>
+		 <div class="tablerangborder table">
+		    <table   style=" margin: 0; padding: 0"  class="table content table-striped account_manage" id="data3" width="1140" cellspacing="0" cellpadding="0" border="0" ></table>
+         </div>
+		  <div class="TaskTable" id="pwdshow">
+		</div>
+		 <div class="TaskTable" id="addm">
+		</div>
+
+</div></div>
+<script type="text/javascript">
+$(function(){
+ 	lised1();
+ });
+//分公司
+ function lised12(p){
+	 $('.loding').css('display','block');
+ 	if(p==undefined){
+             p = 1;
+             page1(p);
+  		   }
+ 	$.ajax({
+ 		url:'{:U("Home/Setsail/lised1")}',
+			dataType:'json',
+			data:{page:p},
+			type:'post',
+			success:function(data){
+
+				json = data.enterprise;
+			    if(data == 1){
+				    str = '';
+			    }else{
+					str = '';
+					for(i in json){
+						str += '<tr><td>';
+						str +='<input id="fname'+json[i].id+'" value="'+json[i].Qyname+'" type="text" style="width:auto;"><input type="button" value="确认" onclick="savname('+json[i].id+',2)" class="btn btn-info">';
+						str += '</td><td>'+json[i].mname+'</td><td><input value="删除" type="button" onclick="delacc('+json[i].id+')" class="btn btn-info"></td></tr>'
+					}
+			    }
+				if(str==""){
+					str+="<tr><td colspan='3'><span style='color:#999;'>当前没有分公司</span></td></tr>";
+				}
+				$('#data3').html(str);
+	            $('#data3 tr:even').css("background","#f0f0f0");
+				$('#data3').prepend('<tr><td>公司名称</td><td>大区总裁</td><td>操作</td></tr>');
+				$('.loding').css('display','none');
+			}
+	})
+ }
+
+//分公司
+function lised1(p){
+	$('.loding').css('display','block');
+	if(p==undefined){
+		p = 1;
+		page1(p);
+	}
+	$.ajax({
+		url:'{:U("Home/Setsail/lised1")}',
+		dataType:'json',
+		data:{page:p},
+		type:'post',
+		success:function(data){
+			json = data.enterprise;
+			user = data.user;
+			if(data == 1){
+				//Showbo.Msg.alert('你还没有大区总裁,请添加');
+				str = '';
+			}else{
+				str = '';
+				for(i in json){
+					if(json[i].mname == null){
+						json[i].mname = '<span style="color:red">大区总裁不存在</span>';
+					}
+						if(user >8){
+							str +='<tr><td><input id="fname'+json[i].id+'" value="'+json[i].Qyname+'" type="text" style="width:auto;"><input type="button" value="确认" onclick="savname('+json[i].id+',2)" class="btn btn-info"></td>';
+							str += '<td>'+json[i].mname+'</td>'
+							str += '</td><td><input value="删除" type="button" onclick="delacc('+json[i].id+')" class="btn btn-info"></td></tr>'
+						}else{
+							str +='<tr><td><input id="fname'+json[i].id+'" value="'+json[i].Qyname+'" type="text" style="width:auto;"><input type="button" value="确认" onclick="savname('+json[i].id+',2)" class="btn btn-info"></td>';
+							str += '<td>'+json[i].mname+'</td>'
+						}
+				}
+			}
+			if(str==""){
+				str+="<tr><td colspan='3'><span style='color:#999;'>当前没有分公司</span></td></tr>";
+			}
+			$('#data3').html(str);
+			$('#data3 tr:even').css("background","#f0f0f0");
+			if(user >8){
+				$('#data3').prepend('<tr><td>公司名称</td><td>大区总裁</td><td>操作</td></tr>');
+			}else{
+				$('#data3').prepend('<tr><td>公司名称</td><td>大区总裁</td></tr>');
+			}
+
+			$('.loding').css('display','none');
+		}
+	})
+}
+
+
+function adddiv(){
+	$.ajax({
+ 		    url:'{:U("Home/Setsail/showchekd")}',
+			dataType:'json',
+			data:{},
+			type:'post',
+			success:function(data){
+				str = '';
+				str += '<div class="TaskTablecount"><div class="Task_header" id="newTask"><h3 id="add" act="add">添加信息</h3><i class=" icon-remove close_task" id="close"></i></div><div style=" height:60px; width: 100%;"></div><div class="Task_cont"><p><span>大区总裁</span><select name="" id="presid" class="form-control"><option value="">--请选择--</option>';
+				for(i in data){
+					str += '<option value="'+data[i].id+'" >'+data[i].mname+'</option>';
+				}
+				str += '</select>';
+				if(data==""){
+					str +="<a class='btn-info btndaqu' style='text-decoration: none;' href='{:U('/Home/Setsail/manager')}'>新建大区总监</a>";
+				}
+				str+='</p> <p><span>公司名称:</span><input class="form-control" type="text" id="gsname"></p><!--<p><span>公司电话:</span><input class="form-control" type="text" id="gspwd"></p>--><p><button class=" btn-info" type="button"  onclick="addlef()">确定</button></p></div></div>';
+				$('#addm').html(str).show();
+				$('.masker').fadeIn();
+				close_mask();
+	}
+  })
+}
+
+function updatamomey(id){
+	$.ajax({
+		url:"__URL__/updatamomey",
+		type:"POST",
+		data:{id:id},
+		dataType:"json",
+		success:function(data){
+			var str ='';
+			str +=' <div class="TaskTablecount"><div class="Task_header" id="newTask"><h3 id="add" act="add">编辑金额</h3><i class=" icon-remove close_task" id="close2" ></i></div><div style=" height:60px; width: 100%;"></div><div  class="Task_cont" id="newPwd">';
+			str+='<p><span>票金额</span><input  class="form-control" type="text" id="leafletstc" value="'+data.leafletstc+'"></p>';
+			str+='<p><span>卡金额</span><input  class="form-control" type="text" id="leafletscc" value="'+data.leafletscc+'"></p>';
+			str+='<p><span>朋友圈金额</span><input  class="form-control" type="text" id="leafletsfc" value="'+data.leafletsfc+'"></p>';
+			str+='<p><span>弟子金额</span><input  class="form-control" type="text" id="leafletsdc" value="'+data.leafletsdc+'"></p>';
+			str+='<p><span>九大规划门票金额</span><input  class="form-control" type="text" id="leafletsnc" value="'+data.leafletsnc+'"></p>';
+			str+='<p><input type="button" class=" btn-info" onclick="editmomeny('+id+')" value="提交" /></p></div></div>';
+			$('#pwdshow').html(str).show();
+			$('.masker').fadeIn();
+			close_mask();
+		}
+	});
+ 	
+ }
+ function close_mask(){
+  $('.close_task').click(function(){
+    $('.TaskTable,.masker').fadeOut();
+  })
+}
+
+//修改各种密码
+function editmomeny(id){
+	var leafletstc = $('#leafletstc').val();
+	var leafletscc = $('#leafletscc').val();
+	var leafletsfc = $('#leafletsfc').val();
+	var leafletsdc = $('#leafletsdc').val();
+	var leafletsnc = $('#leafletsnc').val();
+	var param=new Object();
+	param["id"]=id;
+	param["leafletstc"]=leafletstc;
+	param["leafletscc"]=leafletscc;
+	param["leafletsfc"]=leafletsfc;
+	param["leafletsdc"]=leafletsdc;
+	param["leafletsnc"]=leafletsnc;
+	
+	$.ajax({
+		url:'{:U("Home/Setsail/editmomeny")}',
+		dataType:'json',
+		data:param,
+		type:'POST',
+		success:function(data){
+			
+			Showbo.Msg.alert(data.errmsg);
+			
+		}
+	})
+	
+	
+
+}
+
+//删除
+function delacc(id,v){
+	 Showbo.Msg.confirm('删除分公司 分公司下数据将全部删除，确认删除吗?',function(a){
+		 if(a == 'yes'){
+		$.ajax({
+		url:'{:U("Home/Setsail/delacc")}',
+			dataType:'json',
+			data:{id:id,type:2},
+			type:'post',
+			success:function(data){
+				if(data.errcode == 1){
+					Showbo.Msg.alert(data.errmsg);
+					lised1();
+				}else{
+					Showbo.Msg.alert(data.errmsg);
+				}
+			}
+		})
+		 }
+	 })
+}
+
+function page1(page)
+{
+   var nums ='';
+    $.ajax({
+	    type: "GET",
+	    url:'{:U("Home/Setsail/page1")}',
+	    dataType:"json",
+	    async:false,
+	    error: function(data){
+	    },
+	    success: function(data){
+	           nums = eval(data);
+	    	}
+	    });
+
+    $(".tcdPageCode").remove();
+    $(".tablerangborder").after("<div class='tcdPageCode'></div>");
+    $(".tcdPageCode").createPage({
+          pageCount:nums,
+          current:page,
+          backFn:function(p)
+          {
+            lised1(p);
+          }
+       });
+}
+//修改企业账号
+function savacc(id,v){
+	
+	if(v == 2){
+		var val  = $('#fbn'+id).val();
+		$.ajax({
+		url:'{:U("Home/Setsail/savacc")}',
+			dataType:'json',
+			data:{id:id,val:val,type:2},
+			type:'post',
+			success:function(data){
+				if(data.errcode == 1){
+					Showbo.Msg.alert(data.errmsg);
+					lised1(p);
+				}else if(data.errcode == 3){
+					Showbo.Msg.alert(data.errmsg);
+				}
+			}
+		})
+	}
+}
+
+//修改公司名称
+function savname(id,v){
+	if(v == 2){
+		var val = $('#fname'+id).val();
+		data = {id:id,val:val,type:2};
+	}
+	if(val == ""){
+		Showbo.Msg.alert('名称不能为空');
+		lised1();
+		return false;
+	}
+
+	Showbo.Msg.confirm('确认修改?',function(a){
+		 if(a == 'yes'){
+	$.ajax({
+		    url:'{:U("Home/Setsail/savname")}',
+			dataType:'json',
+			data:data,
+			type:'post',
+			success:function(data){
+				if(data.errcode == 1){
+					Showbo.Msg.alert(data.errmsg);
+					// lised(p);
+				}
+			}
+		})
+	   }
+	})
+}
+ function addlef(id)
+ {
+ 	var presid = $('#presid').val();  //大区总裁id
+ 	var gsname = $('#gsname').val(); // 公司名称
+ 	//var gspwd = $('#gspwd').val();  // 公司密码
+ 	letype = 0;
+ 	cwtype = 0;
+ 		
+
+ 	// if(presid == '')
+ 	// {
+ 	// 	Showbo.Msg.alert('请选择大区总裁');
+ 	// 	return false;
+ 	// }
+ 	if(gsname == '')
+ 	{
+ 		Showbo.Msg.alert('请填写公司名称');
+ 		return false;
+ 	}
+ 	/* 
+ 	if(!(/^13[\d]{9}$|^14[5,7]{1}\d{8}$|^15[\d]{9}$|^17[0,6,7,8]{1}\d{8}$|^18[\d]{9}$/.test(gspwd))){
+        Showbo.Msg.alert("您输入的手机号格式不对或填写号码不足11位");
+        return false;
+    }
+    */
+
+ 	$.ajax({
+      url:"{:U('Home/Setsail/addzjl')}",
+      type:'post',
+      data:{presid:presid,role:8,gsname:gsname,letype:letype,cwtype:cwtype},
+      dataType:'json',
+      success:function(res){
+      		if(res == 1)
+      		{
+      			Showbo.Msg.alert('添加完毕');
+      			$('#addm').hide();
+				$('.masker').hide();
+				lised1();
+      		}
+      		if(res == 3)
+      		{
+      			Showbo.Msg.alert('此账号已存在');
+      		}
+       }
+ 	 })
+ }
+ </script>
+ 

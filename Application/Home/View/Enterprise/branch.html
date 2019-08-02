@@ -1,0 +1,145 @@
+<include file="Public/header" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.upload.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.tabso_yeso.js"></script>
+
+<body>
+
+
+<table>
+
+		<tr>
+		<th>角色</th>
+			<td>
+			<select name="" id="role" onChange="show()">
+				
+				<option value="">--请选择--</option>	
+
+				<foreach name="role" item="vs">
+					
+		        <option value="{$vs.weight}">{$vs.name}</option>
+				</foreach>
+			
+			</select>
+			</td>
+		</tr>
+		<tr>
+
+				<td>账号:<input type="text" id="gsaccount"></td>
+		</tr>
+		<tr>
+
+				<td>公司名称:<input type="text" id="gsname"></td>
+		</tr>
+
+		<tr>
+
+				<td>公司密码:<input type="password" id="gspwd"></td>
+		</tr>
+		<tr>
+
+				<td>确认密码:<input type="password" id="pwdtow"></td>
+		</tr>
+		<tr>
+
+				<td>联系方式:<input type="type" id="gsmobile"></td>
+		</tr>
+		<tr>
+				<td>讲师
+				<input type="checkbox" name="lecyes"  value="1" ></td>
+			    <td>财务
+				<input type="checkbox" name="cwyes"  value="2" disabled="disabled" id="ctwo"></td>
+
+		</tr>
+
+		<tr>
+				<td><input type="button" value="确认" onclick="addlef()"></td>
+
+		</tr>
+		
+
+
+</table>
+
+
+</body>
+
+<script>
+
+function show()
+{
+	var val = $('#role').val();
+	if(val == 5  || val == 6)
+ 	{
+ 		$('#ctwo').attr('disabled',false);
+ 	}
+ 	else
+ 	{
+ 		$('#ctwo').attr('disabled','disabled');
+ 	}
+}
+ function addlef()
+ {
+ 	var role = $('#role').val();//角色的下拉菜单
+ 	var gsname = $('#gsname').val();//公司的名称
+ 	var gspwd = $('#gspwd').val();//公司的密码
+ 	var gsmobile = $('#gsmobile').val();//联系方式
+ 	var letype = $("input[name=lecyes]:checked").val();  //讲师
+ 	var cwtype = $("input[name=cwyes]:checked").val();    //财务
+ 	var account = $('#gsaccount').val();   //账号
+ 	var pwdtow = $("#pwdtow").val();
+ 	if(letype == undefined)
+ 	{
+ 			letype = 0;
+ 	}
+ 	if(cwtype == undefined)
+ 	{
+ 			cwtype = 0;
+ 	}
+ 	if(role == '')
+ 	{
+ 		Showbo.Msg.alert('请选择本公司身份');
+ 		return false;
+ 	}
+ 	if(gsname == '')
+ 	{
+ 		Showbo.Msg.alert('请填写公司名称');
+ 		return false;
+ 	}
+ 	if(gspwd == '')
+ 	{
+ 		Showbo.Msg.alert('请填写密码');
+ 		return false;
+ 	}
+ 	if(pwdtow != gspwd)
+ 	{
+ 		Showbo.Msg.alert('您输入的两次密码不一致,请重新输入');
+ 		return false;
+ 	}
+ 	if(!(/^13[\d]{9}$|^14[5,7]{1}\d{8}$|^15[\d]{9}$|^17[0,6,7,8]{1}\d{8}$|^18[\d]{9}$/.test(gsmobile))){
+        Showbo.Msg.alert("您输入的手机号格式不对或填写号码不足11位");
+        return false;
+    }
+ 	 	
+ 	
+	 	$.ajax({
+	      url:"{:U('Home/Enterprise/branchget')}",
+	      type:'post',
+	      data:{account:account,role:role,gsname:gsname,gspwd:gspwd,gsmobile:gsmobile,letype:letype,cwtype:cwtype},
+	      dataType:'json',
+	      success:function(res){
+	      		if(res == 2)
+	      		{
+	      			Showbo.Msg.alert('添加完毕');
+	      		}
+	      		if(res == 1)
+	      		{
+	      			Showbo.Msg.alert('此账号已存在');
+	      		}
+	      }
+	 	 })
+ 	
+ 	 
+ }
+
+</script>
+ 

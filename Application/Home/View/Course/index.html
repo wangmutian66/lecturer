@@ -1,0 +1,1546 @@
+<include file="Public/header" />
+
+<link rel="stylesheet" href="__PUBLIC__/css/weiyan.css" />
+<style>
+	#asdzxc{
+		color: red;
+	}
+    .newpage{width:100%; text-align: right; padding: 0;}
+	td > table.tyutable tr:first-child td{ font-weight: 100;}
+	.zhezhao{ position: fixed; width:100%; height:100%; top:0; left:0; bottom: 0; right:0; background: rgba(0,0,0,0.8); z-index: 9999; display:none; }
+	.neirong{ width:500px; height:200px; background: #fff; margin:100px auto;}
+</style>
+<script type="text/javascript" src="__PUBLIC__/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.date.mt.js"></script>
+<body>
+
+<div class="zhezhao">
+	<div class="TaskTablecount neirong">
+	</div>
+</div>
+
+
+<!-- 模态框（Modal） -->
+<div class="modal fade tianjiacss" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">批量选择客户</h4>
+            </div>
+            <div class="modal-body">
+	            <div id="zxc">		
+	                <div class="tjform">					
+				    <input type="text" id="yy"  style="width: 75%;"/><input type="button" onclick="ss()" value="搜索企业" />
+				    </div>
+				    <div class="gundongtable">
+					   <table id= "bianji" class="table table-bordered table-hover" ></table>
+					   <div id="editpage"> </div>
+					</div>
+
+					<div id="strbtn"></div>
+					
+					
+				</div>
+            </div>
+            
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade tianjiacss" id="addqihang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">课程管理</h4>
+            </div>
+            <div class="modal-body">
+               <div class="tablebor">
+		           <table id="ran" class="table  table-hover" style="width:100%;">
+					      
+							<tr>
+						        <td style="width:92px; text-align: left;">课程名称</td>
+						        <td><input type="text" id="kcb" class="form-control" style="float:left;width:100%;" ></td>
+							</tr>
+							<tr>
+								  <td style=" text-align: left;">课程时间</td>
+								  <td><input readonly='readonly' type='text' id='stime'  class="form-control" onclick="picker_one()" value='' style="padding: 0px 2px;  width: 100px;"/> 至<span id="etimex"> <input readonly='readonly' style="padding: 0px 2px;width: 100px;"  class="form-control" type='text' id='etime' onclick="picker()" value='' /></span>
+								</td>
+							</tr>
+							<!-- <div class="TaskTablecount-left"><span>任务时间：</span></div>
+													<div class="TaskTablecount-right" style="width: auto;"><input readonly='readonly' type='text' id='stime' onclick="picker_one()" onfocus1="ceshi();" value='' /><span> 至 </span><span id="etimex"><input readonly='readonly' type='text' id='etime' onclick="picker()" value='' /></span></div> -->
+					        <tr>			
+								<td style=" text-align: left;">分公司</td>
+								<td>
+									  <select name="" id="fengongsi" onChange="showchek()"  class="form-control" style="float:left;width:100%;">
+										
+										<option value="">-请选择-</option>	
+					
+										<foreach name="a1" item="vs">
+											
+								        <option value="{$vs.id}">{$vs.Qyname}</option>
+										</foreach>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td  style=" text-align: left;">讲&nbsp;师</td>
+								<td>
+									<select name="" id="jiangshi"  class="form-control" style="float:left;width:100%;">
+										
+										<option value="">--请选择--</option>	
+					
+										<foreach name="b1" item="vs">
+											
+								        <option value="{$vs.id}">{$vs.name}</option>
+										</foreach>
+									
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td style=" text-align: left;">地&nbsp;点</td><td><input type="text" id="didian"  class="form-control" style="float:left;width:100%;"></td>
+							</tr>
+						
+							<tr>
+								<td  style=" text-align: left;">是否开启</td>
+								<td>
+								   <select id="conduct" class="form-control" style="float:left;width:100%;">
+								      <option value="1">已开启</option>
+								      <option value="0">未开启</option>
+								   </select>
+								</td>
+							</tr>
+							
+					</table>
+				</div>
+				<div id="strbtns"><input type="button" value="确认" onclick="addlef()"></div>
+            </div>
+            
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!-- 模态框（Modal）添加成交信息 -->
+<div class="modal fade tianjiacss" id="addcjxinxi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">添加成交信息</h4>
+            </div>
+            <div class="modal-body">
+                   <input type="hidden" id="comid">
+	                <table id="shsh" class="table table-striped table-bordered">
+						<tr>
+							<td>成交人</td>
+							<td>
+								<select id="said" style="width: 72%;">
+									<foreach name="salesman" item="vo">
+									<option value="{$vo.id}">{$vo.name}</option>
+									</foreach>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							  <td>时间</td><td><input type="text" id="tiemm"  onclick="picker_one()"></td>
+						</tr>
+								
+						<tr>
+				              <td>小票</td><td><input type="number" value="0" id="xiaopiao" onblur="msgnone(this)"></td>
+								
+						</tr>
+				        <tr>
+						    <td>九大规划</td><td><input type="number" value="0" id="guihua" onblur="msgnone(this)"></td>
+						</tr>
+						<tr>
+						      <td>卡会员</td><td><input type="number" value="0" id="kahui" onblur="msgnone(this)"></td>
+						</tr>
+				
+						<tr>
+						     <td>朋友圈</td><td><input  type="number" value="0" id="pengyou" onblur="msgnone(this)"></td>
+						</tr>
+				
+						<tr>
+						     <td>弟子学员</td><td><input  type="number" value="0" id="dizi" onblur="msgnone(this)"></td>
+						</tr>
+				
+						
+				 
+					</table>
+					<div id="strbtns1"><input type="button" value="确定" onclick="bj()"></div>
+					
+            </div>
+            
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!-- 模态框（Modal）添加成交信息 -->
+<div class="modal fade tianjiacss" id="beditshow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">编辑成交信息</h4>
+            </div>
+            <div class="modal-body">
+                    <input type="hidden" id="comid">
+	                
+					<table id="shshedit"  class="table table-striped table-bordered">
+
+
+                    </table>
+					<div class="strbtns1" id="bjedit"><input type="button" value="确定" onclick="bj()"></div>
+            </div>
+            
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!-- bedit -->
+<div class="marginrightwt">
+	<div class="container yui_sorcl qihangkecheng"  style="width:97%;">
+		<div class="but"><input type="button" value="添加课程" onclick="add()" data-toggle="modal" data-target="#addqihang"><div>企航课程</div></div>
+		<div class="Modinfo date" style="float:none; margin-left: 0;"><span>
+			<select id="timeyear" class="form-control" onchange="checkChangDate(this)"></select>
+			<select id="timemonth" class="form-control" onchange="checkChangDate(this,1)"></select>
+			<select id="timeday" class="form-control" onchange="checkChangDate(this)"></select>
+		</span> <span>至</span>
+			<span>
+			 <select id="beforeyea" class="form-control" onchange="checkChangDate(this)"></select>
+			 <select id="datayear" class="form-control" onchange="checkChangDate(this,2)"></select>
+			 <select id="day" class="form-control" onchange="checkChangDate(this)"></select>
+				  </span>
+			<span class="searcinput1">
+
+			 <input type="button" class="btn-default1" onclick="searove()" value="搜索">
+			</span>
+
+		</div>
+		<div class="select">
+		   <select id="selec" >
+			   <option value="">--请选择--</option>
+			   <option value="classname">课程名称</option>
+			   <option value='name'>讲师名称</option>
+			   <option value="Qyname">分公司</option>
+			   <option value="place">地点</option>
+		   </select>
+		   <input type="text" id="punt" placeholder="输入搜索内容">
+		   <input type="button" class="button" onclick="search(1,1)" value="搜索"/>
+		   <select id="con" onchange="search(1,2)">
+			   <option value="">全部</option>
+			   <option value="1">已进行</option>
+			   <option value="0">未进行</option>
+		   </select>
+		</div>
+		<div class="tableborder"  style="width:100%;padding:0;"><table id= "rang" border="0"></table></div>
+	</div>
+</div>
+
+<!-- 
+<table id= "ra" ></table>
+<table id= "tyu" ></table>
+
+<div id="data3"></div>
+ -->
+ 
+
+</body>
+<script>
+    
+$(document).ready(function(){ 
+	var p = 1;
+		 list();
+
+   
+
+  	});
+
+function msgnone(obj)
+{
+	var msg  = /^\+?(0|[1-9][0-9]*)$/;
+	if(!msg.test($(obj).val()))
+	{
+		Showbo.Msg.alert('禁止填写负数');
+		$(obj).val(0);
+	}
+
+}
+
+function checkChangDate(obj,act){
+    var myDate = new Date();
+    var year = myDate.getFullYear();
+    var lrstrs = '';
+    var trsts = '';
+    var timeyear = $('#timeyear').val();//左侧年
+
+    var timemonth = $("#timemonth").val();//左侧月 
+
+    var timeday = $("#timeday").val();//左侧日
+
+    var beforeyea = $("#beforeyea").val();//右侧年
+
+    var datayear = $('#datayear').val();//右侧月
+
+    var day = $('#day').val();//右侧日
+
+
+
+    if(act == 1){
+        var mm = getDays(timeyear,timemonth);    //当左侧月改变时执行
+    }else if(act == 2){
+        var mm = getDays(beforeyea,datayear);    //当右侧月改变时执行
+    }
+
+    for (var i = 1 ; i <= mm ; i++)  
+    {  
+        if(act == 1){   
+            lrstrs += "<option value='" + i + "'> " + i + "日</option>"; 
+        }else if(act == 2){
+            if(i==myDate.getDate()){
+                trsts+="<option selected='selected' value='"+i+"'>"+i+"日</option>";
+            }else{
+                trsts+="<option  value='"+i+"'>"+i+"日</option>";
+            } 
+        }
+    } 
+    
+    if(act == 1){
+        $('#timeday').html(lrstrs); //左侧变化的天数
+    }else if(act == 2){
+        $('#day').empty();
+        $('#day').append(trsts); //右侧变化的天数
+    }
+    
+}
+function getDays(year,mouth){
+
+    //定义当月的天数；
+    var days ;
+     
+    //当月份为二月时，根据闰年还是非闰年判断天数
+    if(mouth == 2){
+        days= year % 4 == 0 ? 29 : 28;
+         
+    }
+    else if(mouth == 1 || mouth == 3 || mouth == 5 || mouth == 7 || mouth == 8 || mouth == 10 || mouth == 12){
+        //月份为：1,3,5,7,8,10,12 时，为大月.则天数为31；
+        days= 31;
+    }
+    else{
+        //其他月份，天数为：30.
+        days= 30;   
+    }
+    return days;
+}
+	function search(p,status){
+	
+
+		if(p==undefined)
+		{
+		     p=1;
+		     
+		}
+		$(document.body).attr("page",p);
+		var time1 = $('#timeyear').val();
+		var datenarr = $('#timemonth').val();
+		var timeday = $('#timeday').val();
+		var beforeyea =  $('#beforeyea').val();
+		var datayear =  $('#datayear').val();
+		var day = $('#day').val();
+		var ytime = time1+'-'+datenarr+'-'+timeday;
+		var ntime = beforeyea+'-'+datayear+'-'+day;
+		//----------------
+		var selec = $('#selec').val();//下拉选项的值
+		var punt = $('#punt').val();//文本框里的值
+		var con = $('#con').val();//已进行- 未进行
+		if(status == 1){
+			if($("#selec").val()==""){
+	            Showbo.Msg.alert("请选择类别");
+	            return false;
+	         }
+		}
+
+		$(".loding").show();
+		$.ajax({
+ 		    url:'{:U("Home/Course/searove")}',
+			dataType:'json',
+			data:{ytime:ytime,ntime:ntime,selec:selec,punt:punt,con:con,p:p},
+			type:'post',
+			success:function(data){
+
+				
+				if(data['error'] == 0)
+				{
+					 Showbo.Msg.alert('时间填写不正确');
+					 return false;
+				}
+		    	searchpage(data["pagecount"],p,1);
+		    	var str = "";
+		    	var data = data.data;
+				if(data.length<=0&& p>1){
+					search(p,status);
+				}
+		    	// ->field('c.id as c_id,c.starttime as c_starttime,c.endtime as c_endtime,c.classname as c_clasname,c.place as c_place,u.name as u_name,e.Qyname as e_Qyname')
+		    	for(i in data){
+					str += '<tr><td>kc'+data[i].id+'</td>';
+					if(data[i].starttime == null||data[i].endtime == null){
+						str += '<td id="asdzxc">上课时间未定</td>';
+					}else{
+						str += '<td>'+data[i].starttime+'至'+data[i].endtime+'</td>';
+					}
+					if(data[i].classname == null){
+						str += '<td id="asdzxc">课程时间未定义</td>';
+					}else{
+						str += '<td>'+data[i].classname+'</td>';
+					}
+					if(data[i].name == null){
+						str += '<td id="asdzxc">讲师不存在</td>';
+					}else{
+						str += '<td>'+data[i].name+'</td>';
+					}
+					if(data[i].Qyname == null){
+						str += '<td id="asdzxc">分公司名称未定</td>';
+					}else{
+						str += '<td>'+data[i].Qyname+'</td>';
+					}
+					if(data[i].place == null){
+						str += '<td id="asdzxc">上课地点未定</td>';
+					}else{
+						str += '<td>'+data[i].place+'</td>';
+					}
+					if(data[i].number == null){
+						str += '<td id="asdzxc">上课人数未定</td>';
+					}else{
+						str += '<td>'+data[i].number+'</td>';
+					}
+					str += '<td>'+data[i].numbersign+'</td>';
+					if(data[i].conduct=="1"){
+						str+="<td>已进行";
+					}else{
+						str+="<td>未进行";
+					}
+					str+='</td><td><div class="rankingbtn"><input type="button" value="展开" class="btn btn-primary btn'+data[i].id+'" onclick="show('+data[i].id+')"/><input type="button" value="删除" class="btn btn-danger" onclick="del('+data[i].id+')" /><input type="button" value="添加客户信息"  class="btn btn-success"  data-toggle="modal"  data-target="#myModal" onclick="edit('+data[i].id+',1,'+data[i].uid+')"/><input type="button" value="编辑"  class="btn btn-warning"  data-toggle="modal" data-target="#addqihang" onclick="editlist('+data[i].id+')"/></div></td></tr>';
+				    str+='<tr class="trnone tr'+data[i].id+'"><td colspan="10"><table class="ratable" id="ra'+data[i].id+'"  uid="'+data[i].uid+'"></table></td></tr>';
+				}
+				$('#rang').html("");
+		        $('#rang').html(str);
+				$('#rang').prepend('<tr><th width="5%">ID</th><th width="8%">课程时间</th><th  width="10%">课程名称</th><th width="10%">讲师姓名</th><th>分公司</th><th width="20%">地点</th><th width="6%">预计人数</th><th width="6%">签到人数</th><th width="5%">状态</th><th style=" width: 20%;">操作</th></tr>');
+				$('#zxc').css('display','none');
+				$(".loding").hide();
+				// page1(p);
+			}
+		})
+	}
+	
+	
+	function showchek(){
+		var id=$("#fengongsi").val();
+	    
+		$.ajax({
+			url:'__URL__/showchek',
+			type:"POST",
+			data:{id:id},
+			dataType:"json",
+			success:function(data){
+				var str='<option value="">--请选择--</option>';
+				for(var i in data){
+					str+='<option value="'+data[i]["id"]+'">'+data[i]["name"]+'</option>';
+				}
+				$("#jiangshi").html(str);
+			}
+			
+		});
+	}
+	
+  	
+  	function list(p){
+  		  $(".loding").show();
+  		  if(p==undefined){
+             p = 1;
+  		   }
+		    page1(p);
+		    $(document.body).attr("page",p);
+		    $.ajax({
+		 		    url:'{:U("Home/Course/classlist")}',
+					dataType:'json',
+					data:{page:p},
+					type:'post',
+					success:function(data){
+						if(data.length<=0&& p>1){
+							list(p-1);
+						}
+						str = '';
+						for(i in data){
+
+							str += '<tr><td>kc'+data[i].id+'</td>';
+							if(data[i].starttime == null||data[i].endtime == null){
+								str += '<td id="asdzxc">上课时间未定</td>';
+							}else{
+								str += '<td>'+data[i].starttime+'至'+data[i].endtime+'</td>';
+							}
+							if(data[i].classname == null){
+								str += '<td id="asdzxc">课程时间未定义</td>';
+							}else{
+								str += '<td>'+data[i].classname+'</td>';
+							}
+							if(data[i].name == null){
+								str += '<td id="asdzxc">讲师不存在</td>';
+							}else{
+								str += '<td>'+data[i].name+'</td>';
+							}
+							if(data[i].Qyname == null){
+								str += '<td id="asdzxc">分公司名称未定</td>';
+							}else{
+								str += '<td>'+data[i].Qyname+'</td>';
+							}
+							if(data[i].place == null){
+								str += '<td id="asdzxc">上课地点未定</td>';
+							}else{
+								str += '<td>'+data[i].place+'</td>';
+							}
+							if(data[i].number == null){
+								str += '<td id="asdzxc">上课人数未定</td>';
+							}else{
+								str += '<td>'+data[i].number+'</td>';
+							}
+
+							str += '<td>'+data[i].numbersign+'</td>';
+
+							if(data[i].conduct=="1"){
+								str+="<td>已进行";
+							}else{
+								str+="<td>未进行";
+							}
+							str+='</td><td><div class="rankingbtn"><input type="button" value="展开" class="btn btn-primary btn'+data[i].id+'" onclick="show('+data[i].id+','+data[i].jid+')"/><input type="button" value="删除" class="btn btn-danger" onclick="del('+data[i].id+')" /><input type="button" value="添加客户信息"  class="btn btn-success"  data-toggle="modal"  data-target="#myModal" onclick="edit('+data[i].id+',1,'+data[i].uid+')"/><input type="button" value="编辑"  class="btn btn-warning"  data-toggle="modal" data-target="#addqihang" onclick="editlist('+data[i].id+')"/></div></td></tr>';
+						    str+='<tr class="trnone tr'+data[i].id+'"><td colspan="10"><table class="ratable" id="ra'+data[i].id+'" uid="'+data[i].uid+'"></table></td></tr>';
+						}
+						
+						$('#rang').html(str);
+						$('#rang').prepend('<tr><th width="5%">ID</th><th width="8%">课程时间</th><th>课程名称</th><th width="10%">讲师姓名1</th><th>分公司</th><th width="20%">地点</th><th width="6%">预计人数</th><th width="6%">签到人数</th><th width="5%">状态</th><th style="width:20%">操作</th></tr>');
+
+						$('#zxc').css('display','none');
+						$(".loding").hide();
+
+				   }
+       
+			    })
+  	}
+    function editlist(id){
+        $(".loding").show();
+    	$.ajax({
+    		type:"POST",
+    		url:"{:U('/Home/Course/editlist')}",
+    		data:{id:id},
+    		dataType:"json",
+    		success:function(data){
+				var lectype=data.lectype;
+                var data=data.courfind;
+    			$("#kcb").val(data.classname);
+    			$("#stime").val(data.starttime);
+    			$("#etime").val(data.endtime);
+    			$("#didian").val(data.place);
+    			$("#fengongsi").find("option").removeAttr("selected");
+    			$("#jiangshi").find("option").removeAttr("selected");
+    			$("#conduct").find("option").removeAttr("selected");
+    			 
+    			$("#fengongsi").find("option[value="+data.uid+"]").prop("selected",true);
+    		
+    			$("#jiangshi").find("option[value="+data.jid+"]").prop("selected",true);
+				var str='<option value="">--请选择--</option>';
+				for(var i in lectype){
+					if(lectype[i]["id"]==data.jid){
+						str+='<option value="'+lectype[i]["id"]+'" selected>'+lectype[i]["name"]+'</option>';
+					}else{
+						str+='<option value="'+lectype[i]["id"]+'">'+lectype[i]["name"]+'</option>';
+					}
+				}
+				$("#jiangshi").html(str);
+    			$("#conduct").find("option[value="+data.conduct+"]").prop("selected",true);
+    			$("#strbtns input").attr("onclick","savebtn("+id+")");
+				$(".loding").hide();
+    		}
+    	});
+    }
+    
+    //修改
+    function savebtn(id){
+    	var param=new Object();
+    	param["id"]=id;
+    	param["classname"] = $('#kcb').val();//取课程表的值
+    	param["jid"] = $('#jiangshi').val();//取下拉菜单讲师的值
+    	param["uid"] = $('#fengongsi').val();//取下拉菜单分公司的值
+    	param["place"] = $('#didian').val();//取地点的值
+    	param["starttime"] = $('#stime').val();//取开始时间
+    	param["endtime"]= $('#etime').val();//取结束时间
+    	param["conduct"]=$("#conduct").val();
+    	if($('#fengongsi').val() == '')
+    	{
+    		Showbo.Msg.alert('请选择分公司');
+    		return false;
+    	}
+    	if($('#jiangshi').val() == '')
+    	{
+    		Showbo.Msg.alert('请选择讲师');
+    		return false;
+    	}
+    	$.ajax({
+    		url:"{:U('/Home/Course/savecourse')}",
+    		type:"POST",
+    		data:param,
+    		dataType:"json",
+    		success:function(data){
+    			$(".modal-header .close").click();
+				var page=$(document.body).attr("page");
+    			if(data.error==0){
+    				Showbo.Msg.alert(data.msg);
+    				$("#dvMsgBtns .btn").click(function(){
+						returnpagelist();
+    				});
+    			}
+    		}
+    	});
+    	
+    	
+    }
+    
+	 //时间搜索
+	 function searove(p){
+
+			 	if(p==undefined){
+						p=1;
+				} 
+				var time1 = $('#timeyear').val();
+				var datenarr = $('#timemonth').val();
+				var timeday = $('#timeday').val();
+				var beforeyea =  $('#beforeyea').val();
+				var datayear =  $('#datayear').val();
+				var day = $('#day').val();
+				var ytime = time1+'-'+datenarr+'-'+timeday;
+				var ntime = beforeyea+'-'+datayear+'-'+day;
+		        $(".loding").show();
+		        $(document.body).attr("page",p);
+				$.ajax({
+				    type: "POST",
+				    url:"__URL__/searove",
+				    data:{ytime:ytime,ntime:ntime,page:p},
+				    dataType:"json",
+				    success: function(data)
+				    {
+
+				    	if(data['error'] == 0)
+						{
+							 Showbo.Msg.alert('时间填写不正确');
+							return false;
+						}
+
+				    	searchpage(data["pagecount"],p,2);
+				    	var str = "";
+				    	var data = data.data;
+						if(data.length<=0&& p>1){
+							searove(p-1);
+						}
+				    	// ->field('c.id as c_id,c.starttime as c_starttime,c.endtime as c_endtime,c.classname as c_clasname,c.place as c_place,u.name as u_name,e.Qyname as e_Qyname')
+				    	for(i in data){
+							str += '<tr><td>kc'+data[i].id+'</td>';
+							if(data[i].starttime == null||data[i].endtime == null){
+								str += '<td id="asdzxc">上课时间未定</td>';
+							}else{
+								str += '<td>'+data[i].starttime+'至'+data[i].endtime+'</td>';
+							}
+							if(data[i].classname == null){
+								str += '<td id="asdzxc">课程时间未定义</td>';
+							}else{
+								str += '<td>'+data[i].classname+'</td>';
+							}
+							if(data[i].name == null){
+								str += '<td id="asdzxc">讲师不存在</td>';
+							}else{
+								str += '<td>'+data[i].name+'</td>';
+							}
+							if(data[i].Qyname == null){
+								str += '<td id="asdzxc">分公司名称未定</td>';
+							}else{
+								str += '<td>'+data[i].Qyname+'</td>';
+							}
+							if(data[i].place == null){
+								str += '<td id="asdzxc">上课地点未定</td>';
+							}else{
+								str += '<td>'+data[i].place+'</td>';
+							}
+							if(data[i].number == null){
+								str += '<td id="asdzxc">上课人数未定</td>';
+							}else{
+								str += '<td>'+data[i].number+'</td>';
+							}
+							str += '<td>'+data[i].numbersign+'</td>';
+							if(data[i].conduct=="1"){
+								str+="<td>已进行";
+							}else{
+								str+="<td>未进行";
+							}
+							str+='</td><td><div class="rankingbtn"><input type="button" value="展开" class="btn btn-primary btn'+data[i].id+'" onclick="show('+data[i].id+')"/><input type="button" value="删除" class="btn btn-danger" onclick="del('+data[i].id+')" /><input type="button" value="添加客户信息"  class="btn btn-success"  data-toggle="modal"  data-target="#myModal" onclick="edit('+data[i].id+',1,'+data[i].uid+')"/><input type="button" value="编辑"  class="btn btn-warning"  data-toggle="modal" data-target="#addqihang" onclick="editlist('+data[i].id+')"/></div></td></tr>';
+						    str+='<tr class="trnone tr'+data[i].id+'"><td colspan="10"><table class="ratable" id="ra'+data[i].id+'" uid="'+data[i].uid+'"></table></td></tr>';
+						}
+						$('#rang').html("");
+				        $('#rang').html(str);
+						$('#rang').prepend('<tr><th width="5%">ID</th><th width="8%">课程时间</th><th>课程名称</th><th width="10%">讲师姓名</th><th>分公司</th><th width="20%">地点</th><th width="6%">预计人数</th><th width="6%">签到人数</th><th width="5%">状态</th><th style="width:20%">操作</th></tr>');
+						$('#zxc').css('display','none');
+						$(".loding").hide();
+				    }
+			})	
+	 }
+	 function searchpage(num,page,status){
+        num=(num==undefined)?0:num;
+    	$(".tcdPageCode").remove();
+
+		$(".tableborder").after("<div class='tcdPageCode'></div>");
+		$(".tcdPageCode").createPage({
+				pageCount:num,
+				current:page,
+				backFn:function(p)
+				{
+					
+                    if(status==1){
+                        search(p);
+                    }else{
+                    	 searove(p);
+                    }
+
+			}
+		 });
+    }
+	//搜索
+	function ss(id,uid,p){
+		if(p==undefined){
+			p = 1;
+		}
+
+		var yy=$("#yy").val();
+		page2(id,p,uid,yy);
+		 $(".loding").show();
+		 $.ajax({
+	 		    url:'{:U("Home/Course/edit")}',
+				dataType:'json',
+				data:{id:id,yy:yy,typey:1,uid:uid,page:p},
+				type:'post',
+				success:function(data){
+
+					var str = '';				
+					for(i in data){
+						if(data[i]["checked"]==1){
+							str += '<tr><td><input type="checkbox" name="dfg" onclick="adf(this,'+id+','+data[i].id+')" id="box" value="'+data[i].id+'" checked/></td><td id="rty">'+data[i].name.replace(yy,"<b>"+yy+"</b>")+'</td><td><input type="text" value="'+data[i].pnum+'" style="width:50px;"  class="pnum"></td></tr>'
+						}else{
+							str += '<tr><td><input type="checkbox" name="dfg"  onclick="adf(this,'+id+','+data[i].id+')"  id="box" value="'+data[i].id+'"/></td><td id="rty">'+data[i].name.replace(yy,"<b>"+yy+"</b>")+'</td><td><input type="text" value="'+data[i].pnum+'" style="width:50px;"  class="pnum"></td></tr>'
+						}
+					}		
+
+					$('#bianji').html(str);
+				    $('#bianji').prepend('<tr><th width="20%">选择</th><th width="60%">客户名称</th><th width="20%">人数</th></tr>');
+					//$('.tcdPageCode').css('display','none');
+					$(".loding").hide();
+				}
+		})
+	}
+	 //添加客户信息
+	 function edit(id,p,uid){
+ 	 	 if(p==undefined){
+	             p = 1;
+  		 }
+		 page2(id,p,uid);
+		 $(".loding").show();
+	 	 $('#zxc').css('display','block');
+	 	 $(".tjform input[type=button]").attr("onclick","ss("+id+","+uid+")");
+	 	 $.ajax({
+	 		    url:'{:U("Home/Course/edit")}',
+				dataType:'json',
+				data:{id:id,uid:uid,page:p},
+				type:'post',
+				success:function(data){
+
+
+					var str = '';
+
+					for(i in data){
+						if(data[i]["checked"]==1){
+							str += '<tr><td><input type="checkbox" name="dfg"  onclick="adf(this,'+id+','+data[i].id+')" id="box" value="'+data[i].id+'" checked/></td><td id="rty">'+data[i].name+'</td><td><input type="text" value="'+data[i].pnum+'" style="width:50px;" class="pnum pnumstyle"  readonly ></td><td>'+data[i].remaining+'次</td></tr>';
+						}else{
+							str += '<tr><td><input type="checkbox" name="dfg"  onclick="adf(this,'+id+','+data[i].id+')"  id="box" value="'+data[i].id+'"/></td><td id="rty">'+data[i].name+'</td><td><input type="text" value="'+data[i].pnum+'" style="width:50px;"  class="pnum"></td><td>'+data[i].remaining+'次</td></tr>';
+						}		
+					}
+					var strbtn='<input type="button" value="确定" onclick="que('+id+')" style="margin-top:10px;">';
+					$('#bianji').html(str);
+					$('#strbtn').html(strbtn);
+					$('#bianji').prepend('<tr><th width="20%">选择</th><th width="40%">客户名称</th><th width="6%">预计人数</th><th width="6%">剩余听课次数</th></tr>');
+					$(".loding").hide();
+				}
+		})
+	 }
+
+	 function page2(id,page,uid,yy){
+
+	 	var nums ='';
+        if(yy!=undefined){
+			param={uid:uid,search:yy};
+		}else{
+			param={uid:uid};
+		}
+	    $.ajax({
+		    type: "POST",
+		    url:'{:U("Home/Course/page2")}',
+		    dataType:"json",
+			data:param,
+		    async:false,
+		    error: function(data){
+		    },
+		    success: function(data){
+			    nums = eval(data);
+
+				$(".newpage").remove();
+				$(".gundongtable").after("<div class='tcdPageCode newpage'></div>");
+				$(".newpage").removeAttr("Style");
+				$(".newpage").createPage({
+					pageCount:nums,
+					current:page,
+					backFn:function(p)
+					{
+
+						if(yy!=undefined){
+							ss(id,uid,p);
+						}else{
+							edit(id,p,uid);
+						}
+
+					}
+				});
+			}
+		});
+
+
+	 }
+	function adf(element,cid,fid){
+
+		if(!$(element).prop("checked")){
+             $.ajax({
+				 url:"__URL__/adf",
+				 data:{cid:cid,fid:fid},
+				 dataType:"json",
+				 type:"POST",
+				 success:function(data){
+
+				 }
+			 });
+		}
+	}
+	  //编辑企业里的确定
+	function que(id){
+		var msg  = /^\+?(0|[1-9][0-9]*)$/;
+		var obj = $("input[name=dfg]");  //讲师
+		var nameq = $('#rty').text();
+		var page=$(document.body).attr("page");
+	 	var s=''; 
+		for(var i=0; i<obj.length; i++){ 
+		   if(obj[i].checked){
+		   	    s+=obj[i].value+','; //如果选中，将value添加到变量s中 
+		    	s+=$(".pnum").eq(i).val()+'|';
+
+				if(!msg.test($(".pnum").eq(i).val()))
+				{
+					Showbo.Msg.alert('请输入正整数');
+					return false;
+				}
+		   } 
+		}
+		if(s==""){
+			Showbo.Msg.alert('未添加任何客户');
+			return false;
+		}
+		$.ajax({
+		      url:"{:U('Home/Course/qweadd')}",
+		      type:'post',
+		      data:{s:s,nameq:nameq,id:id},
+		      dataType:'json',
+		      success:function(res){
+		      	if(res == 1)
+	      		{
+	      			Showbo.Msg.alert('添加完毕');
+	      			
+	      		}
+	      		if(res == 3)
+	      		{
+	      			Showbo.Msg.alert('添加失败');
+	      		}
+	            $(".modal-header .close").click(); 
+	            $("#dvMsgBtns input").click(function(){
+	            	 //list(page);
+					returnpagelist();
+	            });
+		     }
+		   })
+			//Showbo.Msg.alert(s==''?'你还没有选择任何内容！':s); 
+		}
+	//展开
+	function show(id,jid,status){
+		if($(".tr"+id).is(":visible") && status!="tiange"){
+
+			$(".trnone").hide();
+			$(".btn"+id).val("展开");
+		}else{
+
+			$(".loding").show();
+			$(".trnone").hide();
+			$(".tr"+id).show();
+			$("#rang .btn-primary").val("展开");
+			$(".btn"+id).val("合上");
+		 	$.ajax({
+		 	      url:"{:U('Home/Course/show')}",
+		 	      type:'post',
+		 	      data:{id:id},
+		 	      dataType:'json',
+		 	      success:function(data){
+		 				str = '';	
+			 			if(data.errcode == 1){
+			 				var data = data.dis;
+			 				for(i in data){
+			 				    str += '<tr id="'+data[i].comid+'" cid="'+id+'"><td>qy'+data[i].id+'</td><td>'+data[i].name+'</td><td>'+data[i].contact+'</td><td>'+data[i].tel+'</td><td>'+data[i].address+'</td><td><span class="numedit">'+data[i].pnum+'</span></td><td><input type="button" value="删除" class="btn btn-danger" onclick="dele('+data[i].comid+')" />';
+								str+='<input type="button" data-toggle="modal" data-target="#addcjxinxi" value="添加成交信息" class="btn btn-primary" onclick="sh('+data[i].id+','+jid+','+data[i].comid+',this)"/><input type="button" value="成交信息展开" class="btn btn-warning" onclick="ed('+data[i].comid+')"/>';
+                                if(data[i].issignin==1){
+									 str+='<input type="button"  class="btn btn-warning" value="已签到" style=" background: #929292;" />';
+								}else{
+								     str+='<input type="button"  class="btn btn-warning" value="签到" onClick="Signin('+data[i].id+','+data[i].remaining+','+data[i].pnum+','+data[i].comid+')" />';
+								}
+								str+='</td></tr>';
+			 				    str += '<tr class="trnone1 trqy'+data[i].comid+'"><td colspan="7"><table class="tyutable" id="tyu'+data[i].comid+'" style="width:100%"></table></td></tr>';
+			 				}
+							if(str==""){
+								str+="<tr><td colspan='7'>暂无客户信息</td></tr>";
+							}
+			 				$('#ra'+id).html(str);
+			 				$('#ra'+id).prepend('<tr><th>ID</th><th>客户名称</th><th>联系人</th><th>电话</th><th width="20%">地址</th><th>人数</th><th width="30%">操作</th></tr>');
+
+			 				//人数修改
+			 			    $(".numedit").click(function(){
+								/*
+			 			    	if($(this).children("input").length>0){
+			 			    		return false;
+			 			    	}
+			 			    	 
+			 			    	var val=$(this).text();
+			 			    	$(this).html("<input type='text' value='"+val+"' onblur='editnum(this)'>");
+			 			    	$(this).children("input").focus();*/
+			 			    });
+			 			}else{
+							$("#ra"+id).html("<tr><td>当前没有客户信息</td></tr>");
+			 				//Showbo.Msg.alert('当前没有信息');
+			 			} 				
+			 			$(".loding").hide();
+		           }
+		 	  })
+		}
+		
+	 }
+	 
+	 function Signin(id,num,pnum,comid)
+	 {
+	 	$('.zhezhao').css('display','block');
+	 	$('.neirong').css('display','block');
+	 	var str ='<div class="Task_header" id="newTask"><h3 id="add" act="add">签到</h3><i class=" icon-remove close_task" id="close"></i></div>';
+
+		 str +='<div class="widthnum Task_cont"><div>您剩余听课次数为'+(parseInt(num))+'节</div>'; //+parseInt(pnum)
+	 	 str +='<div>听课<input type="text" id="remain" value="'+pnum+'"/>人</div>';
+	 	 str +='<p><input type="button"  value="确定" class="btn-info" onClick="savenum('+id+','+num+','+pnum+','+comid+')"/></p></div>';
+	 	 $('.neirong').html(str);
+
+         $("#close").click(function() {
+			 $(".zhezhao").hide();
+		 });
+
+
+	 }
+	 function savenum(id,num,pnum,comid)
+	 {
+
+	 	var cont = $('#remain').val();
+		if(cont<=0){
+			Showbo.Msg.alert('签到人数不能小于零');
+			return false;
+		}
+	 	if(cont > num)
+	 	{
+	 		Showbo.Msg.alert('听课的人数不能大于课程剩余数量');
+	 		return false;
+	 	}
+		 $(".loding").show();
+	 	 $.ajax({
+			 type:"POST",
+			 url:"{:U('/Home/Course/savenum')}",
+			 data:{id:id,comid:comid,cont:cont,pnum:pnum},
+			 dataType:"json",
+			 success:function(data){
+
+				if(data == 1)
+				{
+					//Showbo.Msg.alert('签到完毕');
+				}
+				list();
+				$(".loding").hide();
+				$('.zhezhao').css('display','none');
+				$('.neirong').css('display','none');
+			 }
+		 });
+
+	 }
+	 function editnum(element){
+		 var msg  = /^\+?(0|[1-9][0-9]*)$/;
+		 var id=$(element).parents("tr").attr("id");
+		
+		 var pnum=$(element).val();
+		 if(!msg.test(pnum))
+		 {
+		 	Showbo.Msg.alert('请输入正整数');
+		 	return false;
+		 }
+		 
+		 var param=new Object();
+		 param["id"]=id;
+		 param["pnum"]=pnum;
+	     $(".loding").show();
+		 $.ajax({
+			 type:"POST",
+			 url:"{:U('/Home/Course/editnum')}",
+			 data:param,
+			 dataType:"json",
+			 success:function(data){
+
+				 $(".loding").hide();
+				 list(1);
+				 $(element).parent(".numedit").text(pnum);
+				 
+			 }
+		 });
+		 
+	 }
+	 
+	 
+	 //展开里的删除
+	 function dele(id){
+		 var cid=$(id).attr("cid");
+
+		 Showbo.Msg.confirm('确定删除?',function(data){
+			if(data == 'yes'){
+		 	    $.ajax({
+		 	      url:"{:U('Home/Course/dele')}",
+		 	      type:'post',
+		 	      data:{id:id},
+		 	      dataType:'json',
+		 	      success:function(data){
+		 	      	if(data.errcode == 0){
+				      		Showbo.Msg.alert(data.errmsg);
+						    returnpagelist()
+//				      		show(cid,"tiange");
+			      	}else{
+			      		Showbo.Msg.alert(data.errmsg);
+			      	}	
+		 	      }
+		 	    })
+		    }
+		 });	
+	 }
+	 //成交信息展开
+	 function ed(id){
+		 if($('.trqy'+id).is(":visible")){
+			 $(".trnone1").hide();
+
+		 }else{
+			 $(".loding").show();
+			 $(".trnone1").hide();
+			 $('.trqy'+id).show();
+		 	 $.ajax({
+		 	      url:"{:U('Home/Course/ed')}",
+		 	      type:'post',
+		 	      data:{id:id},
+		 	      dataType:'json',
+		 	      success:function(data){
+		            console.log(data);
+		 	      	str = '';	
+		 	      	if(data.errcode == 1){
+		 	      	var data = data.dis;
+	
+		               for(i in data){
+							str += '<tr><td>jy'+data[i].id+'</td><td>'+data[i].time+'</td><td>小票('+data[i].ticket+')</td><td>九大规划('+data[i].planning+')</td><td>卡会员('+data[i].card+')</td><td>朋友圈('+data[i].friends+')</td><td>弟子学员('+data[i].disciple+')</td><td>成交人：'+data[i].rname+'</td><td width="30%"><input type="button" value="编辑" class="btn btn-primary" style="width:50px"  data-toggle="modal" data-target="#beditshow" onclick="bedit('+data[i].id+',this)"/><input type="button" value="删除" style="width:50px" class="btn btn-danger" onclick="qdel('+data[i].id+')"/></td></tr>';
+					   }
+		 	      	}else{
+		 	      		str += '<tr><td colspan="8">当前没有成交信息</td></tr>';
+		 	      	}
+								
+					$('#tyu'+id).html(str);
+					$('#zxc').css('display','none');
+					//$("#shshedit").css('display','none');
+					$(".loding").hide();
+	
+		 	      }
+		 	  })
+		 }
+		 
+	 }
+	 //成交信息展开删除
+	 function qdel(id){
+		 
+		 Showbo.Msg.confirm('确定删除?',function(data){
+		        if(data == 'yes'){    
+				 	$.ajax({
+				 	      url:"{:U('Home/Course/qdel')}",
+				 	      type:'post',
+				 	      data:{id:id},
+				 	      dataType:'json',
+				 	      success:function(data){
+				 	      		if(data.errcode == 0){
+						      		Showbo.Msg.alert(data.errmsg);
+									returnpagelist()
+						      		// ed();
+						      	}else{
+						      		Showbo.Msg.alert(data.errmsg);
+						      	}
+				 	      }
+				 	   })
+		        }
+		 });     
+	 }
+	 
+	 //成交信息展开编辑
+	 function bedit(id,element){
+
+		 $(".loding").hide();
+		 var uid=$(element).parents(".ratable").attr("uid");
+
+		 $.ajax({
+	 	      url:"{:U('Home/Course/dit')}",
+	 	      type:'post',
+	 	      data:{id:id,uid:uid},
+	 	      dataType:'json',
+	 	      success:function(data){
+	 				str = '';
+				    var salesman = data.salesman;
+				    var finatype = data.finatype;
+		 	      	var data = data.dis;
+		 			for(i in data) {
+						str += '<tr><td>成交人</td><td><select id="rid" style="width: 72%;">';
+						for (var j in salesman){
+							if (data[i]["rid"] == salesman[j]["id"]) {
+								str += "<option value='" + salesman[j]["id"] + "' selected>" + salesman[j]["name"] + "</option>";
+							} else {
+								str += "<option value='" + salesman[j]["id"] + "'>" + salesman[j]["name"] + "</option>";
+							}
+					    }
+					    str+='</select></td></tr><tr><td>时间</td><td><input type="text" id="tiem" onclick="picker_one()" value="'+data[i].time+'"></td></tr>';
+                        if(finatype!="1"){
+							str+='<tr><td>小票</td><td><input type="text" id="xiaopia" value="'+data[i].ticket+'"></td></tr>';
+							str+='<tr><td>九大规划</td><td><input type="type" id="guihu" value="'+data[i].planning+'"></td></tr>';
+							str+='<tr><td>卡会员</td><td><input type="type" id="kahu" value="'+data[i].card+'"></td></tr>';
+							str+='<tr><td>朋友圈</td><td><input type="type" id="pengyo" value="'+data[i].friends+'"></td></tr>';
+							str+='<tr><td>弟子学员</td><td><input type="type" id="diz" value="'+data[i].disciple+'"></td></tr>';
+						}else{
+							str+='<tr><td>小票</td><td>数量：<input type="text" id="xiaopia" style="width:70px;" value="'+data[i].ticket+'">&nbsp;&nbsp;单价：<input type="text" id="leafletstc" style="width:70px;" value="'+data[i].leafletstc+'"></td></tr>';
+							str+='<tr><td>九大规划</td><td>数量：<input type="type" id="guihu" style="width:70px;"  value="'+data[i].planning+'">&nbsp;&nbsp;单价：<input type="text" id="leafletsnc" style="width:70px;" value="'+data[i].leafletsnc+'"></td></tr>';
+							str+='<tr><td>卡会员</td><td>数量：<input type="type" id="kahu" style="width:70px;"  value="'+data[i].card+'">&nbsp;&nbsp;单价：<input type="text" id="leafletscc" style="width:70px;" value="'+data[i].leafletscc+'"></td></tr>';
+							str+='<tr><td>朋友圈</td><td>数量：<input type="type" id="pengyo" style="width:70px;"  value="'+data[i].friends+'">&nbsp;&nbsp;单价：<input type="text" id="leafletsfc" style="width:70px;" value="'+data[i].leafletsfc+'"></td></tr>';
+							str+='<tr><td>弟子学员</td><td>数量：<input type="type" id="diz" style="width:70px;"  value="'+data[i].disciple+'">&nbsp;&nbsp;单价：<input type="text" id="leafletsdc" style="width:70px;" value="'+data[i].leafletsdc+'"></td></tr>';
+						}
+	 				}
+
+				    var strbtn='<input type="button" value="确定" onclick="bjedit('+data[i].id+')">';
+		 			$("#bjedit").html(strbtn);
+
+					$("#shshedit").html(str);
+		
+					$(".loding").hide();	  
+		 	      	
+	 	      }
+	 	})
+	 }   
+	 function bjedit(id){
+	 	var msg  = /^\+?(0|[1-9][0-9]*)$/;
+	 	var timem1 = $('#tiem').val();//时间
+	 	var xiaopiao1 = $('#xiaopia').val();//小票
+		var rid= $("#rid").val();
+
+
+	 	if(!msg.test(xiaopiao1))
+		{
+			Showbo.Msg.alert('小票请输入正整数');
+			return false;
+		}
+	 	var kahui1 = $('#kahu').val();//卡会员
+ 		if(!msg.test(kahui1))
+		{
+			Showbo.Msg.alert('卡会员请输入正整数');
+			return false;
+		}
+	 	var pengyou1 = $('#pengyo').val();//朋友圈
+	 	if(!msg.test(pengyou1))
+		{
+			Showbo.Msg.alert('朋友圈请输入正整数');
+			return false;
+		}
+	 	var dizi1 = $('#diz').val();//弟子
+	 	if(!msg.test(dizi1))
+		{
+			Showbo.Msg.alert('弟子请输入正整数');
+			return false;
+		}
+	 	var guihua1 = $('#guihu').val();//九大规划
+	 	if(!msg.test(guihua1))
+		{
+			Showbo.Msg.alert('九大规划请输入正整数');
+			return false;
+		}
+	 	$("#loding").show();
+		var param=new Object();
+		param["id"]=id;
+		param["timem1"]=timem1;
+		param["xiaopiao1"]=xiaopiao1;
+		param["kahui1"]=kahui1;
+		param["pengyou1"]=pengyou1;
+		param["dizi1"]=dizi1;
+		param["guihua1"]=guihua1;
+		param["rid"]=rid;
+
+		if($("#leafletstc").length>0){
+			param["leafletstc"]=$("#leafletstc").val();
+			param["leafletsnc"]=$("#leafletsnc").val();
+			param["leafletstc"]=$("#leafletstc").val();
+			param["leafletstc"]=$("#leafletstc").val();
+			param["leafletstc"]=$("#leafletstc").val();
+		}
+
+
+		$.ajax({
+	 	      url:"{:U('Home/Course/bjedit1')}",
+	 	      type:'post',
+	 	      data:param,
+	 	      dataType:'json',
+	 	      success:function(data){
+	 	      	if(data.errcode == 0){
+	 	      		//Showbo.Msg.alert(data.errmsg);
+	 	      		 //$('#beditshow,.modal-backdrop.fade').hide();
+	 	      		// $('.modal-body').hide();
+	 	      	//$('#beditshow').hide();
+
+	 	      	    $("#beditshow .close").click();
+					returnpagelist();
+	 	      	}else{
+	 	      		Showbo.Msg.alert(data.errmsg);
+	 	      	}
+	 	      
+	 	      	$("#loding").hide();
+	 	      }
+	 	   })
+	 }
+	  	//添加成交信息
+	 function sh(kid,jid,id,element){
+	    $("#comid").val(id);
+		var uid=$(element).parents(".ratable").attr("uid");
+
+		$.ajax({
+			url:"__URL__/getsh",
+			data:{uid:uid},
+			type:"POST",
+			dataType:"json",
+			success:function(data){
+				var str="<option value=''>--请选择成交人--</option>";
+				for(var i in data){
+                    str+="<option value='"+data[i]["id"]+","+jid+","+kid+"'>"+data[i]["name"]+"</option>";
+				}
+                $("#said").html(str);
+			}
+		})
+	 	//$('#shsh').css('display','block');
+	    $("#tianjiacss").find("input[type=text]").val("");
+
+	 }
+	 function bj(){
+	 	var comid = $('#comid').val();
+		var saidd=$("#said").val();
+		said1 = saidd.split(",")
+		said = said1[0];
+		jid = said1[1];//讲师id
+		kid = said1[2];//课id
+	 	var timem = $('#tiemm').val();//时间
+	 	var xiaopiao = $('#xiaopiao').val();//小票
+	 	var kahui = $('#kahui').val();//卡会员
+	 	var pengyou = $('#pengyou').val();//朋友圈
+	 	var dizi = $('#dizi').val();//弟子
+	 	var guihua = $('#guihua').val();//九大规划
+        var uid=$("#"+comid).parents(".ratable").attr("uid");
+
+		if(said == ''){
+			 Showbo.Msg.alert('请选择成交人！');
+			 return false;
+		}
+	 	if(timem == ''){
+	 		Showbo.Msg.alert('请填写时间！');
+	 		return false;
+	 	}
+	 	if(xiaopiao == ''){
+	 		Showbo.Msg.alert('请填写小票数量');
+	 		return false;
+	 	}
+	 	if(kahui == ''){
+	 		Showbo.Msg.alert('请填写卡会员数量');
+	 		return false;
+	 	}
+	 	if(pengyou == ''){
+	 		Showbo.Msg.alert('请填写朋友圈数量');
+	 		return false;
+	 	}
+	 	if(dizi == ''){
+	 		Showbo.Msg.alert('请填写弟子数量');
+	 		return false;
+	 	}
+	 	if(guihua == ''){
+	 		Showbo.Msg.alert('请填写九大规划数量');
+	 		return false;
+	 	}
+		///---
+		 if(!(xiaopiao>0||kahui>0 ||pengyou>0||dizi>0||guihua>0)){
+			 Showbo.Msg.alert('成交信息至少应有一样成交数量大于0');
+			 return false;
+		 }
+
+
+	 	$("#loding").show();
+
+	 	$.ajax({
+	 	      url:"{:U('Home/Course/shadd')}",
+	 	      type:'post',
+	 	      data:{comid:comid,said:said,timem:timem,xiaopiao:xiaopiao,kahui:kahui,pengyou:pengyou,dizi:dizi,guihua:guihua,jid:jid,kid:kid,uid:uid},
+	 	      dataType:'json',
+	 	      success:function(data){
+	 	      		if(data == 1)
+		      		{
+		      			//Showbo.Msg.alert('添加完毕');
+						returnpagelist()
+		      		}
+		      		if(data == 2){
+		      			Showbo.Msg.alert('添加失败');
+		      		}
+		      		
+	 				$(".modal-header .close").click();	
+	 				$("#loding").hide();
+	 	      }
+	 	  })
+	 }
+	 //删除
+	function del(id){
+		 Showbo.Msg.confirm('确定删除当前课程?',function(a){
+			 if(a == 'yes'){
+			     $.ajax({
+			      url:"{:U('Home/Course/del')}",
+			      type:'post',
+			      data:{id:id},
+			      dataType:'json',
+			      success:function(res){
+			      		if(res.errcode == 1){
+			      			//Showbo.Msg.alert(res.errmsg);
+							returnpagelist()
+			      		}else{
+			      			Showbo.Msg.alert(res.errmsg);
+							
+			      		}
+			      }
+			    })
+	         }
+	     })
+	}	
+	function picker_one(){
+		//WdatePicker({minDate: '%y-%M-#{%d+1}' })
+		WdatePicker({onpicking:function(dp){cs1(dp.cal.newdate.y,dp.cal.newdate.M,dp.cal.newdate.d)} })
+		old_etime = $('#etime').val();
+		$('#etimex').empty();
+		$('#etimex').html('<input readonly="readonly" type="text" id="etime" onclick="picker()" value="" />');
+	}
+
+
+	function picker(){
+		tx = $('#stime').val();
+		var d = new Date();
+		var Year = d.getFullYear();
+		var Mon = d.getMonth() + 1;
+		var Day = d.getDate();
+		var now = Year + "-" + Mon + "-" + Day;
+		nowstr = new Date(now);
+		txstr = new Date(tx);
+		if(nowstr>txstr){
+			WdatePicker({minDate:now});
+		}else{
+			WdatePicker({minDate:tx});
+		}
+	}
+	
+	function cs1(y,m,d) {
+	
+			tx = '';
+			if(m<9)
+			{
+				m = '0'+m;
+			}
+			if(d<9)
+			{
+				d = '0'+d;
+			}
+			tx = y+'-'+m+'-'+d;
+			//tx = $('#stime').val();
+			if(old_etime == '')
+			{
+				if($('#stime').val() == '')
+				{
+					tx1 = $('#stime').val();
+				}else
+				{
+					tx1 = $('#etime').val();
+				}
+			}else
+			{
+				a = new Date(tx);
+				b = new Date(old_etime);
+				if(b>a)
+				{
+					tx1 = old_etime;
+				}else
+				{
+					tx1 = tx;
+				}
+				old_etime = '';
+			}
+			$('#etime').val(tx1);
+		}
+	　
+	//分页
+	function page1(page)
+	{
+	   var nums ='';
+	    $.ajax({
+		    type: "GET",
+		    url:'{:U("Home/Course/page1")}',
+		    dataType:"json",
+		    async:false,
+		    error: function(data){
+		    },
+		    success: function(data){
+		           nums = eval(data);
+		    	}
+		    });
+	
+	    $(".tcdPageCode").remove();
+	    $(".tableborder").after("<div class='tcdPageCode'></div>");
+	    $(".tcdPageCode").createPage({
+	          pageCount:nums,
+	          current:page,
+	          backFn:function(p)
+	          {
+	            list(p);
+	          }
+	       });
+	}
+	function add(){
+		$("#kcb").val("");
+		$("#stime").val("");
+		$("#etime").val("");
+		$("#didian").val("");
+		$("#fengongsi").find("option").removeAttr("selected");
+		$("#jiangshi").find("option").removeAttr("selected");
+		$("#conduct").find("option").removeAttr("selected");
+		$("#strbtns input").attr("onclick","addlef()");
+		var comid="{$comid}";
+
+		if(parseInt(comid)>0){
+			if(comid.split(",").length<0){
+				$("#fengongsi").find("option[value="+comid+"]").attr("selected",true);
+			}
+			showchek();
+		}
+
+	}
+	function addlef(){
+		
+		var kcb = $('#kcb').val();//取课程表的值
+		var jiangshi = $('#jiangshi').val();//取下拉菜单讲师的值
+		var fengongsi = $('#fengongsi').val();//取下拉菜单分公司的值
+		var didian = $('#didian').val();//取地点的值
+		var renshu = $('#renshu').val();//取人数的值
+		var stime = $('#stime').val();//取开始时间
+		var etime = $('#etime').val();//取结束时间
+		var conduct=$("#conduct").val();
+		
+		
+		if(kcb == ''){
+			Showbo.Msg.alert('请填写课程名称！');
+	 		return false;
+		}
+		if(stime == ''){
+			Showbo.Msg.alert('请选择课程开始时间！');
+	 		return false;
+		}
+		if(etime == ''){
+			Showbo.Msg.alert('请选择课程结束时间！');
+	 		return false;
+		}
+		if(jiangshi == ''){
+			Showbo.Msg.alert('请选择讲师！');
+	 		return false;
+		}
+		if(fengongsi == ''){
+			Showbo.Msg.alert('请选择分公司！');
+	 		return false;
+		}
+		if(didian == ''){
+			Showbo.Msg.alert('请填写上课地点！');
+	 		return false;
+		}
+		if(renshu == ''){
+			Showbo.Msg.alert('请填写上课人数！');
+	 		return false;
+		}
+		$.ajax({
+		      url:"{:U('Home/Course/addzjl')}",
+		      type:'post',
+		      data:{kcb:kcb,jiangshi:jiangshi,fengongsi:fengongsi,didian:didian,renshu:renshu,stime:stime,etime:etime,conduct:conduct},
+		      dataType:'json',
+		      success:function(res){
+		      		if(res == 1)
+		      		{
+		      			Showbo.Msg.alert('添加完毕');
+		      			$("#addqihang .close").click();
+		      			
+		      		    list();
+		      		}
+		      		if(res == 3)
+		      		{
+		      			Showbo.Msg.alert('此账号已存在');
+		      		}
+		      }
+		   })
+	}
+
+
+
+	//做完 添加客户 编辑  删除 添加成交信息 所调回的页面
+	function returnpagelist(){
+		var page=$(document.body).attr("page");
+
+        if($("#punt").val()!=""){
+			search(page,1)
+		}else if($("#con").val()!=""){
+			search(page,2)
+		}else{
+			//searove(page);
+
+			list(page);
+		}
+	}
+
+
+
+</script>
+</html>

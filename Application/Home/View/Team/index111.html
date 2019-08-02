@@ -1,0 +1,766 @@
+<link rel="stylesheet" href="__PUBLIC__/css/weiyan.css" />
+<include file="Public/header_rela" />
+
+
+<div class="container yui_sorcl">
+	<div class="cont">
+		<h3>团队</h3>
+
+		<if condition="$_SESSION['type']!=C('SALES_POWER_SESSION')">
+			<span onclick="addtz()">添加</span>
+		</if>
+		<div class="fengongsi" style="float:right; margin-right: 10px; margin-top: 3px;">
+			<b>选择分公司</b>
+			<select id="fcomid" class="form-control" style="width:auto;" onchange="Team(1)">
+				<option value="">--请选择分公司--</option>
+				<foreach name="enterprise" item="vo">
+					<if condition="$comid eq $vo.id ">
+						<option value="{$vo.id}" selected>{$vo.Qyname}</option>
+						<else/>
+						<option value="{$vo.id}">{$vo.Qyname}</option>
+					</if>
+
+				</foreach>
+			</select>
+		</div>
+	</div>
+	<table id="teandata" width="1140" cellspacing="0" cellpadding="0" border="3" bordercolor="#0588ce" rules=rows>
+
+	</table>
+	<div class="TaskTable" id="pwdshow"></div>
+	<div class="TaskTable" id="editteam"></div>
+<script>
+
+$(function(){
+
+	Team();
+})
+
+ function Team(p){
+	$('.loding').show();
+	var fcomid=$("#fcomid").val();
+ 	if(p==undefined)
+ 	{
+         p = 1;
+    }
+
+	page(p,fcomid);
+ 	$.ajax({
+ 		url:'{:U("Home/Team/Teams")}',
+			dataType:'json',
+			data:{page:p,fcomid:fcomid},
+			type:'post',
+			success:function(data)
+			{
+
+             	var str = '';
+
+				for(i in data){
+					if(data[i].ecount == undefined)
+					{
+						data[i].ecount = 0;
+					}
+					if(data[i].gcount == undefined)
+					{
+						data[i].gcount = 0;
+					}
+
+					if(data[i].role == 5){
+						data[i].role = "业务经理";
+					}
+					if(data[i].role == 4){
+						data[i].role = "业务副经理";
+					}
+					if(data[i].role == 3){
+						data[i].role = "业务主管";
+					}
+					if(data[i].role == 2){
+						data[i].role = "业务副主管";
+					}
+					if(data[i].role == 1){
+						data[i].role = "业务员";
+					}
+					str += '<tr class="team'+data[i].power+'"><td>'+data[i].tname+'</td><td>'+data[i].gname+'('+data[i].role+')</td><td><span>成员'+data[i].gcount+'人</span>';
+					str+='<div class="divbox">';
+					str+='<i class="single1"></i>';
+					str+='<i class="single2"></i>';
+					for(var j in data[i].gsum){
+						if(data[i].gsum == undefined)
+						{
+							data[i].gsum = 0;
+						}
+						if(data[i].gsum[j].role == 5){
+							data[i].gsum[j].role = "业务经理";
+						}
+						if(data[i].gsum[j].role == 4){
+							data[i].gsum[j].role = "业务副经理";
+						}
+						if(data[i].gsum[j].role == 3){
+							data[i].gsum[j].role = "业务主管";
+						}
+						if(data[i].gsum[j].role == 2){
+							data[i].gsum[j].role = "业务副主管";
+						}
+						if(data[i].gsum[j].role == 1){
+							data[i].gsum[j].role = "业务员";
+						}
+					  str+='<span>'+data[i].gsum[j].name+'('+data[i].gsum[j].role+')</span>';
+					}
+					str+='</div>';
+					str+='</td><td>成员'+data[i].ecount+'人';
+					str+='<div class="divbox">';
+					str+='<i class="single1"></i>';
+					str+='<i class="single2"></i>';
+					for(var j in data[i].esum){
+						if(data[i].esum[j].role == 5){
+							data[i].esum[j].role = "业务经理";
+						}
+						if(data[i].esum[j].role == 4){
+							data[i].esum[j].role = "业务副经理";
+						}
+						if(data[i].esum[j].role == 3){
+							data[i].esum[j].role = "业务主管";
+						}
+						if(data[i].esum[j].role == 2){
+							data[i].esum[j].role = "业务副主管";
+						}
+						if(data[i].esum[j].role == 1){
+							data[i].esum[j].role = "业务员";
+						}
+					  str+='<span>'+data[i].esum[j].name+'('+data[i].esum[j].role+')</span>';
+					}
+					str+='</div>';
+					str+='</td><td>';
+					if(data[i].power!=0) {
+						str += '<input value="编辑" type="button" onclick="editteam(' + data[i].id + ','+data[i].power+')" class="btn btn-info">';
+					}else{
+						str += '<input value="编辑"  class="btn btn-info" style="opacity:0;cursor: default;">';
+					}
+					if(data[i].power==2){
+						str+='<input value="删除" type="button" onclick="delteam('+data[i].id+',this)" class="btn btn-danger">';
+					}else{
+						str+='<input value="删除" type="button"  class="btn btn-danger" style="opacity:0;cursor: default;">';
+					}
+					str+='</td></tr>'
+				}
+				if(str==""){
+					str+='<tr><td colspan="5"><span style="color: #9A8F8F;">暂无团队</span></td></tr>';
+				}
+				$('#teandata').html(str);
+				$('#teandata').prepend('<tr><td>团队名称</td><td>上级领导</td><td>管理人员</td><td>成员</td><td style="width:30px">操作</td></tr>');
+			    // $('#teandata').prepend('<tr><td><input type="button" value="添加" onclick="addtz('+data[i].id+')" /></td></tr>');
+				$('.loding').hide();
+				$("#teandata tr td").hover(function(){
+					$(this).children(".divbox").show();
+				},function(){
+					$(this).children(".divbox").hide();
+				});
+           }
+	      })
+}
+
+
+
+
+function page(page,comid)
+{
+   var nums ='';
+    $.ajax({
+	    type: "POST",
+	    url:'{:U("Home/Team/page")}',
+		data:{comid:comid},
+	    dataType:"json",
+	    async:false,
+	    error: function(data){
+	    },
+	    success: function(data){
+	           nums = eval(data);
+	    	}
+	    });
+
+    $(".tcdPageCode").remove();
+    $("#teandata").after("<div class='tcdPageCode'></div>");
+    $(".tcdPageCode").createPage({
+          pageCount:nums,
+          current:page,
+          backFn:function(p)
+          {
+            Team(p);
+          }
+       });
+}
+function delteam(id,obj)
+{
+
+ Showbo.Msg.confirm('确认删除?',function(a){
+ 	if(a == 'yes')
+ 	{
+      $(".loading").show();
+      $.ajax({
+         type:'get',
+         url:'__URL__/delteam',
+         data:{id:id},
+         dataType:'json',
+         success:function(data)
+         {
+
+          if(data.code == 1)
+          {
+          	$(obj).parent().parent().remove();
+            Team();
+          }
+         $(".loading").hide();
+         }
+         });
+ 	}
+ })
+}
+function addtz(id){
+
+	var str ='';
+
+	var uid="{$comid}";
+    $.ajax({
+     type:'post',
+     url:'__URL__/teamdata',
+     dataType:'json',
+     success:function(t)
+     {
+		   data=t.salesman;
+		   enterprise=t.enterprise;
+	       str +=' <div class="TaskTablecount taskdemo"><div class="Task_header" id="newTask"><h3 id="add" act="add">创建团队</h3><i class=" icon-remove close_task" id="close2" ></i></div><div style=" height:60px; width: 100%;"></div><div  class="Task_cont">';
+	       str +="<div class='tableborder'>";
+	       str +='<p><span>团队名称</span><input  class="form-control" type="text" id="teamname"></p>';
+		   str +='<p><span>分公司</span>';
+		   str +='<select name="" id="Superioriduid" class="form-control" onchange="changeenterprise(this)">';
+		   str +='<option value="">--请选择--</option>';
+
+		   for(i in enterprise)
+		   {
+			 if(uid==enterprise[i].id){
+				 str +='<option value="'+enterprise[i].id+'" selected>'+enterprise[i].Qyname+'</option>';
+			 }else{
+				 str +='<option value="'+enterprise[i].id+'">'+enterprise[i].Qyname+'</option>';
+			 }
+
+		   }
+
+		   str +='</select></p>';
+	       str +='<p><span>上级领导</span>';
+	       str +='<select name="" id="Superiorid" class="form-control" onchange="Superioridpower(this)">';
+	       str +='<option value="">--请选择--</option>';
+           /*
+	       for(i in data)
+	       {
+	       	   str +='<option value="'+data[i].id+'">'+data[i].name+'</option>';
+	       }*/
+	       str +='</select></p>';
+		   str +='<p><span>主管</span>';
+
+		   str +='<select name="" id="Superiorid1" class="form-control">';
+	       str +='<option value="">--请选择--</option>';
+           /*
+	       for(i in data)
+	       {
+	       	   str +='<option value="'+data[i].id+'">'+data[i].name+'</option>';
+	       }*/
+	       str +='</select>&nbsp;<button class="addbtn"  id="addzhug">添加</button></p>';
+	       str+='<div class="demotime">';
+	       str+='<div class="drongqi">';
+	       str+='<div class="dtitle">主管列表</div>';
+	       str+='<div class="dcontent addzhug"  input="zgid">';
+	       str+='<input type="hidden" id="zgid">';
+	       //str+='<span>王牧田<em></em></span>';
+	       str+='</div></div></div>';
+		   str+='<p><span>员工</span>';
+
+		   str +='<select name="" id="Superiorid2" class="form-control">';
+	       str +='<option value="">--请选择--</option>';
+           /*
+	       for(i in data)
+	       {
+	       	   str +='<option value="'+data[i].id+'">'+data[i].name+'</option>';
+	       }*/
+	       str +='</select>&nbsp;<button class="addbtn" id="addchengy">添加</button></p>';
+	       str+='<p><div class="demotime">';
+	       str+='<div class="drongqi">';
+	       str+='<div class="dtitle">成员列表</div>';
+	       str+='<div class="dcontent addchengy" input="ygid">';
+	       str+='<input type="hidden" id="ygid">';
+	       //str+='<span>王牧田<em></em></span>';
+	       str+='</div></div></div></p>';
+	       str+='</div>';
+	  	   str +='<p><input type="button" class=" btn-info"  value="提交" onclick="addteam()"/></p></div></div>';
+	  	   $('#pwdshow').html(str).show();
+	  	   $('.masker').fadeIn();
+	 	   close_mask();
+	 	   add_list();
+	 	   changeenterprise();
+      }
+    });
+
+
+}
+function changeenterprise(element){
+	if(element == undefined){
+		var uid="{$comid}";
+	}else{
+	    var uid=$(element).val();
+	}
+    $.ajax({
+		url:"__URL__/changeenterprise",
+		data:{uid:uid},
+		type:"POST",
+		dataType:"json",
+		success:function(data){
+			console.log(data)
+            var html="<option value=''>--请选择--</option>";
+			for(var i in data){
+				if(data[i].role == 5){
+				data[i].role = "业务经理";
+				}
+				if(data[i].role == 4){
+					data[i].role = "业务副经理";
+				}
+				if(data[i].role == 3){
+					data[i].role = "业务主管";
+				}
+				if(data[i].role == 2){
+					data[i].role = "业务副主管";
+				}
+				if(data[i].role == 1){
+					data[i].role = "业务员";
+				}
+               html+="<option value='"+data[i]["id"]+"'>"+data[i]["name"]+"("+data[i].role+")</option>";
+			}
+			$("#Superiorid").html(html);
+			$("#Superiorid1").html(html);
+			$("#Superiorid2").html(html);
+			$(".dcontent").html("");
+		}
+	});
+}
+
+
+function add_list(){
+	$("#addzhug").click(function(){
+
+		var zgtext=$("#Superiorid1").find("option:selected").text();
+		var zgvalue=$("#Superiorid1").find("option:selected").val();
+		var tid=$(this).parents(".TaskTablecount").attr("id");
+
+		if(zgvalue!=""){
+
+			var zgval=$("#zgid").val();
+//			var zplit=zgval.split(",");
+//
+//			$("#zgid").val(zgval+","+zgvalue);
+
+			if($("#"+zgvalue).length>0||$("#Superiorid").val()==zgvalue){
+				Showbo.Msg.alert("成员名称不能重复");
+				return false;
+			}
+			addchengyuan(tid,zgvalue,1,zgtext)
+
+
+			removecha();
+		}else{
+			Showbo.Msg.alert("请选择添加成员");
+		}
+
+	});
+
+	$("#addchengy").click(function(){
+		var zgtext=$("#Superiorid2").find("option:selected").text();
+		var zgvalue=$("#Superiorid2").find("option:selected").val();
+		if(zgvalue!="") {
+			var tid = $(this).parents(".TaskTablecount").attr("id");
+			var zgval = $("#ygid").val();
+//			var zplit = zgval.split(",");
+
+			//$("#ygid").val(zgval + "," + zgvalue);
+
+			if($("#"+zgvalue).length>0||$("#Superiorid").val()==zgvalue){
+				Showbo.Msg.alert("成员名称不能重复");
+				return false;
+			}
+			addchengyuan(tid, zgvalue, 0, zgtext);
+			removecha();
+		}else{
+			Showbo.Msg.alert("请选择添加成员");
+		}
+	});
+
+
+}
+function removecha(){
+	$(".dcontent > span > em").click(function(){
+
+		var input=$(this).parents(".dcontent").attr("input");
+		var inputval=$("#"+input).val();
+		var eid=$(this).parent("span").attr("id");
+		var tid=$(this).parents(".TaskTablecount").attr("id");
+
+		if(tid!=undefined){
+			delmember(tid,eid);
+		}
+
+		$(this).parent("span").fadeOut(function(){
+			$(this).remove();
+		});
+
+	});
+}
+function addchengyuan(tid,eid,type,zgtext){
+    if(tid==undefined){
+		if(type==0){
+			str='<span id="'+eid+'">'+zgtext+'<em></em></span>';
+			$(".addchengy").append(str);
+		}else{
+			str='<span id="'+eid+'">'+zgtext+'<em></em></span>';
+			$(".addzhug").append(str);
+		}
+		removecha();
+		return false;
+	}
+	var param=new Object();
+	$.ajax({
+		url:"__URL__/addchengyuan",
+		data:{tid:tid,eid:eid,type:type},
+		type:"POST",
+		dataType:"json",
+		success:function(data){
+
+			if(data["error"]!=0){
+                Showbo.Msg.alert(data["msg"]);
+			}else{
+
+                if(type==0){
+                	str='<span id="'+eid+'">'+zgtext+'<em></em></span>';
+			        $(".addchengy").append(str);
+                }else{
+                	str='<span id="'+eid+'">'+zgtext+'<em></em></span>';
+			        $(".addzhug").append(str);
+                }
+                removecha();
+			}
+		}
+	});
+}
+function delmember(tid,eid){
+
+	$.ajax({
+		url:"__URL__/delmember",
+		data:{tid:tid,eid:eid},
+		type:"POST",
+		success:function(data){
+
+		}
+	});
+}
+
+
+function close_mask(){
+  $('.close_task').click(function(){
+    $('.TaskTable,.masker').fadeOut();
+  })
+}
+
+
+
+function addteam()
+{
+	var teamname = $('#teamname').val(); //团队名称;
+	var Superiorid = $('#Superiorid').val();//上级领导id
+	var Superioriduid = $('#Superioriduid').val();//分公司UID
+
+	var idsstr = "";
+	var isc = "";
+	if(teamname == '')
+	{
+	    Showbo.Msg.alert('请填写团队名称');
+	    return false;
+	}
+	if(Superiorid == '')
+	{
+	    Showbo.Msg.alert('请选择上级领导');
+	    return false;
+	}
+	if(Superiorid == '')
+	{
+		Showbo.Msg.alert('请选择分公司');
+		return false;
+	}
+
+    gid='';
+    $(".addzhug > span").each(function(key,element){
+    	 var id=$(element).attr("id");
+    	 if(key==0){
+    		 gid+=id;
+    	 }else{
+    		 gid+=","+id;
+    	 }
+    });
+    eid='';
+    $(".addchengy > span").each(function(key,element){
+    	 var id=$(element).attr("id");
+    	 if(key==0){
+    		 eid+=id;
+    	 }else{
+    		 eid+=","+id;
+    	 }
+    });
+    if(gid == '')
+	{
+	    Showbo.Msg.alert('请选择管理员');
+	    return false;
+	}
+    if(eid == '')
+	{
+	    Showbo.Msg.alert('请选择成员');
+	    return false;
+	}
+	 $.ajax({
+	    type: "post",
+	    url:'{:U("Home/Team/addteam")}',
+	    data:{tname:teamname,sid:Superiorid,gid:gid,eid:eid,uid:Superioriduid},
+	    dataType:"json",
+	    success: function(data){
+	        $('.Task_cont').hide();
+	        $('.masker').hide();
+	        $('.TaskTablecount').hide();
+	        Team();
+	    }
+	});
+}
+function editteam(id,pow){
+	var str ='';
+	power='';
+
+    if(pow==1){
+        power='disabled="disabled"';
+	}
+    $.ajax({
+     type:'post',
+     url:'__URL__/teaminfo',
+     data:{id:id},
+     dataType:'json',
+     success:function(t)
+     {
+		   var enterprise=t.enterprise;
+    	   var data = t.salesman;
+           var sname = t.sname;
+
+	       str +=' <div class="TaskTablecount taskdemo" id="'+sname.id+'" ><div class="Task_header" id="newTask"><h3 id="add" act="add">编辑团队</h3><i class=" icon-remove close_task" id="close2" ></i></div><div style=" height:60px; width: 100%;"></div><div  class="Task_cont">';
+	       str +="<div class='tableborder'>";
+	       str +='<p><span>团队名称</span><input  class="form-control" type="text" id="teamname" value="'+sname.tname+'"></p>';
+		   str +='<p><span>分公司</span>';
+		   str +='<select name="" id="Superioriduid" class="form-control" '+power+' disabled="disabled" onchange="changeenterprise(this)">';
+		   str +='<option value="">--请选择--</option>';
+		   for(i in enterprise)
+		   {
+			     if(sname.uid==enterprise[i].id){
+					 str +='<option value="'+enterprise[i].id+'" selected>'+enterprise[i].Qyname+'</option>';
+				 }else{
+					 str +='<option value="'+enterprise[i].id+'">'+enterprise[i].Qyname+'</option>';
+				 }
+
+		   }
+		   str +='</select></p>';
+	       str +='<p><span>上级领导</span>';
+	       str +='<select name="" id="Superiorid"  '+power+'  class="form-control Superiorid-form" onchange="Superioridpower(this)">';
+	       str +='<option value="">--请选择--</option>';
+	       for(i in data)
+	       {
+	       	    if(data[i].role == 5){
+			    	data[i].role = "业务经理";
+				}
+				if(data[i].role == 4){
+					data[i].role = "业务副经理";
+				}
+				if(data[i].role == 3){
+					data[i].role = "业务主管";
+				}
+				if(data[i].role == 2){
+					data[i].role = "业务副主管";
+				}
+				if(data[i].role == 1){
+					data[i].role = "业务员";
+				}
+
+	    	   if(sname.sid==data[i].id){
+	    		   str +='<option value="'+data[i].id+'" selected>'+data[i].name+'('+data[i].role+')</option>';
+	           }else{
+	        	   str +='<option value="'+data[i].id+'">'+data[i].name+'('+data[i].role+')</option>';
+	           }
+	       }
+	       str +='</select></p>';
+		   str +='<p><span>主管</span>';
+
+		   str +='<select name="" id="Superiorid1" class="form-control  Superiorid-form1">';
+	       str +='<option value="">--请选择--</option>';
+
+	       for(i in data)
+	       {
+	       		if(data[i].role == 5){
+			    	data[i].role = "业务经理";
+				}
+				if(data[i].role == 4){
+					data[i].role = "业务副经理";
+				}
+				if(data[i].role == 3){
+					data[i].role = "业务主管";
+				}
+				if(data[i].role == 2){
+					data[i].role = "业务副主管";
+				}
+				if(data[i].role == 1){
+					data[i].role = "业务员";
+				}
+	       	   str +='<option value="'+data[i].id+'">'+data[i].name+'('+data[i].role+')</option>';
+	       }
+	       str +='</select>&nbsp;<button class="addbtn"  id="addzhug">添加</button></p>';
+	       str+='<div class="demotime">';
+	       str+='<div class="drongqi">';
+	       str+='<div class="dtitle">主管列表</div>';
+	       str+='<div class="dcontent addzhug" id="'+sname.id+'"  input="zgid">';
+	       str+='<input type="hidden" id="zgid" value="'+sname.gid+'">';
+
+	       for(i in t.gids)
+	       {
+	       	 //str +='<option value="'+data[i].id+'">'+data[i].name+'</option>';
+
+	       	 str+='<span id="'+t.gids[i].id+'">'+t.gids[i].name+'<em></em></span>';
+	       }
+	       str+='</div></div></div>';
+		   str+='<p><span>员工</span>';
+
+		   str +='<select name="" id="Superiorid2" class="form-control">';
+	       str +='<option value="">--请选择--</option>';
+
+	       for(i in data)
+	       {
+	            if(data[i].role == 5){
+			    	data[i].role = "业务经理";
+				}
+				if(data[i].role == 4){
+					data[i].role = "业务副经理";
+				}
+				if(data[i].role == 3){
+					data[i].role = "业务主管";
+				}
+				if(data[i].role == 2){
+					data[i].role = "业务副主管";
+				}
+				if(data[i].role == 1){
+					data[i].role = "业务员";
+				}
+
+	       	   str +='<option value="'+data[i].id+'">'+data[i].name+'('+data[i].role+')</option>';
+	       }
+	       str +='</select>&nbsp;<button class="addbtn" id="addchengy">添加</button></p>';
+	       str+='<p><div class="demotime">';
+	       str+='<div class="drongqi">';
+	       str+='<div class="dtitle">成员列表</div>';
+	       str+='<div class="dcontent addchengy" id="'+sname.id+'" input="ygid">';
+	       str+='<input type="hidden" id="ygid"  value="'+sname.eid+'">';
+
+	       for(i in t.eids)
+	       {
+	       	 //str +='<option value="'+data[i].id+'">'+data[i].name+'</option>';
+
+	       	 str+='<span id="'+t.eids[i].id+'">'+t.eids[i].name+'<em></em></span>';
+	       }
+
+	       //str+='<span>王牧田<em></em></span>';
+	       str+='</div></div></div></p>';
+	       str+='</div>';
+	  	   str +='<p><input type="button" class=" btn-info"  value="提交" onclick="saveteam('+sname.id+')"/></p></div></div>';
+	       $('#editteam').html(str).show(); //TaskTable
+	       $('.masker').fadeIn();
+	       close_mask();
+	       add_list();
+	       removecha();
+     }
+   });
+
+
+}
+
+function Superioridpower(element){
+	var val=$(element).val();
+    if($("#"+val).length>0){
+		Showbo.Msg.alert('团队成员不能重复');
+		$("#Superiorid").find("option[value="+val+"]").removeAttr("selected");
+		return false;
+	}
+
+}
+
+
+function saveteam(id)
+{
+	var val=$("#Superiorid").val();
+	if($("#"+val).length>0){
+		Showbo.Msg.alert('团队成员不能重复');
+		return false;
+	}
+    var teamname = $('#teamname').val(); //团队名称;
+    var Superiorid = $('#Superiorid').val();//上级领导id
+	var uid = $('#Superioriduid').val(); //团队名称;
+    if(Superiorid == '')
+    {
+      Showbo.Msg.alert('请选择上级领导');
+      return false;
+    }
+
+    gid='';
+    $(".addzhug > span").each(function(key,element){
+    	 var id=$(element).attr("id");
+    	 if(key==0){
+    		 gid+=id;
+    	 }else{
+    		 gid+=","+id;
+    	 }
+    });
+    eid='';
+    $(".addchengy > span").each(function(key,element){
+    	 var id=$(element).attr("id");
+    	 if(key==0){
+    		 eid+=id;
+    	 }else{
+    		 eid+=","+id;
+    	 }
+    });
+    if(gid == '')
+	{
+	    Showbo.Msg.alert('请选择管理员');
+	    return false;
+	}
+    if(eid == '')
+	{
+	    Showbo.Msg.alert('请选择成员');
+	    return false;
+	}
+
+
+    $.ajax({
+      type: "post",
+      url:'{:U("Home/Team/saveteam")}',
+      data:{id:id,tname:teamname,sid:Superiorid,gid:gid,eid:eid,uid:uid},
+      dataType:"json",
+      success: function(data){
+		if(data.error==1){
+			Showbo.Msg.alert(data.msg);
+		}else{
+			$('.Task_cont').hide();
+			$('.masker').hide();
+			$('.TaskTablecount').hide();
+			Team();
+		}
+
+      }
+    });
+}
+</script>
+</html>

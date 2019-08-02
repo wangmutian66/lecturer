@@ -1,0 +1,176 @@
+<!DOCTYPE HTML>
+<html lang="en" >
+  <head>
+      <title>企航教育</title>
+        <!-- agreement -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="ptagma" content="no-cache"><!-- 清除缓存 -->
+      <meta name="description" content="">
+      <meta name="author" content="templatemo">
+      <meta name="applicable-device" content="mobile" />
+      <meta name="format-detection" content="telephone=no" />
+      <meta http-equiv="X-UA-Compatible"content="IE=9; IE=8; IE=7; IE=EDGE">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <!--   css -->
+      <!--[if IE]> <link href="__PUBLIC__/css/IE.css" rel="stylesheet" type="text/css" /> <![endif]-->
+       <link rel="shortcut icon" href="__PUBLIC__/images/login-image/title.png">
+      <link href="__PUBLIC__/css/bootstrap.min.css"  rel="stylesheet" >
+      <link href="__PUBLIC__/css/lecturer.css" rel="stylesheet">
+      <link href="__PUBLIC__/fonts/css/font-awesome.min.css" rel="stylesheet">
+      <link href="__PUBLIC__/fonts/css/font-awesome-ie7.min.css" rel="stylesheet">
+      
+
+        <!-- JS -->
+      <script type="text/javascript" src="__PUBLIC__/js/jquery-1.11.2.min.js"></script>
+      <script type="text/javascript" src="__PUBLIC__/js/showBo.js"></script>
+      <script type="text/javascript" src="__PUBLIC__/js/table-common.js"></script>
+      <script type="text/javascript" src="__PUBLIC__/js/ajaxfileupload.js"></script>
+      <script type="text/javascript" src="__PUBLIC__/js/myslideup.js"></script>
+      <script type="text/javascript" src="__PUBLIC__/js/jquery.page.js"></script>
+      <script type="text/javascript" src="__PUBLIC__/js/bootstrap.min.js"></script>
+      <!--<script type="text/javascript" src="__PUBLIC__/js/highcharts.js"></script>-->
+      <script type="text/javascript" src="__PUBLIC__/js/jquery.upload.js"></script>
+      <script type="text/javascript" src="__PUBLIC__/js/laydate/laydate.js"></script>
+      <script type="text/javascript">
+          $(document).ready(function(){
+              var window=$(document.body).width();
+
+              if(window<=1400){  //1080
+                  $(".Modinfo span").eq(0).addClass("span1");
+                  $(".Modinfo span").eq(1).addClass("span2");
+                  $(".Modinfo span").eq(2).addClass("span3");
+                  $(".Modinfo span").eq(3).addClass("span4");
+              }
+              if(window<=1080){
+                  $(document.body).addClass("minwidth");
+              }
+          });
+      </script>
+    </head>
+<body>
+<div class="contment">
+  <div class="masker"></div>
+  <div class="top"></div>
+  <div class="header"><i></i>
+    <if condition="($Think.session.id neq '') ">
+      <div class="headernav">
+      <input type="button" value="综合搜索"  onclick="window.location.href='{:U('/Home/Index/index')}'">
+      <input  type="button" value="企航课程" onclick="window.location.href='{:U('/Home/Course/index')}'"/>
+      <input type="button" value="客户关系管理" class="focuse" onclick="window.location.href='{:U('/Home/Relationship')}'"/>
+
+      <?php if($_SESSION['type']!=C('SALES_POWER_SESSION')){ ?>
+      <?php if($_SESSION['yid']=='admin'){ ?>
+      <input  type="button" value="财务系统" onclick="window.location.href='{:U('Home/Admin/branch')}'"/>
+      <?php }else{ ?>
+      <input  type="button" value="财务系统"  onclick="window.location.href='{:U('Home/Setsail/biy')}'"/>
+      <?php }} ?>
+
+      <?php if($_SESSION['type']!=C('SALES_POWER_SESSION')){ ?>
+      <input  type="button" value="讲师追踪" <if condition="($Think.session.nav eq 'Enterprise') ">class="focuse"</if> onclick="window.location.href='{:U('/Home/Leunfold')}'">
+      <?php }else{ ?>
+       <input  type="button" value="讲师追踪" <if condition="($Think.session.nav eq 'Enterprise') ">class="focuse"</if> onclick="authority()">
+      <?php } ?>
+
+       <?php if($_SESSION['type']==C('SALES_POWER_SESSION')){ ?>
+       <?php }else{ ?>
+        <div class="button"    onclick="window.location.href='{:U('/Home/message')}'">消息通知<em class="messageweidu{$Think.session.message}"></em></div>
+      <?php } ?>
+
+        <?php if($_SESSION['type']==C('SALES_POWER_SESSION')){ ?>
+         <input  type="button" value="系统设置" onclick="window.location.href='{:U('/Home/Admin/adminpwd1')}'">
+       <?php }else{ ?>
+          <?php if($_SESSION['yid']=='admin'){ ?>
+          <input  type="button" value="系统设置"  onclick="window.location.href='{:U('/Home/Admin/admininfo')}'">
+          <?php }else{ ?>
+          <?php if(($_SESSION['type']==13)||$_SESSION['type']==12){ ?>
+          <input  type="button" value="系统设置"   onclick="window.location.href='{:U('/Home/Admin/adminceo')}'">
+          <?php }else if($_SESSION['type']==11){ ?>
+          <input  type="button" value="系统设置"   onclick="window.location.href='{:U('/Home/Setsail/management')}'">
+          <?php }else if($_SESSION['type']==10&&$_SESSION["yid"]!=1){ ?>
+          <input  type="button" value="系统设置"  onclick="window.location.href='{:U('/Home/Setsail/manager')}'">
+          <?php }else{ ?>
+          <input  type="button" value="系统设置"   onclick="window.location.href='{:U('/Home/Setsail/division')}'">
+          <?php } ?>
+
+          <?php } ?>
+       <?php } ?>
+      </div>
+      <span>{$Think.session.name}<em onclick="location.href='{:U("Home/Login/login")}'">退出</em></span>
+
+    <else/>
+      <input  class="but1" type="button" id="login" value="登录"  onclick="login()"  />
+      <!--<input  class="but2" type="button" id="" value="下载APP" onclick="" />-->
+      <h3>企航集团</h3>
+
+    </if>
+  </div>
+
+ <div class="menu">
+    <ul>
+      <li>菜单</li>
+
+        <li <if condition="($Think.session.menu eq '') ">class="hover"</if>>
+            <a href="{:U('/Home/Relationship')}">
+            <span><img src="__PUBLIC__/images/nav/all.png"  width="20"></span><span>全部客户</span>
+            </a>
+        </li>
+
+        <li <if condition="($Think.session.menu eq 'deal') ">class="hover"</if>>
+            <a href="{:U('/Home/Relationship/index/list/deal')}">
+            <span><img src="__PUBLIC__/images/nav/deal.png"></span><span>成交客户</span>
+            </a>
+        </li>
+        <li <if condition="($Think.session.menu eq 'follow') ">class="hover"</if>>
+            <a href="{:U('/Home/Relationship/index/list/follow')}">
+            <span><img src="__PUBLIC__/images/nav/follow.png"></span><span>跟进客户</span>
+            </a>
+        </li>
+        <li <if condition="($Think.session.menu eq 'public') ">class="hover"</if>>
+            <a href="{:U('/Home/Relationship/index/list/public')}">
+            <span><img src="__PUBLIC__/images/nav/public.png"></span><span>客户公海池</span>
+            </a>
+        </li>
+        <li  <if condition="($Think.session.menu eq 'delete') ">class="hover"</if>>
+            <a href="{:U('/Home/Relationship/index/list/delete')}">
+            <span><img src="__PUBLIC__/images/nav/delete.png"></span><span>客户回收站</span>
+            </a>
+        </li>
+
+
+         <li  <if condition="($Think.session.menu eq 'team') ">class="hover"</if>>
+            <a href="{:U('/Home/Team')}">
+            <span><img src="__PUBLIC__/images/nav/team.png"></span></span><span>团队管理</span>
+            </a>
+         </li>
+
+
+
+        <li><a href="{:U('/Home/Login/login')}"><span><i class="icon-signin icon-large"></i></span><span>退出登录</span></a>
+      </li>
+    </ul>
+  </div>
+  <script>
+  /*
+  function url1()
+  {
+     location.href = "{:U('Home/Enterprise/index')}";
+  }
+  function url2()
+  {
+     location.href = "{:U('Home/Setsail/biy')}";
+  }
+  */
+ function authority(){
+    Showbo.Msg.alert("你的权限不够");
+  }
+  </script>
+
+<div class="loding"> <!-- style="display: none;" 背景 -->
+  <div class="mask-conrment">
+    <h3>提示</h3>
+    <p><i class="icon-spinner icon-spin"></i></p>
+    <p style="font-size: 1em;"><span>加载中...</span></p>
+    <p id="upnotice"></p>
+  </div>
+</div>

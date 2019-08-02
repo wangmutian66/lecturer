@@ -1,0 +1,409 @@
+<include file="Public/header" />
+<style>
+	.Task_cont p:first-child input{width:auto;}
+</style>
+
+<div class="wrap">
+	<div class="container"> <!-- 导航↓ -->
+
+		<?php if($_SESSION['type']==10 || $_SESSION['type']==9){ ?>
+		<div id="selename">
+
+		</div>
+		<?php }else{ ?>
+		<?php } ?>
+		<div><input type="button" value="添加{$name}" class="btn btn-success bornone" onclick="deputy()"></div>
+		<table class="table content table-striped account_manage" id="data" bordercolor="#2294d3"></table>
+		<div class="TaskTable" id="pwdshow">
+		</div>
+		<div class="TaskTable" id="addm">
+		</div>
+		<div class="TaskTable" id="savname">
+		</div>
+	</div></div>
+<script type="text/javascript">
+	$(function(){
+		lised();
+
+		//selename();
+	})
+	//列表展示
+	function lised(p){
+
+		$('.loding').css('display','block');
+		$.ajax({
+			url:'{:U("Home/Setsail/lisedmanage")}',
+			dataType:'json',
+			data:{page:p},
+			type:'post',
+			success:function(data){
+
+				str = '';
+				for(i in data){
+					str += '<tr><td><span id="dbn'+data[i].id+'">'+data[i].account+'</span></td><td><input type="button" value="修改密码" onclick="savepwd('+data[i].id+')" class="btn btn-info"><input type="button" value="修改" onclick="saveacc('+data[i].id+')" class="btn btn-info"><input value="删除" type="button" onclick="delacc('+data[i].id+')" class="btn btn-info"></td></tr>';
+				}
+				if(str==""){
+					str+="<tr><td colspan='4'><span style='color:#999;'>当前没有{$name}</span></td></tr>";
+				}
+				$('#data').html(str);
+				$('#data').prepend('<tr><td>账号</td><td>操作</td></tr>');
+				$('.loding').css('display','none');
+
+			}
+		})
+
+	}
+	function selename()
+	{
+
+        /*
+		$.ajax({
+			url:'{:U("Home/Enterprise/selename")}',
+			dataType:'json',
+			data:{role:{$role}},
+			type:'post',
+			success:function(data){
+
+				html = '选择公司：';
+				html +='<select name="" id="enterpid" class="form-control" style="width:auto;" onchange="chanenter()" >';
+				html +='<option value="">--请选择--</option>';
+				for(i in data)
+				{
+					html +='<option value="'+data[i].id+'">'+data[i].Qyname+'</option>';
+				}
+				html +='</select>';
+				$('#selename').html(html);
+
+			}
+		})
+
+        */
+	}
+
+	function chanenter(p)
+	{
+		/*
+		var val = $('#enterpid').val();
+		if(p==undefined){
+			p = 1;
+			pages(p,val);
+		}
+		if(val == "")
+		{
+			lised();
+			return false;
+		}
+		$('.loding').css('display','block');
+		$.ajax({
+			url:'{:U("Home/Enterprise/enteinfo")}',
+			dataType:'json',
+			data:{val:val,role:{$role},p:p},
+			type:'post',
+			success:function(data){
+
+				html = '';
+
+				for(i in data)
+				{
+					html += '<tr><td><span id="dbn'+data[i].id+'">'+data[i].account+'</span></td><td><span id="dname'+data[i].id+'">'+data[i].name+'</span></td><td><span id="dmob'+data[i].id+'">'+data[i].mobile+'</span></td><td><input type="button" value="修改密码" onclick="savepwd('+data[i].id+')" class="btn btn-info"><input type="button" value="修改" onclick="saveacc('+data[i].id+')" class="btn btn-info"><input value="删除" type="button" onclick="delacc('+data[i].id+')" class="btn btn-info"></td></tr>';
+					//html +='<tr><td>'+data[i].name+'</td><td>'+data[i].account+'</td><td>'+data[i].mobile+'</td></tr>';
+				}
+
+				if(html==""){
+					html+="<tr><td colspan='4'><span style='color:#999;'>当前没有{$name}</span></td></tr>";
+				}
+				$('#data').html(html);
+				$('#data').prepend('<tr><td>账号</td><td>姓名</td><td>联系电话</td><td>操作</td></tr>');
+				$('.loding').css('display','none');
+
+			}
+		})
+        */
+	}
+	function pages(page,val)
+	{
+		/*
+		var nums ='';
+		$.ajax({
+			type: "GET",
+			url:'{:U("Home/Enterprise/pages")}',
+			data:{role:{$role},val:val},
+			dataType:"json",
+			async:false,
+			error: function(data){
+			},
+			success: function(data){
+				nums = eval(data);
+			}
+		});
+
+		$(".tcdPageCode").remove();
+		$("#data").after("<div class='tcdPageCode'></div>");
+		$(".tcdPageCode").createPage({
+			pageCount:nums,
+			current:page,
+			backFn:function(p)
+			{
+
+				chanenter(p);
+			}
+		});
+		*/
+	}
+	function savepwd(id){
+		var str ='';
+		str +=' <div class="TaskTablecount"><div class="Task_header" id="newTask"><h3 id="add" act="add">修改密码</h3><i class=" icon-remove close_task" id="close2" ></i></div><div style=" height:60px; width: 100%;"></div><div  class="Task_cont"><p><span>旧密码</span><input  class="form-control" type="password" id="oldpwd"></p><p><span>请输入新密码</span><input  class="form-control" type="password" id="newpwd"></p><p><span>再次确认新密码</span><input  class="form-control" type="password" id="townewpwd" /><input type="hidden" id="adyid" value="" /></p><p><input type="button" class=" btn-info" onclick="editpwd('+id+')" value="提交" /></p></div></div>';
+		$('#pwdshow').html(str).show();
+		$('.masker').fadeIn();
+		close_mask();
+	}
+
+	function saveacc(id){
+
+		$.ajax({
+			url:'{:U("Home/Enterprise/saveacc")}',
+			dataType:'json',
+			data:{id:id},
+			type:'post',
+			success:function(data){
+
+				str = '';
+				str +=' <div class="TaskTablecount"><div class="Task_header" id="newTask"><h3 id="add" act="add">修改</h3><i class=" icon-remove close_task" id="close2" ></i></div><div style=" height:60px; width: 100%;"></div><div  class="Task_cont"><p><span>账号</span><input  class="form-control" type="text" id="adacc" value="'+data.account+'"></p><p><span>名称</span><input  class="form-control" type="text" id="adname" value="'+data.name+'"></p><p><span>联系方式</span><input  class="form-control" type="text" id="admob" value="'+data.mobile+'"></p>';
+
+				str+='<p><span>';
+
+				if(data.lectype == 1){  //讲师
+					str+='<b>讲师<input type="checkbox"  class="form-control" name="lecyess'+id+'" value="1" checked="checked" id="jwyes"></b>';
+				}else{
+					str+='<b>讲师<input type="checkbox"  class="form-control" name="lecyess'+id+'" value="0" id="jwyes"></b>';
+				}
+
+				if(data.finatype == 1){ //讲师
+					str+='<b class="dispa dispa{$role}">财务<input type="checkbox" name="cwyess'+id+'" value="1" checked="checked" id="cwnone"></span></b>';
+				}else{
+					str+='<b class="dispa dispa{$role}">财务<input type="checkbox" name="cwyess'+id+'" value="0" id="cwnone"></span></b>';
+				}
+				str+='</span></p>';
+				str += '<p><input type="button" class=" btn-info" onclick="saveinfo('+id+')" value="提交" /></p></div></div>';
+				$('#savname').html(str).show();
+				$('.masker').fadeIn();
+				close_mask();
+			}
+		})
+	}
+	function close_mask(){
+		$('.close_task').click(function(){
+			$('.TaskTable,.masker').fadeOut();
+		})
+	}
+
+	//修改各种信息
+	function saveinfo(id){
+		var jwyes = $("input[name=lecyess"+id+"]").is(':checked') ;  //讲师判断是否选中
+		var cwnone = $("input[name=cwyess"+id+"]").is(':checked');    //财务判断是否选中
+		var adacc = $('#adacc').val();
+		var adname = $('#adname').val();
+		var admob = $('#admob').val();
+		var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+		if(adacc == ""){
+			Showbo.Msg.alert('请输入要修改的账号');
+			return false;
+		}
+		if(adname  == '')
+		{
+			Showbo.Msg.alert('请输入要修改的名称');
+			return false;
+		}
+		if((/[\u4e00-\u9fa5]+/).test(adacc)){
+			Showbo.Msg.alert("账号不能出现汉字");
+			return false;
+		}
+		if(!myreg.test(admob))
+		{
+			Showbo.Msg.alert("您输入的手机号格式不对或填写号码不足11位");
+			return false;
+		}
+
+		jwyes=jwyes?1:0;
+		cwnone=cwnone?1:0;
+		$.ajax({
+			url:'{:U("Home/Enterprise/saveinfo")}',
+			dataType:'json',
+			data:{adacc:adacc,adname:adname,id:id,admob:admob,cwnone:cwnone,jwyes:jwyes},
+			type:'post',
+			success:function(data){
+				if(data.errcode == 1){
+					Showbo.Msg.alert(data.errmsg);
+					$('#savname').hide();
+					$('.masker').hide();
+
+					if($("#enterpid").val()==""||$("#enterpid").length<=0){
+						lised();
+					}else{
+						chanenter();
+					}
+				}else if(data.errcode == 3){
+					Showbo.Msg.alert(data.errmsg);
+				}else if(data.errcode == 0){
+					Showbo.Msg.alert(data.errmsg);
+				}else if(data.errcode == 10){
+					Showbo.Msg.alert(data.errmsg);
+				}
+			}
+		})
+
+
+	}
+
+	//修改各种密码
+	function editpwd(id){
+		var oldpwd = $('#oldpwd').val();
+		var newpwd = $('#newpwd').val();
+		var townewpwd = $('#townewpwd').val();
+		if(oldpwd == ""){
+			Showbo.Msg.alert('旧密码不能为空,请重新输入');
+			return false;
+		}if(newpwd == ""){
+			Showbo.Msg.alert('新密码不能为空,请重新输入');
+			return false;
+		}
+		if(newpwd != townewpwd){
+			Showbo.Msg.alert('两次密码输入不一致,请重新输入');
+			return false;
+		}
+		if(oldpwd == newpwd ){
+			Showbo.Msg.alert('新旧密码一致,请重新输入');
+			return false;
+		}
+		if(oldpwd == townewpwd ){
+			Showbo.Msg.alert('新旧密码一致,请重新输入');
+			return false;
+		}
+		$.ajax({
+			url:'{:U("Home/Enterprise/editpwd")}',
+			dataType:'json',
+			data:{oldpwd:oldpwd,newpwd:newpwd,id:id},
+			type:'post',
+			success:function(data){
+				if(data.errcode == 1){
+					Showbo.Msg.alert(data.errmsg);
+					$('#pwdshow').hide();
+					$('.masker').hide();
+					lised();
+				}else if(data.errcode == 3){
+					Showbo.Msg.alert(data.errmsg);
+				}else{
+					Showbo.Msg.alert(data.errmsg);
+				}
+			}
+		})
+	}
+
+	//删除
+	function delacc(id){
+		Showbo.Msg.confirm('确认删除?',function(a){
+			if(a == 'yes'){
+				$.ajax({
+					url:'{:U("Home/Enterprise/delacc")}',
+					dataType:'json',
+					data:{id:id},
+					type:'post',
+					success:function(data){
+						if(data.errcode == 1){
+							Showbo.Msg.alert(data.errmsg);
+							lised();
+						}else{
+							Showbo.Msg.alert(data.errmsg);
+						}
+					}
+				})
+			}
+		})
+	}
+
+
+
+
+	function deputy(){
+		str = '';
+		str += '<div class="TaskTablecount"><div class="Task_header" id="newTask"><h3 id="add" act="add">添加信息</h3><i class=" icon-remove close_task" id="close"></i></div><div style=" height:60px; width: 100%;"></div><div class="Task_cont">';
+
+
+
+		str+='<p><span>账号:</span><input type="text" class="form-control" id="gsaccount"></p> <p><span>名称:</span><input type="text" class="form-control" id="gsname"></p><p><span>密码:</span><input type="password" class="form-control" id="gspwd"></p><p><span>确认密码:</span><input type="password" class="form-control" id="pwdtow"></p><p><span>联系方式:</span><input type="type" class="form-control" id="gsmobile"></p> <p><button class=" btn-info" type="button"  onclick="adddeputy()">确定</button></p></div></div>';
+		$('#addm').html(str).show();
+		$('.masker').fadeIn();
+		close_mask();
+	}
+
+
+
+	function adddeputy(){
+
+		var cid = $('#city').val();
+		var gsname = $('#gsname').val();
+		var gspwd = $('#gspwd').val();
+		var account = $('#gsaccount').val();
+
+		if((/[\u4e00-\u9fa5]+/).test(account)){
+			Showbo.Msg.alert("账号不能出现汉字");
+			return false;
+		}
+		var pwdtow = $("#pwdtow").val();
+
+
+		if(account == '')
+		{
+			Showbo.Msg.alert('请填写账号');
+			return false;
+		}
+		if(gsname == '')
+		{
+			Showbo.Msg.alert('请填写名称');
+			return false;
+		}
+		if(gspwd == '')
+		{
+			Showbo.Msg.alert('请填写密码');
+			return false;
+		}
+
+
+		if(pwdtow != gspwd)
+		{
+			Showbo.Msg.alert('您输入的两次密码不一致,请重新输入');
+			return false;
+		}
+
+		$.ajax({
+			url:"{:U('Home/Setsail/manage')}",
+			type:'post',
+			data:{gsname:gsname,gspwd:gspwd,account:account},
+			dataType:'json',
+			success:function(res){
+				if(res == 1){
+					Showbo.Msg.alert('添加完毕');
+					$('#addm').hide();
+					$('.masker').hide();
+
+					if($("#enterpid").val()!=""&&$("#enterpid").length>0){
+						chanenter();
+					}else{
+						lised();
+					}
+
+				}
+				if(res == 3){
+					Showbo.Msg.alert('此账号已存在');
+				}
+				if(res == 4){
+					Showbo.Msg.alert('手机号已被占用');
+				}
+			}
+		})
+
+	}
+
+
+</script>
+

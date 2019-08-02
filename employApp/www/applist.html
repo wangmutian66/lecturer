@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+    <title>助企软件一线讲师追踪系统</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, minimal-ui">
+     <!--<script type="text/javascript" src="js/showBo.js"></script>-->
+
+    <script type="text/javascript" charset="utf-8" src="js/jquery.2.1.1.min.js"></script>
+	<script type="text/javascript" src="js/fastclick.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			FastClick.attach(document.body);
+		});
+	</script>
+	<script type="text/javascript" src="js/LCalendar.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
+	<script type="text/javascript" src="js/showalert.js"></script>
+	<script type="text/javascript" src="cordova.js"></script>
+     <!--<script type="text/javascript" src="js/jquery.date.mt.js"></script>-->
+	<link rel="stylesheet" type="text/css" href="css/LCalendar.css" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<!--<link href="css/index.css" rel="stylesheet"/>-->
+
+	<script type="text/javascript">
+		  //var path_url = "http://192.168.0.223:8086/";
+		  var path_url="http://192.168.0.250:8082/";
+//    var path_url = "http://192.168.0.160/lecturer/";
+		var mobile= window.localStorage.getItem('mobile');//账户名称
+		var jid = window.localStorage.getItem('jid');//讲师ID
+
+	</script>
+	<style>
+		#showinfo{
+			position: fixed;
+			left: 0;
+			top: 0;
+			bottom: 0;
+			right: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0,0,0,0.8);
+			z-index: 199;
+			display: none;
+		}
+		.boxcontent {
+			height: 238px;
+			overflow-y: auto;
+		}
+		#showinfo tr td:first-child{
+			width: 80px;
+		}
+	</style>
+ </head>
+<body>
+<header class="header3">
+	<span>启航教育系统</span><span class="spanright" onclick="screen()">筛选</span>
+</header>
+<div class="loading">
+	<div class="loader-inner line-scale-pulse-out">
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
+	</div>
+</div>
+
+
+<!-- 当前月第一天和最后一天 -->
+<div class="mobielpadding">
+	<div class="mobilepadding10">
+		<div id="show" class="showzhengzhao"></div>
+        <div id="showinfo" ></div>
+		<div id="stime"></div>
+		<div id="etime"></div>
+
+		<div class="searchtj"></div>
+		<div class="searchtj1"></div>
+		<table id="teacher">
+
+
+		</table>
+
+
+		<table id="student">
+
+
+
+		</table>
+
+		<table id="classification"></table>
+	</div>
+</div>
+
+
+<script>
+$(function(){
+	lecturer_list();
+})
+
+function lecturer_list(flag){
+
+
+	$('.searchtj1').removeAttr("style").html("");
+	var param=new Object();
+	param["jid"]=jid;
+
+	var uid=$("#juid").val();
+	var start_date=$("#start_date").val();
+	var end_date=$("#end_date").val();
+	var btnseinpu=$(".btnseinpu input").val();
+
+
+	if(uid!=undefined){
+		param["uid"]=uid;
+	}else{
+		if(flag==1){
+			Showbo.Msg.alert('请选择分公司');
+			return false;
+		}
+	}
+
+	if(start_date!=undefined && start_date!=""){
+		param["start_date"]=start_date;
+	}else{
+		if(flag==1) {
+			Showbo.Msg.alert('请选择开始时间');
+			return false;
+		}
+	}
+
+	if(end_date!=undefined && end_date!=""){
+		param["end_date"]=end_date;
+	}else{
+		if(flag==1) {
+			Showbo.Msg.alert('请选择结束时间');
+			return false;
+		}
+	}
+
+	if(btnseinpu!=undefined && btnseinpu!=""){
+		param["btnseinpu"]=btnseinpu;
+	}else{
+		if(flag==1) {
+			Showbo.Msg.alert('请填写客户名称');
+			return false;
+		}
+	}
+
+	if(start_date > end_date){
+		Showbo.Msg.alert('开始日期不能大于结束日期');
+		return false;
+	}
+
+	// 将搜索内容 添加到这里
+	var uname=$("#juid").find("option[value="+uid+"]").text();
+    var start_date=$("#start_date").val();
+	var end_date=$("#end_date").val();
+	var btnseipu=$(".btnseinpu input").val();
+    var searchText="分公司："+uname+" "+start_date+"至"+end_date +" 客户名称 ："+btnseipu;
+	//$(".searchtj1").html("<div class='textcenter' style='text-align:left;'>"+searchText+"</div>");
+	$(".showzhengzhao").hide();
+	$(".loading").show();
+	url = path_url+"index.php/Home/Interface/lecturer_list/";
+    var str = '';
+    $.ajax({
+        url:url,        //跨域到http://www.wp.com，另，http://test.com也算跨域
+        type:'POST',             //jsonp 类型下只能使用GET,不能用POST,这里不写默认为GET
+        dataType:'json',  
+        data:param,                        //指定为jsonp类型
+        // jsonp:'callback',                          //服务器端获取回调函数名的key，对应后台有$_GET['callback']='getName';callback是默认值
+        // jsonpCallback:'getName',                   //回调函数名
+        success:function(result) {
+			str = '';
+			stt = '';
+			if (result == 1) {
+				//alert("暂无")
+				$('.searchtj1').css("margin-top","50px").html("<div class='textcenter'>暂时没有学员 <button onclick='home()'>返回</button></div>");
+				$('.searchtj').html("");
+				$('#teacher').html(str);
+				$('#student').html(stt);
+				$(".loading").hide();
+			} else if (result == 2) {
+				//alert("该分公司下没有你的学员")
+				$('.searchtj1').css("margin-top","50px").html("<div class='textcenter'>该分公司下没有你的学员</div>");
+				$('.searchtj').html("");
+				$('#teacher').html(str);
+				$('#student').html(stt);
+				$(".loading").hide();
+			} else {
+				str = '';
+				stt = '';
+				orders = result.orders;
+				order = result.order;
+
+				//str += '<tr><td>'+orders.stime+'<td>至<td>'+orders.etime+'</td></tr>';
+				std = orders.stime + ' 至 ' + orders.etime;
+
+				if (order.length <= 0) {
+					//stt = "当前没有查询结果，请重新筛选";
+					$('.searchtj').html("<div class='textcenter'>当前没有查询结果，请重新筛选</div>");
+					$('#teacher').html(str);
+					$('#student').html(stt);
+				} else {
+					str = '';
+					stt = '';
+					//str += '<tr><td>'+orders.stime+'<td>至<td>'+orders.etime+'</td></tr>';
+					std = orders.stime + ' 至 ' + orders.etime;
+					if(orders.uname){
+						std+="  分公司："+orders.uname;
+					}
+                    if(orders.fname){
+						std+="  客户名称："+orders.fname;
+					}
+
+					str += '<tr><td>业绩:<span>' + orders.performance + '元</span></td><td>提成:<span>' + orders.deduct + '元</span></td></tr>';
+					str += '<tr><td>已发:<span>' + orders.send + '元</span></td><td>未发:<span>' + orders.unbilled + '元</span></td></tr>';
+
+					for (i in order) {
+
+						if (order[i].typet == 2) {
+							order[i].typet = '<span class="yf2">已发</span>';
+						} else if (order[i].typet == 1) {
+							order[i].typet = '<span class="yf1">已入账</span>';
+						} else {
+							order[i].typet = '<span class="yf0">未入账</span>';
+						}
+
+						if (order[i].typef == 2) {
+							order[i].typef = '<span class="yf2">已发</span>';
+						} else if (order[i].typef == 1) {
+							order[i].typef = '<span class="yf1">已入账</span>';
+						} else {
+							order[i].typef = '<span class="yf0">未入账</span>';
+						}
+
+						if (order[i].typec == 2) {
+							order[i].typec = '<span class="yf2">已发';
+						} else if (order[i].typec == 1) {
+							order[i].typec = "<span class=\"yf1\">已入账</span>";
+						} else {
+							order[i].typec = '<span class="yf0">未入账</span>';
+						}
+						if (order[i].typep == 2) {
+							order[i].typep = '<span class="yf2">已发</span>';
+						} else if (order[i].typep == 1) {
+							order[i].typep = "<span class=\"yf1\">已入账</span>";
+						} else {
+							order[i].typep = "<span class=\"yf0\">未入账</span>";
+						}
+
+						if (order[i].typed == 2) {
+							order[i].typed = '<span class="yf2">已发</span>';
+						} else if (order[i].typed == 1) {
+							order[i].typed = "<span class=\"yf1\">已入账</span>";
+						} else {
+							order[i].typed = "<span class=\"yf0\">未入账</span>";
+						}
+
+
+						stt += '<tr class="linetitle"><td colspan="2">客户：' + order[i].kname + '&nbsp;&nbsp;' + order[i].tel + '</td></tr>';
+						stt += '<tr><td colspan="2" class="padding10">';
+						stt += '<div class="linehang colorblue"><span  class="dleft">课程名称：' + order[i].classname + '</span><span class="dright">' + order[i].dtime + '</span></div>';
+						stt += '<div class="linehang"><span  class="dleft">分公司：' + order[i].Qyname + '</span><span class="dright"><input value="详情" type="button" onclick="details(' + order[i].id + ')"></span></div>';
+						stt += '</td></tr>';
+						stt += '<tr><td colspan="2"><table class="tablechildren">';
+						stt += '<tr><td>分类</td><td>数量</td><td>金额</td><td>提成比</td><td>提成</td><td>状态</td></tr>';
+						if (order[i].ticket == 0) {
+
+						} else {
+							stt += '<tr><td>小票</td><td>' + order[i].ticket + '</td><td>' + order[i].leafletstc + '</td><td>' + order[i].piao_ratio + '%</td><td>' + order[i].piao_money + '</td><td>' + order[i].typet + '</td></tr>';
+						}
+
+						if (order[i].planning == 0) {
+
+						} else {
+							stt += '<tr><td>九大规划</td><td>' + order[i].planning + '</td><td>' + order[i].leafletsnc + '</td><td>' + order[i].jiu_ratio + '%</td><td>' + order[i].jiu_money + '</td><td>' + order[i].typep + '</td></tr>';
+
+						}
+						if (order[i].card == 0) {
+
+						} else {
+							stt += '<tr><td>卡会员</td><td>' + order[i].card + '</td><td>' + order[i].leafletscc + '</td><td>' + order[i].car_ratio + '%</td><td>' + order[i].car_money + '</td><td>' + order[i].typec + '</td></tr>';
+						}
+						if (order[i].friends == 0) {
+
+						} else {
+							stt += '<tr><td>朋友圈</td><td>' + order[i].friends + '</td><td>' + order[i].leafletsfc + '</td><td>' + order[i].fri_ratio + '%</td><td>' + order[i].fri_money + '</td><td>' + order[i].typef + '</td></tr>';
+						}
+
+						if (order[i].disciple == 0) {
+
+						} else {
+							stt += '<tr><td>弟子学员</td><td>' + order[i].disciple + '</td><td>' + order[i].leafletsdc + '</td><td>' + order[i].dz_ratio + '%</td><td>' + order[i].dz_money + '</td><td>' + order[i].typed + '</td></tr>';
+						}
+
+						stt += '</table></td></tr>';
+
+					}
+
+				}
+
+                if(str=="" && stt==""){
+					$(".searchtj").after("<div class='textcenter'>当前页面暂无数据</div>");
+				}
+
+				$(".searchtj").html(std);
+				$('#teacher').html(str);
+				$('#student').html(stt);
+				$(".loading").hide();
+			}
+		}
+    });
+
+}
+
+//筛选
+ function screen(){
+ 	var data = {jid:jid};
+	$(".loading").show();
+	url = path_url+"index.php/Home/Interface/fuid_list/";
+    var str = '';
+    $.ajax({
+        url:url,        //跨域到http://www.wp.com，另，http://test.com也算跨域
+        type:'POST',             //jsonp 类型下只能使用GET,不能用POST,这里不写默认为GET
+        dataType:'json',  
+        data:data,  
+        success:function(result) {
+        	var str ='';
+			str +='<div class="zzbox"><div class="boxline"><span class="close">X</span><h3 id="add">筛选条件</h3></div><div class="boxcontent"><p><select id="juid">';
+			for(i in result){
+				str += '<option value="'+result[i].id+'">'+result[i].Qyname+'</option>';
+			}
+			
+			str += '</select></p><p>'
+			str += '<span>开始日期 </span><input type="text" name="start_date" id="start_date" placeholder="选择开始日期" readonly="readonly"/>'
+			str += '</p><p><span>结束日期 </span><input type="text" name="end_date" id="end_date"  placeholder="选择结束日期" readonly="readonly" /></p>';
+			str+='<div class="btnseinpu"><input type="text" placeholder="请输入客户姓名"  /></div>';
+			str+='<div class="btnclass"><input type="button" onclick="lecturer_list(1)" value="搜索" /></div></div></div>';
+			$('#show').html(str).show();
+			$('.masker').fadeIn();
+			LCalendar123();
+			close_mask();
+			$(".loading").hide();
+        }
+    })
+
+ 	
+ }
+
+ function close_mask(){
+  $('#show .close').click(function(){
+    $('.showzhengzhao').fadeOut();
+  });
+  $('.showzhengzhao').click(function(){
+	  $(".zzbox").click(function(){
+		  return false;
+	  });
+	  //$('.showzhengzhao').fadeOut();
+  });
+}
+
+function home(){
+  window.location.href="applist.html";
+}
+function personage(){
+   window.location.href="info.html";
+}
+</script>
+
+<div class="footerdiv">
+  <div class="f-navindex hover" onclick="home()"><div class="indeximg"></div><div class="indextitle" >首页</div></div>
+  <div class="f-navren  " onclick="personage()"><div class="indeximg"></div><div class="indextitle">个人中心</div></div>
+</div>
+
+
+<script type="text/javascript">
+
+	//		$(function() {
+	//			$('#start_date').date();
+	//			$('#end_date').date();
+	//		});
+</script>
+<script type="text/javascript">
+	function LCalendar123(){
+		var calendar = new lCalendar();
+		calendar.init({
+			'trigger': '#start_date',
+			'type': 'date'
+		});
+		var calendar = new lCalendar();
+		calendar.init({
+			'trigger': '#end_date',
+			'type': 'date'
+		});
+	}
+	//LCalendar();
+
+
+  function details(oid){
+    var data = {oid:oid};
+    url = path_url+"index.php/Home/Interface/details/";
+    var str = '';
+    $.ajax({
+        url:url,        //跨域到http://www.wp.com，另，http://test.com也算跨域
+        type:'POST',             //jsonp 类型下只能使用GET,不能用POST,这里不写默认为GET
+        dataType:'json',  
+        data:data,  
+        success:function(data) {
+
+             var str ='<div class="zzbox"><div class="boxline"><span class="close">X</span><h3 id="add">成交详情</h3></div>';
+             str+="<div class=\"boxcontent\"><table class='table table-bordered table-hover table-striped'>";
+             str+="<tr><td>分公司：</td><td>"+data.Qyname+"</td></tr>";
+             str+="<tr><td>课程名称:</td><td>"+data.classname+"</td></tr>";
+             str+="<tr><td>地点:</td><td>"+data.place+"</td></tr>";
+             str+="<tr><td>讲师:</td><td>"+data.uname+"</td></tr>";
+             str+="<tr><td>客户名称:</td><td>"+data.iname+"</td></tr>";
+             str+="<tr><td>人数:</td><td>"+data.pnum+"</td></tr>";
+             str+="<tr><td>成交时间:</td><td>"+data.time+"</td></tr>";
+             str+="<tr><td>成交人:</td><td>"+data.sname+"</td></tr>";
+             str+="<tr><td>成交信息</td><td>小票("+data.ticket+") 九大规划门票("+data.planning+") 卡会员("+data.card+")  朋友圈("+data.friends+") 弟子学员("+data.disciple+") </td></tr>";
+             str+="</table></div></div>";
+              $('#showinfo').html(str).show();
+              $('.masker').fadeIn();
+
+			$('#showinfo').click(function(){
+				$('#showinfo').fadeOut();
+			});
+        }
+      })
+  }
+</script>
+</body>
+</html>

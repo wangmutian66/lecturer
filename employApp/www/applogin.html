@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+    <title>助企软件一线讲师追踪系统</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+     <script type="text/javascript" src="js/showBo.js"></script>
+     <script type="text/javascript" charset="utf-8" src="js/jquery.2.1.1.min.js"></script>
+ </head>
+<body>
+<script type="text/javascript">
+// var path_url = "http://123.56.206.58/";
+// var path_url = "http://prof.zhuqiyun.com/";
+ // var path_url = "http://192.168.0.107/";
+ //var path_url = "http://192.168.0.137/lecturer/";
+ var path_url="http://192.168.0.250:8082/";
+ </script>
+    <input  type="text" id="mobile"  placeholder="请输入账号"><br>
+    <input type="password" id="password"  placeholder="请输入密码"><br>
+    <input  type="button" id="submit" value="登 录" onclick="load()"/>
+
+	<script>
+
+    var mobile= window.localStorage.getItem('mobile');
+    var password= window.localStorage.getItem('password');
+    console.log(mobile);
+		function load(){
+			 var mobile = $('#mobile').val();//取账号的值
+             var password = $('#password').val();//去密码的值
+             window.localStorage['mobile'] = mobile; //本地存值
+             window.localStorage['password'] = password; //本地存值
+             if(mobile == ""){
+             	   Showbo.Msg.alert('账号不能为空');
+                   return false;
+             }
+             if(password == ""){
+             	   Showbo.Msg.alert('密码不能为空');
+                   return false;
+             }
+             var str = {mobile:mobile,password:password};
+              $.ajax({
+	            url:path_url+'index.php/Home/Interface/login/',       //跨域到http://www.wp.com，另，http://test.com也算跨域
+	            type:'POST',             //jsonp 类型下只能使用GET,不能用POST,这里不写默认为GET
+	            dataType:'json',                          //指定为jsonp类型
+	            // jsonp:'callback',                          //服务器端获取回调函数名的key，对应后台有$_GET['callback']='getName';callback是默认值
+	            // jsonpCallback:'getName',                   //回调函数名
+	            data:str,
+	            success:function(result){                //成功执行处理，对应后台返回的getName(data)方法。
+	                 var data = eval(result);
+	                // // console.log(data);return false;
+	                 if(data.errcode == "1"){
+	                    Showbo.Msg.alert(data.errmsg); //修改失败  旧密码不正确
+	                }else{
+	                	window.localStorage['jid'] = data['jid']; //本地存值
+	                    Showbo.Msg.alert(data.errmsg); //成功跳转
+	                    // setTimeout(function () {
+	                    //     locationUrl('index.html',data);
+	                    // },800);
+	                }
+	            }
+	            // ,
+	            // error:function(msg){
+	            //     // Showbo.Msg.alert("this is error");                 //执行错误
+	            // }
+	        })
+		}
+	</script>
+
+
+
+</body>
+</html>

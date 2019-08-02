@@ -1,0 +1,285 @@
+<include file="Public/header" />
+<style>
+
+</style>
+<div class="wrap">
+	<div class="container">
+
+		<div><input type="button" class="btn btn-success bornone" value="添加企业CEO" onclick="addment()"></div>
+		<div class="tablerangborder table"><table style=" margin: 0; padding: 0" class="table content table-striped account_manage" id="data" ></table></div>
+	</div>
+	 <div class="TaskTable" id="pwdshow">
+</div>
+
+
+<include file="Public/footer" />
+<script type="text/javascript">
+$(function(){
+	listnub();
+})
+
+function listnub(p){
+	$('.loding').css('display','block');
+	$('.loding').css('display','block');
+	if(p==undefined){
+	    p = 1;
+    }
+	page(p);
+	$.ajax({
+			url:'{:U("Home/Admin/listnub")}',
+			dataType:'json',
+			data:{page:p,typey:100},
+			type:'post',
+			success:function(res){
+
+				var data = res.data;
+
+				str = '';
+				if(res.errcode == 1){
+
+					for(i in data){
+							str += '<tr><td><input value="'+data[i].account+'" type="text" id="dbn'+data[i].id+'"><input value="确认" type="button" onclick="savacc('+data[i].id+')" class="btn btn-info"></td><td><input id="dname'+data[i].id+'" value="'+data[i].mname+'" type="text"><input type="button" value="确认" onclick="savname('+data[i].id+')" class="btn btn-info"></td><td><input type="button" value="修改密码" onclick="savepwd('+data[i].id+')" class="btn btn-info"></td><td><input value="删除" type="button" onclick="delacc('+data[i].id+')" class="btn btn-info"></td></tr>'
+					}
+				}else{
+					str+="<tr><td colspan='4'><span style='color:#999;'>当前没有企业CEO</span></td></tr>";
+				}
+				$('#data').html(str);
+				$('#data tr:even').css("background","#f0f0f0");
+				$('#data').prepend('<tr><td>账号</td><td>名称</td><td>修改密码</td><td>操作</td></tr>');
+				$('.loding').css('display','none');
+		   }
+		})
+}
+
+//分页
+function page(page)
+{
+   var nums ='';
+    $.ajax({
+	    type: "GET",
+	    url:'{:U("Home/Admin/pagenub2")}',
+	    dataType:"json",
+	    async:false,
+	    error: function(data){
+	    },
+	    success: function(data){
+	           nums = eval(data);
+	    	}
+	    });
+
+    $(".tcdPageCode").remove();
+    $(".tablerangborder").after("<div class='tcdPageCode'></div>");
+    $(".tcdPageCode").createPage({
+          pageCount:nums,
+          current:page,
+          backFn:function(p)
+          {
+            listnub(p);
+          }
+       });
+}
+
+//添加账号管理员
+function addment(){
+	var str ='';
+	str += '<div class="TaskTablecount"><div class="Task_header" id="newTask"><h3 id="add" act="add">企业CEO添加</h3><i class=" icon-remove close_task" id="close"></i></div><div style=" height:60px; width: 100%;"></div><div class="Task_cont"><p><span>账号:</span><input  class="form-control" type="text" id="qyname"></p><p><span>名称:</span><input  class="form-control" type="text" id="qyaccount"></p><p><span>密码:</span><input  class="form-control" type="password" id="pwd"></p><p><span>确认密码:</span><input  class="form-control" type="password" id="agpwd"></p><p><button class=" btn-info" type="button"  onclick="addnub()">确定</button></p></div></div>';
+	$('#pwdshow').html(str).show();
+	$('.masker').fadeIn();
+	close_mask();
+}
+
+function addnub(){
+	var account = $('#qyname').val();
+	var name = $('#qyaccount').val();
+	var pwd = $('#pwd').val();
+	var agpwd = $('#agpwd').val();
+	if(account == ""){
+		Showbo.Msg.alert('企业账号不能为空');
+		return false;
+	}
+	if((/[\u4e00-\u9fa5]+/).test(account)){ 
+        Showbo.Msg.alert("账号不能出现汉字");
+    return false;
+    }
+	if(name == ""){
+		Showbo.Msg.alert('企业名称不能为空');
+		return false;
+	}
+	if(pwd == ""){
+		Showbo.Msg.alert('密码不能为空');
+		return false;
+	}
+	if(agpwd == ""){
+ 		Showbo.Msg.alert('确认密码不能为空,请重新输入');
+		return false;
+ 	}
+ 	if(pwd != agpwd){
+ 		Showbo.Msg.alert('两次密码不一致,请重新输入');
+		return false;
+ 	}
+	$.ajax({
+		    url:'{:U("Home/Admin/adduid")}',
+			dataType:'json',
+			data:{account:account,name:name,pwd:pwd,typey:2},
+			type:'post',
+			success:function(data){
+				if(data.errcode == 1){
+					Showbo.Msg.alert(data.errmsg);
+					$('#pwdshow').hide();
+					$('.masker').hide();
+					listnub();
+				}else if(data.errcode == 3){
+					Showbo.Msg.alert(data.errmsg);
+				}
+			}
+		})
+}
+
+//删除账号管理员
+function delacc(id){
+	 Showbo.Msg.confirm('确认删除?',function(a){
+		 if(a == 'yes'){
+			 $.ajax({
+				url:'{:U("Home/Admin/delacc")}',
+				dataType:'json',
+				data:{id:id},
+				type:'post',
+				success:function(data){
+					if(data.errcode == 1){
+						//Showbo.Msg.alert(data.errmsg);
+						listnub();
+					}else{
+						Showbo.Msg.alert(data.errmsg);
+					}
+				}
+			 })
+	    }
+	 })
+}
+
+function savepwd(id){
+	var str ='';
+	str +=' <div class="TaskTablecount"><div class="Task_header" id="newTask"><h3 id="add" act="add">修改密码</h3><i class=" icon-remove close_task" id="close2" ></i></div><div style=" height:60px; width: 100%;"></div><div  class="Task_cont" id="newPwd"><p><span>请输入旧密码</span><input  class="form-control" type="password" id="oldpwd"></p><p><span>请输入新密码</span><input  class="form-control" type="password" id="newpwd"></p><p><span>再次确认新密码</span><input  class="form-control" type="password" id="townewpwd" /><input type="hidden" id="yid" value="" /></p><p><input type="button" class=" btn-info" onclick="editpwd('+id+')" value="提交" /></p></div></div>';
+	$('#pwdshow').html(str).show();
+	$('.masker').fadeIn();
+	close_mask();
+}
+
+function close_mask(){
+  $('.close_task').click(function(){
+    $('.TaskTable,.masker').fadeOut();
+  })
+}
+
+function editpwd(id){
+	var oldpwd = $('#oldpwd').val();
+	var newpwd = $('#newpwd').val();
+	var townewpwd = $('#townewpwd').val();
+
+	if(oldpwd == ""){
+		Showbo.Msg.alert('旧密码不能为空,请重新输入');
+		return false;
+	}if(newpwd == ""){
+		Showbo.Msg.alert('新密码不能为空,请重新输入');
+		return false;
+	}
+	if(newpwd != townewpwd){
+		Showbo.Msg.alert('两次密码输入不一致,请重新输入');
+		return false;
+	}
+	if(oldpwd == newpwd ){
+		Showbo.Msg.alert('新旧密码一致,请重新输入');
+		return false;
+	}
+	if(oldpwd == townewpwd ){
+		Showbo.Msg.alert('新旧密码一致,请重新输入');
+		return false;
+	}
+	
+	$.ajax({
+		url:'{:U("Home/Admin/adminpwd")}',
+			dataType:'json',
+			data:{id:id,oldpwd:oldpwd,newpwd:newpwd},
+			type:'post',
+			success:function(data){
+				
+				if(data.errcode == 1){
+					Showbo.Msg.alert(data.errmsg);
+					$('.masker').hide();
+					$('#pwdshow').hide();
+					listnub();
+				}else if(data.errcode == 3){
+					Showbo.Msg.alert(data.errmsg);
+				}else if(data.errcode == 2){
+					Showbo.Msg.alert(data.errmsg);
+				}
+			}
+
+	})
+}
+
+//修改企业账号
+function savacc(id){
+	 Showbo.Msg.confirm('确认修改?',function(a){
+		 if(a == 'yes'){
+		var val  = $('#dbn'+id).val();
+		if(val == ""){
+			Showbo.Msg.alert('账号不能为空');
+			listnub();
+			return false;
+		}
+	if((/[\u4e00-\u9fa5]+/).test(val)){ 
+        Showbo.Msg.alert("账号不能出现汉字");
+        listnub();
+        return false;
+    }
+		$.ajax({
+		    url:'{:U("Home/Setsail/savacc")}',
+			dataType:'json',
+			data:{id:id,val:val,type:1},
+			type:'post',
+			success:function(data){
+				if(data.errcode == 1){
+					//Showbo.Msg.alert(data.errmsg);
+					listnub();
+				}else if(data.errcode == 3){
+					Showbo.Msg.alert(data.errmsg);
+					listnub();
+				}
+			}
+		})
+	}
+	 })
+	
+}
+//修改公司名称
+function savname(id){
+	 Showbo.Msg.confirm('确认修改?',function(a){
+		 if(a == 'yes'){
+
+				var val = $('#dname'+id).val();
+				var data = {id:id,val:val,type:1};
+
+				if(val == ""){
+					Showbo.Msg.alert('名称不能为空');
+					listnub();
+					return false;
+				}
+
+				$.ajax({
+					url:'{:U("Home/Setsail/savname")}',
+					dataType:'json',
+					data:data,
+					type:'post',
+					success:function(data){
+
+						if(data.errcode == 1){
+							Showbo.Msg.alert(data.errmsg);
+							listnub();
+						}
+					}
+				})
+		 }
+	 })
+}
+</script>

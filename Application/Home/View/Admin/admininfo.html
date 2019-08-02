@@ -1,0 +1,244 @@
+<include file="Public/header" />
+<div class="wrap">
+	<div class="container">
+		<h3>企业账号管理</h3>
+		<table class="table content table-striped account_manage" id="data"  bordercolor="#2294d3"></table>
+	</div>
+	 <div class="TaskTable" id="pwdshow">
+</div>
+<include file="Public/footer" />
+<script type="text/javascript">
+$(function(){
+	firm();
+})
+function firm(p){
+	$('.loding').css('display','block');
+	if(p==undefined){
+             p = 1;
+             page(p);
+  		   }
+		$.ajax({
+			url:'{:U("Home/Admin/firm")}',
+			dataType:'json',
+			data:{page:p},
+			type:'post',
+			success:function(data){
+				
+				str = '';
+				for(i in data){
+				 	str += '<tr><td onmouseover="blocker('+data[i].id+',1)" onmouseleave="noblocker('+data[i].id+',1)"><span id="ba'+data[i].id+'">'+data[i].account+'</span><input value="'+data[i].account+'"  id="bl'+data[i].id+'" style="display:none" type="text"><input value="确认" type="button" id="bb'+data[i].id+'" style="display:none" onclick="saveacc('+data[i].id+')" class="btn btn-info"></td><td onmouseover="blocker('+data[i].id+',2)" onmouseleave="noblocker('+data[i].id+',2)"><span id="qyba'+data[i].id+'">'+data[i].mname+'</span><input value="'+data[i].mname+'" id="qybl'+data[i].id+'" style="display:none" type="text"><input type="button" value="确认" onclick="savename('+data[i].id+')" id="qybb'+data[i].id+'" style="display:none" class="btn btn-info"></td><td><input type="button" value="修改密码" onclick="savepwd('+data[i].id+')" class="btn btn-info"></td><td><input class="btn btn-info" value="删除" type="button" onclick="delacc('+data[i].id+')"></td</tr>'
+				}
+				$('#data').html(str);
+				$('#data').append('<tr><td><input type="text" placeholder="请输入企业账号" id="qyname"/></td><td><input type="text" placeholder="请输入企业名称" id="qyaccount"/></td><td><input type="password" placeholder="请输入密码" id="qypwd" /></td><td><input type="button" value="添加" class="btn btn-info" onclick="adduid()" /></td></tr>');
+				$('#data').prepend('<tr><td width="30%">企业账号</td><td  width="30%">企业名称</td><td>添加密码</td><td>操作</td></tr>');
+				$('.loding').css('display','none');
+			}
+
+		})
+}
+
+function close_mask(){
+  $('.close_task').click(function(){
+    $('.TaskTable,.masker').fadeOut();
+  })
+}
+//移入账号
+function blocker(id,v){
+	if(v==1){
+		$('#ba'+id).hide();
+		$('#bl'+id).show();
+		$('#bb'+id).show();
+	}else{
+		$('#qyba'+id).hide();
+		$('#qybl'+id).show();
+		$('#qybb'+id).show();
+	}
+	
+}
+
+function noblocker(id,v){
+	if(v == 1){
+		$('#ba'+id).show();
+		$('#bl'+id).hide();
+		$('#bb'+id).hide();
+	}else{
+		$('#qyba'+id).show();
+		$('#qybl'+id).hide();
+		$('#qybb'+id).hide();
+	}
+	
+}
+
+function savepwd(id){
+	var str ='';
+	str +=' <div class="TaskTablecount"><div class="Task_header" id="newTask"><h3 id="add" act="add">修改密码</h3><i class=" icon-remove close_task" id="close2" ></i></div><div style=" height:60px; width: 100%;"></div><div  class="Task_cont" id="newPwd"><p><span>请输入旧密码</span><input  class="form-control" type="password" id="oldpwd"></p><p><span>请输入新密码</span><input  class="form-control" type="password" id="newpwd"></p><p><span>再次确认新密码</span><input  class="form-control" type="password" id="townewpwd" /><input type="hidden" id="yid" value="" /></p><p><input type="button" class=" btn-info" onclick="editpwd('+id+')" value="提交" /></p></div></div>';
+	$('#pwdshow').html(str).show();
+	$('.masker').fadeIn();
+	close_mask();
+}
+function editpwd(id){
+	var oldpwd = $('#oldpwd').val();
+	var newpwd = $('#newpwd').val();
+	var townewpwd = $('#townewpwd').val();
+
+	if(oldpwd == ""){
+		Showbo.Msg.alert('旧密码不能为空,请重新输入');
+		return false;
+	}if(newpwd == ""){
+		Showbo.Msg.alert('新密码不能为空,请重新输入');
+		return false;
+	}
+	if(newpwd != townewpwd){
+		Showbo.Msg.alert('两次密码输入不一致,请重新输入');
+		return false;
+	}
+	if(oldpwd == newpwd ){
+		Showbo.Msg.alert('新旧密码一致,请重新输入');
+		return false;
+	}
+	if(oldpwd == townewpwd ){
+		Showbo.Msg.alert('新旧密码一致,请重新输入');
+		return false;
+	}
+	
+	$.ajax({
+		url:'{:U("Home/Admin/adminpwd")}',
+			dataType:'json',
+			data:{id:id,oldpwd:oldpwd,newpwd:newpwd},
+			type:'post',
+			success:function(data){
+				
+				if(data.errcode == 1){
+					Showbo.Msg.alert(data.errmsg);
+					$('.masker').hide();
+					$('#pwdshow').hide();
+					firm();
+				}else if(data.errcode == 3){
+					Showbo.Msg.alert(data.errmsg);
+				}else if(data.errcode == 2){
+					Showbo.Msg.alert(data.errmsg);
+				}
+			}
+
+	})
+}
+
+function saveacc(id){
+	var val = $('#bl'+id).val();
+	$.ajax({
+		url:'{:U("Home/Admin/blocker")}',
+			dataType:'json',
+			data:{id:id,val:val,type:1},
+			type:'post',
+			success:function(data){
+				if(data.errcode == 1){
+					Showbo.Msg.alert(data.errmsg);
+					firm();
+				}else if(data.errcode == 3){
+					Showbo.Msg.alert(data.errmsg);
+				}
+			}
+		})
+}
+
+function savename(id){
+	var val = $('#qybl'+id).val();
+	$.ajax({
+		url:'{:U("Home/Admin/blocker")}',
+			dataType:'json',
+			data:{id:id,val:val,type:2},
+			type:'post',
+			success:function(data){
+				if(data.errcode == 1){
+					Showbo.Msg.alert(data.errmsg);
+					firm();
+				}else if(data.errcode == 3){
+					Showbo.Msg.alert(data.errmsg);
+				}
+			}
+		})
+}
+
+function delacc(id){
+	 Showbo.Msg.confirm('确认删除?',function(a){
+		 if(a == 'yes'){
+	$.ajax({
+		url:'{:U("Home/Admin/delacc")}',
+			dataType:'json',
+			data:{id:id},
+			type:'post',
+			success:function(data){
+				if(data.errcode == 1){
+					Showbo.Msg.alert(data.errmsg);
+					firm();
+				}else{
+					Showbo.Msg.alert(data.errmsg);
+				}
+			}
+		})
+	 }
+	 })
+}
+
+//添加
+function adduid(){
+	var account = $('#qyname').val();
+	var name = $('#qyaccount').val();
+	var pwd = $('#qypwd').val();
+	if(account == ""){
+		Showbo.Msg.alert('企业账号不能为空');
+		return false;
+	}
+	if(name == ""){
+		Showbo.Msg.alert('企业名称不能为空');
+		return false;
+	}
+	if(pwd == ""){
+		Showbo.Msg.alert('密码不能为空');
+		return false;
+	}
+	$.ajax({
+		url:'{:U("Home/Admin/adduid")}',
+			dataType:'json',
+			data:{account:account,name:name,pwd:pwd},
+			type:'post',
+			success:function(data){
+				if(data.errcode == 1){
+					Showbo.Msg.alert(data.errmsg);
+					firm();
+				}else if(data.errcode == 3){
+					Showbo.Msg.alert(data.errmsg);
+				}
+			}
+		})
+}
+	 /*分页*/
+function page(page)
+{
+   var nums ='';
+    $.ajax({
+    type: "GET",
+    url:"__URL__/page1",
+    dataType:"json",
+    async:false,
+    error: function(data){
+    },
+    success: function(data){
+           nums = eval(data);
+    	}
+    });
+
+    $(".tcdPageCode").remove();
+    $("#data").after("<div class='tcdPageCode'></div>");
+    $(".tcdPageCode").createPage({
+          pageCount:nums,
+          current:page,
+          backFn:function(p)
+          {
+            firm(p);
+          }
+       });
+}
+</script>
+</body>
+</html>

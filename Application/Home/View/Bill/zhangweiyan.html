@@ -1,0 +1,678 @@
+<link rel="stylesheet" href="__PUBLIC__/css/zhangweiyan.css" />
+<include file="Public/header" />
+<style type="text/css">.container:first-child{ height: auto!important; padding-bottom:20px; }</style>
+<script type="text/javascript">
+  $(function(){
+   $('.shows').siblings('.hides').remove(); 
+   var winheight = $(window).height() - 269;
+   $('.yui_sorcl').css('height',winheight);
+  })
+</script>
+<div class="wrap">
+<div class="container enter_info" style=" height: 200px!important;">
+    <h3>企业资料</h3>
+    <div class="info_name">
+    <p>企业名称：{$info.Qyname} </p>
+       
+      <span>法人姓名：<input type="text" name="" value="{$info.person}" old="{$info.person}" onclick="blocks(1)" onblur="namenones(1)" id="fname"><input type="button" class="btn-info" id="fedit" value="确认" style="display:none" onclick="upSystem(1)" /></span>
+
+      <span>联系电话：<input type="text" name="" value="{$info.phone}" old="{$info.phone}" onclick="blocks(2)" onblur="namenones(2)" id="fphone"><input type="button" class="btn-info" id="medit" value="确认" style="display:none" onclick="upSystem(2)" /></span>
+    </div>
+</div>
+<div class="container yui_sorcl">
+    <h3 name="001" id="001">消息通知</h3>
+    <div>
+       <table class="aa" width="1140" height="450" cellspacing="0" cellpadding="0" border="3" bordercolor="#2294d3">
+        <tr><td>
+          <img src="__PUBLIC__/images/login-image/xiaoxi_02.jpg" alt="">
+          <span>张某某 学员<a href="">在 2017-01-09 申报弟子学员  交定金 3,000.00元</a></span>
+          
+          <p>删除</p>
+        </td></tr>
+        <tr><td>
+          <img src="__PUBLIC__/images/login-image/xiaoxi_01.jpg" alt="">
+          <span>张某某 学员<a href="">在 2017-01-09 申报弟子学员  在1/4 期还款 1,000.00元</a></span>
+          
+          <p>删除</p>
+        </td></tr>
+        <tr><td>
+          <img src="__PUBLIC__/images/login-image/xiaoxi_02.jpg" alt="">
+          <span>张某某 学员<a href="">在 2017-01-09 申报弟子学员  已完款 2,000.00元</a></span>
+          
+          <p>删除</p>
+        </td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+       </table>
+
+    
+    <div class="bb"></div> 
+
+    <div class="cc">
+      <ul>
+        <li><p>上传报表检查报告<img src="__PUBLIC__/images/login-image/tanchuang1.jpg" alt=""></p></li>
+        <li>
+            <div>
+            <img src="__PUBLIC__/images/login-image/tanchuang2.jpg" alt="">
+            <span>1 行数26 学员 张斌 13936581212与已有学员数据合并<br/>
+                  2 行数28 学员 张斌 13936581212还款数据与ID：5489定金数据关联<br/>
+                  3 行数50 学院 李美美 15678452589为新增学员</span>
+            </div>
+            <div>
+            <img src="__PUBLIC__/images/login-image/tanchuang3.jpg" alt="">
+            <span>1 行数8 收账金额数据 格式错误<br/>
+                  2 行数56 出账原因为空</span>
+            </div>
+        </li>
+        <li><a href="">确认上传</a><a href="">取消上传</a></li>
+      </ul>
+
+    </div>
+
+<script type="text/javascript">
+  $(function(){
+    $(".bb,.cc").hide();
+    $(".aa p").click(function(){
+    $(".bb,.cc").show();
+    });
+    $(".cc p img").click(function(){
+    $(".bb,.cc").hide();
+    });
+
+
+  })
+</script>
+
+
+       <!--    <foreach name="data" item="vo" >
+              <tr name="orde{$vo['id']}">
+                <td class="shows">{$vo.name}</td>
+                 <td tid="1" onclick="telone(this)"  ><span class="nie">{$vo.mobile}</span><span  style="display:none" class="cver"><input type="text" value="{$vo.mobile}"  /><a tid="1" onclick="savewang({$vo.id},this)"  href="javascript:;">修改</a></span></td>
+                <td tid="2" onclick="telone(this)"  ><span class="nie">{$vo.note}</span><span  style="display:none" class="cver"><input type="text"  value="{$vo.note}"   /><a tid="2" onclick="savewang({$vo.id},this)" href="javascript:;">修改</a></span></td>
+                <foreach name="orders" item="vi" >
+                  <if condition="$vo['id'] eq $vi['sid']">
+                        <td class="hides"></td>
+                        <td class="hides"></td>
+                        <td class="hides"></td>
+                        <td>{$vi.name}</td>
+                        <td>{$vi.mobile}</td>
+                        <td>{$vi.times}</td>
+              </tr>
+
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>票</td>
+                    <td>{$vi.ticket}</td>
+                    <td>
+                      <if condition="($info['tc'] eq '0') OR ($info['tc'] eq '')">
+                        0 
+                      <else />
+                        {$info['tc']}
+                      </if>
+                      %
+                    </td>
+                    <td>{:money($vi['ticket'],$info['tc'],$info['leafletstc'])}元</td>
+                    <td>
+                      <select class="form-control type" did="{$vi['id']}" name="ptype">
+                        <option <eq name="vi['ptype']" value="0">selected</eq> value="0">取消</option>
+                        <option <eq name="vi['ptype']" value="1">selected</eq> value="1">已发</option>
+                        <option <eq name="vi['ptype']" value="2">selected</eq> value="2">未发</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>九大规划门票</td>
+                    <td>{$vi.planning}</td>
+                    <td>
+                      <if condition="($info['nc'] eq '0') OR ($info['nc'] eq '')">
+                        0 
+                      <else />
+                        {$info['nc']}
+                      </if>
+                      %
+                    </td>
+                    <td>{:money($vi['planning'],$info['nc'],$info['leafletsnc'])}元</td>
+                    <td>
+                      <select class="form-control type" did="{$vi['id']}" name="ntype">
+                        <option <eq name="vi['ntype']" value="0">selected</eq> value="0">取消</option>
+                        <option <eq name="vi['ntype']" value="1">selected</eq> value="1">已发</option>
+                        <option <eq name="vi['ntype']" value="2">selected</eq> value="2">未发</option>
+                      </select>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>卡</td>
+                    <td>{$vi.card}</td>
+                    <td>
+                      <if condition="($info['cc'] eq '0') OR ($info['cc'] eq '')">
+                        0
+                      <else />
+                        {$info['cc']}
+                      </if>
+                      %
+                    </td> 
+                    <td>{:money($vi['card'],$info['cc'],$info['leafletscc'])}元</td>
+                    <td>
+                      <select class="form-control type" did="{$vi['id']}" name="ctype">
+                        <option <eq name="vi['ctype']" value="0">selected</eq> value="0">取消</option>
+                        <option <eq name="vi['ctype']" value="1">selected</eq> value="1">已发</option>
+                        <option <eq name="vi['ctype']" value="2">selected</eq> value="2">未发</option>
+                      </select>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>朋友圈</td>
+                    <td>{$vi.friends}</td>
+                    <td>
+                      <if condition="($info['fc'] eq '0') OR ($info['fc'] eq '')">
+                        0
+                      <else />
+                        {$info['fc']}
+                      </if>
+                      %
+                    </td> 
+                    <td>{:money($vi['friends'],$info['fc'],$info['leafletsfc'])}元</td>
+                    <td>
+                      <select class="form-control type"  did="{$vi['id']}" name="ftype">
+                        <option <eq name="vi['ftype']" value="0">selected</eq> value="0">取消</option>
+                        <option <eq name="vi['ftype']" value="1">selected</eq> value="1">已发</option>
+                        <option <eq name="vi['ftype']" value="2">selected</eq> value="2">未发</option>
+                      </select>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>弟子</td>
+                    <td>{$vi.disciple}</td>
+                    <td>
+                      <if condition="($info['dc'] eq '0') OR ($info['dc'] eq '')">
+                        0
+                      <else />
+                        {$info['dc']}
+                      </if>
+                      %
+                    </td> 
+                    <td>{:money($vi['disciple'],$info['dc'],$info['leafletsdc'])}元</td>
+                    <td>
+                      <select class="form-control type"  did="{$vi['id']}" name="dtype">
+                        <option <eq name="vi['dtype']" value="0">selected</eq> value="0">取消</option>
+                        <option <eq name="vi['dtype']" value="1">selected</eq> value="1">已发</option>
+                        <option <eq name="vi['dtype']" value="2">selected</eq> value="2">未发</option>
+                      </select>
+                    </td>
+                  <td></td>
+                  </tr>
+
+                  <else />
+                  </if>
+                  
+              </foreach>
+              </tr>
+
+              <tr>
+               
+
+                   
+                   
+                  
+                    
+                
+              </tr>
+          </foreach> -->
+        </table>
+        
+    </div>
+    <div class="">
+        <input type="button" class="btn btn-success bornone" value="生成表格文档" onclick="excel(this)"> 
+    </div>
+ <a href="#001" class="back_top icon-chevron-up"></a>
+  </div>
+</div>
+
+  <script>
+    function blocks(act){
+        setTimeout(function(){
+          if(act == 1){
+            $("#fedit").css('display','inline-block');
+          }else if(act == 2){
+            $("#medit").css('display','inline-block');
+          }
+        }, 300);
+    }
+
+    function namenones(act){
+      setTimeout(function(){
+          if(act == 1){
+            $("#fedit").css('display','none');
+            var old = $("#fname").attr('old');
+            $("#fname").val(old);
+          }else if(act == 2){
+            $("#medit").css('display','none');
+            var old = $("#fphone").attr('old');
+            $("#fphone").val(old);
+          }
+      }, 300); 
+    }
+
+    function upSystem (act) {
+        if(act == 1){
+          var old = $("#fname").attr('old');
+          var value = $("#fname").val();
+          value = trim(value);
+          if(value != ''){
+            if(old == value){
+              Showbo.Msg.alert('新用户名不能与原用户一样');
+              return false;
+            }
+          }else{
+            Showbo.Msg.alert('用户名不能为空');
+            return false;
+          }
+        }else if(act == 2){
+          var old = $("#fphone").attr('old');
+          var value = $("#fphone").val();
+          if(value != ''){
+            if(!(/^13[\d]{9}$|^14[5,7]{1}\d{8}$|^15[\d]{9}$|^17[0,6,7,8]{1}\d{8}$|^18[\d]{9}$/.test(value))){
+                Showbo.Msg.alert('您输入的手机号格式不对或填写号码不足11位');
+                return false;
+            }else{
+              if(old == value){
+                Showbo.Msg.alert('新手机号不能与原手机号一样');
+                return false;
+              }              
+            }
+          }else{
+            Showbo.Msg.alert('手机号不能为空');
+            return false;            
+          }
+        }
+        $.ajax({
+          url:"{:U('Home/Enterprise/fedit')}",
+          dataType:"json",
+          type:'post',
+          data:{type:act,value:value},
+          success:function(res){
+            // console.log(res);
+            if(res.errcode == 0){
+                Showbo.Msg.alert(res.errmsg);
+            }else if(res.errcode == 1){
+                window.location.href="{:U('Home/Enterprise/index')}";
+            }else if(res.errcode == 2){
+                Showbo.Msg.alert(res.errmsg);
+            }
+            
+          }
+        })
+    }
+
+    $(function(){
+      $(".js").change(function(e) {
+          var js = $(this).val();
+          var did = $(this).attr('did');
+          $.post('{:U('Home/Enterprise/jmobile')}',{js:js},function(d){
+                // console.log(d);
+                if(d.errcode == 1){
+                    var str = '';
+                    str = '<span>'+d.errmsg+'</span>';
+                    $("#jd"+did).empty();
+                    $("#jd"+did).append(str);
+                }else if(d.errcode == 0){
+                    Showbo.Msg.alert(d.errmsg);
+                }              
+            },"json")
+      });
+    })
+
+    $(function(){
+      $(".type").change(function(e){
+        var orderV = $(this).val(); //订单id
+        var orderI = $(this).attr('did');
+        var orderN = $(this).attr('name');
+        var old = $(this).attr('old');
+        Showbo.Msg.confirm('确认修改?',function(a)
+        {
+          if(a == "yes")
+          {
+            $.post('{:U('Home/Enterprise/orderedit')}',{val:orderV,id:orderI,name:orderN},function(d){
+                  // console.log(d);
+                  if(d.errcode == 1){
+                    Showbo.Msg.alert(d.errmsg);
+                  }else if(d.errcode == 0){
+                      Showbo.Msg.alert(d.errmsg);
+                  }else if(d.errcode == 2){
+                      Showbo.Msg.alert(d.errmsg);
+                  }              
+              },"json")
+          }else{
+              window.location.href="{:U('Home/Enterprise/index')}";
+          }
+        })
+      })
+    })
+
+    function submit(id){
+      var jid = $("#lm"+id).val();
+
+      var ticket = $("#ticket"+id).val();
+      var card = $("#card"+id).val();
+      var friends = $("#friends"+id).val();
+      var disciple = $("#disciple"+id).val();
+
+      var sticket = $("#sticket"+id).val();
+      var scard = $("#scard"+id).val();
+      var sfriends = $("#sfriends"+id).val();
+      var sdisciple = $("#sdisciple"+id).val();
+
+      if(jid == ''){
+        Showbo.Msg.alert('请选择讲师');
+        return false;
+      }
+
+      if(ticket != ''){
+        if(!(/^[0-9]*$/.test(ticket))){
+          Showbo.Msg.alert('票只能输入正整数');
+          return false;
+        }
+      }else{
+        Showbo.Msg.alert('票选项不能为空');
+        return false;
+      }
+
+      if(card != ''){
+        if(!(/^[0-9]*$/.test(card))){
+          Showbo.Msg.alert('卡只能输入正整数');
+          return false;
+        }
+      }else{
+        Showbo.Msg.alert('卡选项不能为空');
+        return false;
+      }
+
+      if(friends != ''){
+        if(!(/^[0-9]*$/.test(friends))){
+          Showbo.Msg.alert('朋友圈只能输入正整数');
+          return false;
+        }
+      }else{
+        Showbo.Msg.alert('朋友圈选项不能为空');
+        return false;
+      }
+
+      if(disciple != ''){
+        if(!(/^[0-9]*$/.test(disciple))){
+          Showbo.Msg.alert('弟子只能输入正整数');
+          return false;
+        }
+      }else{
+        Showbo.Msg.alert('弟子选项不能为空');
+        return false;
+      } 
+
+      $.post('{:U('Home/Enterprise/order')}',{sid:id,uid:jid,ticket:ticket,card:card,friends:friends,disciple:disciple,ptype:sticket,ctype:scard,ftype:sfriends,dtype:sdisciple},function(d){
+            // console.log(d);
+            if(d.errcode == 1){
+                Showbo.Msg.alert(d.errmsg);
+                setTimeout(function(){
+                  window.location.href="{:U('Home/Enterprise/index')}";
+                }, 1000);    
+            }else if(d.errcode == 0){
+                Showbo.Msg.alert(d.errmsg);
+            }              
+        },"json")      
+    }
+
+    function telone(obj)
+    {
+        $tid = $(obj).attr('tid');
+        
+        if($tid == 1)
+        {   
+            $('.cver').css('display','none');
+            $('.nie').css('display','block');
+            $(obj).find(".nie").css('display','none');
+            $(obj).find(".cver").css('display','block');
+            
+            
+        }else
+        {
+            $('.cver').css('display','none');
+            $('.nie').css('display','block');
+            $(obj).find(".nie").css('display','none');
+            $(obj).find(".cver").css('display','block');
+        }
+    }
+
+    function savewang(id,obj)
+    {
+        var tid = $(obj).attr('tid');
+        
+        var cin = $(obj).prev().val();
+        if(tid == 1)
+        {
+            if(!(/^1[3|4|5|8][0-9]\d{8}$/.test(cin)))
+            {
+                   Showbo.Msg.alert("您输入的手机号格式不对或填写号码不足11位");
+                   return false;
+            }
+        }else
+        {
+            if(cin == "")
+            {
+                Showbo.Msg.alert("不能为空");
+            }
+        }
+        $.post('{:U("Home/Enterprise/savewang")}',{id:id,tid:tid,cin:cin},function(t)
+                {
+                    if(t == 1)
+                    {
+                        Showbo.Msg.alert('修改成功');
+                        var sibnole = $(obj).prev().val();
+                        $(obj).parent().prev().html(sibnole);
+                        $(obj).parent().css('display','none');
+                        $(obj).parent().prev().css('display','block');
+                    }else if(t == 2)
+                    {
+                        Showbo.Msg.alert('修改失败');
+                    }else
+                    {
+                        Showbo.Msg.alert('请修改内容');
+                    }
+            
+            
+                },'json')
+    }
+
+    function excel(obj){
+      window.location.href="{:U('Home/Enterprise/report')}";
+    }
+    
+    function trim(str){ //删除左右两端的空格
+　　     return str.replace(/(^\s*)|(\s*$)/g, "");
+　　}
+    
+    $(function()
+            {
+        $.post('{:U("Home/Enterprise/dateindex")}',{},function(t)
+                {
+                        console.log(t)
+                        str = "";
+                        act = "";
+                        act2 = "";
+                        act3 = "";
+                        act4 = "";
+                        act5 = "";
+                        
+                    for(i in t)
+                    {
+                        str += "<tr>"
+                        str += "<td>"+t[i].uname+"</td><td>"+t[i].umobile+"</td><td>"+t[i].yecount+"</td><td>"+t[i].ticount+"</td><td>"+t[i].y+"</td><td>"+t[i].w+"</td>"
+                        str+="<td><table>";
+                        for(n in t[i].count )
+                        {   
+                            
+                            str += "<tr><td>"+t[i].count[n].tname+"</td><td>"+t[i].count[n].tmobile+"</td><td>"+t[i].count[n].tnote+"</td><td>"+t[i].count[n].times+"</td></tr>";
+                            if(t[i].count[n].ticket != 0)
+                            {
+                                
+                            
+                            if(t[i].count[n].ptype  == 0)
+                            {   
+                                str += "<tr><td>票</td><td>"+t[i].count[n].ticket+"</td><td >"+t[i].count[n].ticketall+"</td><td>"+t[i].count[n].pil+"</td><td>"+t[i].count[n].pcount+"</td><td><select  class='sed' onchange='state(this,1,"+t[i].count[n].id+")'><option selected='selected' value='0'>取消</option><option  value='1'>已发</option><option  value='2'>未发</option></select></td></tr>";
+                            }else if(t[i].count[n].ptype  == 1)
+                            {
+                                str += "<tr><td>票</td><td>"+t[i].count[n].ticket+"</td><td >"+t[i].count[n].ticketall+"</td><td>"+t[i].count[n].pil+"</td><td>"+t[i].count[n].pcount+"</td><td><select  class='sed' onchange='state(this,1,"+t[i].count[n].id+")' ><option  value='0'>取消</option><option selected='selected'  value='1'>已发</option><option  value='2'>未发</option></select></td></tr>";
+                                
+                            }else
+                            {
+                                str += "<tr><td>票</td><td>"+t[i].count[n].ticket+"</td><td >"+t[i].count[n].ticketall+"</td><td>"+t[i].count[n].pil+"</td><td>"+t[i].count[n].pcount+"</td><td><select class='sed' onchange='state(this,1,"+t[i].count[n].id+")' ><option  value='0'>取消</option><option   value='1'>已发</option><option selected='selected'  value='2'>未发</option></select></td></tr>";
+                                
+                            }
+                            }
+                            if(t[i].count[n].planning != 0)
+                            {
+                                
+                            
+                            if(t[i].count[n].ntype  == 0)
+                            {
+                                str += "<tr><td>九大规划门票</td><td>"+t[i].count[n].planning+"</td><td >"+t[i].count[n].planningall+"</td><td>"+t[i].count[n].nil+"</td><td>"+t[i].count[n].ncount+"</td><td><select   class='sed' onchange='state(this,2,"+t[i].count[n].id+")'><option selected='selected' value='0'>取消</option><option  value='1'>已发</option><option  value='2'>未发</option></select></td></tr>";
+                                
+                            }else if(t[i].count[n].ntype  == 1)
+                            {
+                                str += "<tr><td>九大规划门票</td><td>"+t[i].count[n].planning+"</td><td >"+t[i].count[n].planningall+"</td><td>"+t[i].count[n].nil+"</td><td>"+t[i].count[n].ncount+"</td><td><select  class='sed' onchange='state(this,2,"+t[i].count[n].id+")'><option  value='0'>取消</option><option  selected='selected' value='1'>已发</option><option  value='2'>未发</option></select></td></tr>";
+                                
+                            }else
+                            {
+                                str += "<tr><td>九大规划门票</td><td>"+t[i].count[n].planning+"</td><td >"+t[i].count[n].planningall+"</td><td>"+t[i].count[n].nil+"</td><td>"+t[i].count[n].ncount+"</td><td><select  class='sed' onchange='state(this,2,"+t[i].count[n].id+")'><option  value='0'>取消</option><option   value='1'>已发</option><option selected='selected'   value='2'>未发</option></select></td></tr>";
+                                
+                            }
+                            }
+                            if(t[i].count[n].card != 0)
+                            {
+                                
+                            
+                            if(t[i].count[n].ctype  == 0)
+                            {
+                                str += "<tr><td>卡</td><td>"+t[i].count[n].card+"</td><td >"+t[i].count[n].cardall+"</td><td>"+t[i].count[n].kil+"</td><td>"+t[i].count[n].kcount+"</td><td><select  class='sed' onchange='state(this,3,"+t[i].count[n].id+")' ><option  selected='selected' value='0'>取消</option><option  value='1'>已发</option><option  value='2'>未发</option></select></td></tr>";
+                            }else if(t[i].count[n].ctype  == 1)
+                            {
+                                str += "<tr><td>卡</td><td>"+t[i].count[n].card+"</td><td >"+t[i].count[n].cardall+"</td><td>"+t[i].count[n].kil+"</td><td>"+t[i].count[n].kcount+"</td><td><select  class='sed' onchange='state(this,3,"+t[i].count[n].id+")' ><option  value='0'>取消</option><option  selected='selected'  value='1'>已发</option><option  value='2'>未发</option></select></td></tr>";
+                                
+                            }else
+                            {
+                                str += "<tr><td>卡</td><td>"+t[i].count[n].card+"</td><td >"+t[i].count[n].cardall+"</td><td>"+t[i].count[n].kil+"</td><td>"+t[i].count[n].kcount+"</td><td><select  class='sed' onchange='state(this,3,"+t[i].count[n].id+")' ><option  value='0'>取消</option><option    value='1'>已发</option><option selected='selected'  value='2'>未发</option></select></td></tr>";
+                                
+                            }
+                            }
+                            if(t[i].count[n].friends !=0)
+                            {
+                                
+                            
+                            if(t[i].count[n].ftype  == 0)
+                            {
+                                str += "<tr><td>朋友圈</td><td>"+t[i].count[n].friends+"</td><td >"+t[i].count[n].friendsall+"</td><td>"+t[i].count[n].qil+"</td><td>"+t[i].count[n].qcount+"</td><td><select  onchange='state(this,4,"+t[i].count[n].id+")'  class='sed' ><option selected='selected'  value='0'>取消</option><option    value='1'>已发</option><option   value='2'>未发</option></select></td></tr>";
+                                
+                            }else if(t[i].count[n].ftype  == 1)
+                            {
+                                str += "<tr><td>朋友圈</td><td>"+t[i].count[n].friends+"</td><td >"+t[i].count[n].friendsall+"</td><td>"+t[i].count[n].qil+"</td><td>"+t[i].count[n].qcount+"</td><td><select  onchange='state(this,4,"+t[i].count[n].id+")' class='sed' ><option   value='0'>取消</option><option selected='selected'   value='1'>已发</option><option   value='2'>未发</option></select></td></tr>";
+                                
+                            }else
+                            {
+                                str += "<tr><td>朋友圈</td><td>"+t[i].count[n].friends+"</td><td >"+t[i].count[n].friendsall+"</td><td>"+t[i].count[n].qil+"</td><td>"+t[i].count[n].qcount+"</td><td><select  onchange='state(this,4,"+t[i].count[n].id+")' class='sed' ><option   value='0'>取消</option><option    value='1'>已发</option><option  selected='selected' value='2'>未发</option></select></td></tr>";
+                                
+                            }
+                            }
+                            if(t[i].count[n].disciple !=0)
+                            {
+                                
+                            
+                            if(t[i].count[n].dtype  == 0)
+                            {
+                                str += "<tr><td>弟子</td><td>"+t[i].count[n].disciple+"</td><td >"+t[i].count[n].discipleall+"</td><td>"+t[i].count[n].dil+"</td><td>"+t[i].count[n].dcount+"</td><td><select tid="+t[i].count[n].id+" onchange='state(this,5)'  class='sed' ><option selected='selected'  value='0'>取消</option><option    value='1'>已发</option><option   value='2'>未发</option></select></td></tr>";
+                                
+                            }else  if(t[i].count[n].dtype  == 1)
+                            {
+                                str += "<tr><td>弟子</td><td>"+t[i].count[n].disciple+"</td><td >"+t[i].count[n].discipleall+"</td><td>"+t[i].count[n].dil+"</td><td>"+t[i].count[n].dcount+"</td><td><select tid="+t[i].count[n].id+" onchange='state(this,5)' class='sed' ><option   value='0'>取消</option><option selected='selected'   value='1'>已发</option><option   value='2'>未发</option></select></td></tr>";
+                                
+                                
+                            }else
+                            {
+                                str += "<tr><td>弟子</td><td>"+t[i].count[n].disciple+"</td><td >"+t[i].count[n].discipleall+"</td><td>"+t[i].count[n].dil+"</td><td>"+t[i].count[n].dcount+"</td><td><select tid="+t[i].count[n].id+" onchange='state(this,5)' class='sed' ><option   value='0'>取消</option><option   value='1'>已发</option><option selected='selected'   value='2'>未发</option></select></td></tr>";
+                                    
+                            }
+                            }
+                            }
+                        str+="</table></td>";
+                        str += "</tr>"
+                    }
+                
+                        
+                        $('#yeerborder').append(str);
+                },'json')
+        
+                
+                
+        
+            })
+            
+ function state(obj,r,id)
+    {
+        var dat = $(obj).val();
+         Showbo.Msg.confirm('确认修改?',function(a)
+                    {   
+                        if(a == "yes")
+                        {
+                             $.post("{:U('Home/Enterprise/adddat')}",{act:dat,id:id,r:r},function(t)
+                                        {
+                                            if(t !=1)
+                                            {
+                                                Showbo.Msg.alert('修改失败');
+                                            }
+                                    
+                                    
+                                        },'json')
+                        }
+                
+            
+                    })
+    
+        
+        
+    }
+            
+                
+                
+   
+    
+  </script>
+</body>
+</html>

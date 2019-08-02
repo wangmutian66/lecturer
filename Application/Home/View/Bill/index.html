@@ -1,0 +1,2217 @@
+<include file="Public/header" />
+<link rel="stylesheet" href="__PUBLIC__/css/zhangweiyan.css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.date.mt.js"></script>
+<!-- 模态框（Modal） -->
+<div class="modal fade tianjiacss" id="myModaljin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 1300px;width:100%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">选择企业和课程</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-hover">
+
+                </table>
+                <div><button id="savajin">保存</button></div>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade tianjiacss" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">选择客户</h4>
+            </div>
+            <div class="modal-body">
+	            <div id="zxc">
+	                <div class="tjform">
+				    <input type="text" id="yy" /><input type="button" onclick="ss()" value="搜索企业"/>
+				    </div>
+				    <div class="gundongtable">
+					   <table id= "bianji" class="table table-bordered table-hover" ></table>
+					</div>
+					<div id="strbtn"></div>
+				</div>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+	<div class="container cupdate"  style="width:97%;">
+	    <div class="ctitle">
+
+             <?php if($_SESSION["yid"]=='admin'){ ?>
+	           <span style="float: left;padding: 12px 0;color: #0588CE;cursor: pointer;" onclick="window.location.href='{:U('Home/Admin/branch')}'">返回</span>
+	         <?php }else{ ?>
+               <span style="float: left;padding: 12px 0;color: #0588CE;cursor: pointer;" onclick="window.location.href='{:U('Home/Setsail/biy')}'">返回</span>
+	      	 <?php } ?>
+	       <h3>{$lecturername} 财务账单</h3>
+	       <div class="cbtn">
+	            <if condition="($finatype eq 1)">
+		        <input type="button" class="btn btn-success bornone" name="" value="上传财务列表" onclick="uploadCate()">
+		        <input type="button" class="btn btn-success bornone" name="" value="下载财务模板" onclick="window.location.href='{:U('Home/Bill/down')}'">
+
+	            </if>
+	            <input type="button" class="btn btn-success bornone" name="" value="导出列表" onClick="dcli({$getid})">
+	        </div>
+        </div>
+
+        <div  class="content Teacher_achievement">
+            <div class="Modinfo date" style="margin:0;margin: 20px 0;width: 100%;">
+                <span>
+                     <select  id="timeyear"  class="form-control" onchange="checkChangDate(this)"></select>
+                     <select id="timemonth"  class="form-control" onchange="checkChangDate(this,1)"></select>
+                     <select id="timeday"  class="form-control" onchange="checkChangDate(this)"></select>
+
+                </span>
+                <span>至</span>
+                <span>
+                   <select id="beforeyea"  class="form-control" onchange="checkChangDate(this)"></select>
+                  <select id="datayear"  class="form-control" onchange="checkChangDate(this,2)"></select>
+                  <select id="day"  class="form-control" onchange="checkChangDate(this)"></select>
+                    <select id="stype" class="form-control" style="width: 140px;">
+                      <option value="0">类别</option>
+                      <option value="1">小票</option>
+                      <option value="5">九大规划门票</option>
+                      <option value="2">卡会员</option>
+                      <option value="3">朋友圈</option>
+                      <option value="4">弟子学员</option>
+                    </select>
+                    <select id="smoney" class="form-control">
+                      <option value="0">进出账</option>
+                      <option value="1">进帐</option>
+                      <option value="2">出帐</option>
+                    </select>
+
+                    <!-- <input type="button" style="outline: none;"class="btn-default searchbtn"  onclick ="seove()" value="搜索" /> -->
+                    </span>
+                    <span class="searcinput" style="padding: 0;">
+                      <input type="text" id="lsor" value="客户名称查询" onfocus="if(this.value=='客户名称查询') {this.value='';}this.style.color='#000';" onblur="if(this.value=='') {this.value='客户名称查询';this.style.color='#ccc';}" value="" style="color:#CCC; width:auto;" />
+                      <input type="button" class="btn-default"  onclick ="seove()" value="" />
+                    </span>
+            </div>
+            <div class="">
+                <input type="radio" name="xuanxiang" checked value="0" onclick="seove()"> &nbsp;全部
+                <input type="radio" name="xuanxiang" value="1" onclick="seove()"> &nbsp;定金
+            </div>
+            <div class="finaright">
+            <if condition="($finatype eq 1)">
+            	<input type="button" class="btn btn-success bornone" style='line-height: initial;' value="添加进账"  onClick="savepwd(1)" />
+                <input type="button" class="btn btn-success bornone" style='line-height: initial;' value="添加出账"  onClick="infoshow()"/>
+            </if>
+            </div>
+                <div class="lleverdiv">
+                    <table id ="llever" class="table content  table-border">
+
+                    </table>
+                </div>
+            <div id="setBudgetPage"></div>
+        </div>
+
+    </div>
+
+     <div class="TaskTable" id="pwdshow"> </div>
+     <div class="TaskTable" id="infoshow"></div>
+     <div class="TaskTable" id="idtashow"></div>
+
+</div>
+<div class="bb" style="display:none;"></div>
+<div class="cc" style="display:none;">
+  <ul>
+    <li><p>上传报表检查报告<img src="__PUBLIC__/images/login-image/tanchuang1.jpg" alt=""></p></li>
+    <li>
+        <div>
+        <img src="__PUBLIC__/images/login-image/tanchuang2.jpg" alt="">
+	        <span class="tishi">
+
+
+	        </span>
+        </div>
+        <div>
+        <img src="__PUBLIC__/images/login-image/tanchuang3.jpg" alt="">
+	        <span class="baocuo">
+
+	        </span>
+        </div>
+    </li>
+    <li><a href="javascript:;" class="shagnchuan" data-toggle="modal" data-target="#myModaljin">下一步</a><a href="javascript:;" class="quxiaoshangchuan">取消上传</a></li>
+  </ul>
+
+</div>
+
+<style>
+html{background-color:#E3E3E3; font-size:14px; color:#000; font-family:'微软雅黑'}
+h2{line-height:30px; font-size:20px;}
+a,a:hover{ text-decoration:none;}
+pre{font-family:'微软雅黑'}
+.box{width:970px; padding:10px 20px; background-color:#fff; margin:10px auto;}
+.box a{padding-right:20px;}
+.Task_cont p:first-child input{width:auto;}
+</style>
+</head>
+<body>
+
+
+<script>
+!function(){
+laydate({
+   elem: '#demo'
+})
+}();
+</script>
+
+</body>
+</html>
+<div style="display:none">
+
+    <!--<script type="text/javascript">-->
+    <!--var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");-->
+    <!--document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F6f798e51a1cd93937ee8293eece39b1a' type='text/javascript'%3E%3C/script%3E"));-->
+    <!--</script>-->
+    <!--<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5718743'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s9.cnzz.com/stat.php%3Fid%3D5718743%26show%3Dpic2' type='text/javascript'%3E%3C/script%3E"));</script>-->
+    </div>
+<include file="Public/footer" />
+</body>
+
+<script>
+
+$('.loding').css('display','block');
+$(".cc p img,.shagnchuan,.quxiaoshangchuan").click(function(){
+    $(".bb,.cc").hide();
+});
+
+
+
+function addchz()
+{
+    var why = $('#whysid').val();
+    var money = $('#refund').val();
+    var timesdemo = $('#timesdemo').val();
+    var bz = $('#bz').val();
+    var qid = {$getid};
+    var preg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+    if(!preg.test(money)){
+      Showbo.Msg.alert("请输入有效数字,小数点后保留两位");
+      return false;
+    }
+    if(timesdemo == ''){
+      Showbo.Msg.alert("请选择日期");
+      return false;
+    }
+    var currentdate = getNowFormatDate();
+    if(timesdemo > currentdate){
+      Showbo.Msg.alert("选择的日期大于当前日期");
+      return false;
+    }
+    $.ajax({
+            type: "post",
+            url: "__URL__/addchz",
+            data: {why:why,money:money,timesdemo:timesdemo,qid:qid,bz:bz},
+            dataType: "json",
+            success:function(data)
+            {
+                if(data.errcode == 1)
+                {
+                	// 之前的框消失
+                	$("#pwdshow,.masker").hide();
+                	$("#TaskTablecount").remove();
+                    Showbo.Msg.alert('添加完毕');
+                    $("#dvMsgBtns input").click(function(){
+                    	onload();
+                    });
+                }else{
+                  Showbo.Msg.alert(data.errmsg);
+                }
+            }
+          })
+}
+//var data = {};
+//var table = {};
+// var myDate = new Date();
+// var m = myDate.getMonth()+1;
+// var lnstr ="";
+// var lyst ="";
+// var lrstr ="";
+
+// var tnst ="";
+// var tystr ="";
+// var trst ="";
+
+// var y = new Date().getFullYear(); //当前年份
+
+var mm = getDays(y,m);    //当左侧月改变时执行
+
+$(document).ready(function($){
+// 	$('.loding').css('display','block');
+//     for (var i = (y-2); i < (y+1); i++) {
+//         if(i==y){
+//             lnstr+="<option selected='selected' value='"+i+"'>"+i+"年</option>";
+//         }else{
+//             lnstr += '<option value="'+i+'">'+i+'年</option>';
+//         }
+//         if(i==y){
+//             tnst+="<option selected='selected' value='"+i+"'>"+i+"年</option>";
+//         }else{
+//             tnst+="<option  value='"+i+"'>"+i+"年</option>";
+//         }
+//     }
+//     $('#timeyear').append(lnstr); //前两年年份
+//     $('#beforeyea').append(tnst); //今年年份
+
+// /********************************年份赋值****************************************/
+
+//     for (var i = 1; i < 13; i++)
+//     {
+//         if(i==m){
+//             lyst+="<option selected='selected' value='"+i+"'>"+i+"月</option>";
+//         }else{
+//             lyst += "<option value='" + i + "'> " + i + "月</option>";
+//         }
+//         if(i==m){
+//             tystr+="<option selected='selected' value='"+i+"'>"+i+"月</option>";
+//         }else{
+//             tystr+="<option  value='"+i+"'>"+i+"月</option>";
+//         }
+//     }
+//     $('#timemonth').append(lyst); //前两年月份
+//     $('#datayear').append(tystr); //今年月份
+
+// /********************************月份赋值****************************************/
+
+    for (var i = 1; i <= mm; i++)
+    {
+        lrstr += "<option value='" + i + "'> " + i + "日</option>";
+        if(i==myDate.getDate()){
+            trst+="<option selected='selected' value='"+i+"'>"+i+"日</option>";
+        }else{
+            trst+="<option  value='"+i+"'>"+i+"日</option>";
+        }
+    }
+    $('#timeday').append(lrstr); //前两年月份
+    $('#day').append(trst); //今年月份
+
+/********************************天数赋值****************************************/
+    onload();
+
+
+});
+
+
+function onload(){
+	var timeyear = $('#timeyear').val();
+  	var timemonth = $('#timemonth').val();
+  	var timeday = $('#timeday').val();
+  	var beforeyea = $('#beforeyea').val();
+  	var datayear = $('#datayear').val();
+  	var day = $('#day').val();
+    var stype = $('#stype').val(); //类别
+    var smoney = $('#smoney').val(); //进出账
+    var lsor = $("#lsor").val(); //客户名称
+    if(lsor=="客户名称查询"){
+        lsor="";
+    }
+
+    taskList(timeyear,timemonth,timeday,beforeyea,datayear,day,stype,smoney,lsor);
+}
+
+function taskList(timeyear,timemonth,timeday,beforeyea,datayear,day,stype,smoney,lsor,xuanxiang){
+
+
+	$('.loding').css('display','block');
+    $.ajax({
+      	url:"{:U('Home/Bill/tasklist')}",
+      	type:'post',
+      	dataType:'json',
+      	data:{timeyear:timeyear,timemonth:timemonth,timeday:timeday,beforeyea:beforeyea,datayear:datayear,day:day,getid:{$getid},stype:stype,smoney:smoney,lsor:lsor,xuanxiang:xuanxiang},
+      	success:function(res){
+      		var info = res.datalist;
+            if(res.error==1){
+                Showbo.Msg.alert(res.msg);
+                $('.loding').css('display','none');
+                return false;
+            }
+      		if(res.code == 1){
+		        var str = '';
+		        str +='<tr><td colspan="5">&nbsp;</td><td colspan="7" style="background:#caeaf9;color: #666666;font-size: 17px;font-weight: 600;">进账</td><td colspan="3" style="background:#e0f2fc;color: #666666;font-size: 17px;font-weight: 600;">出账</td>';
+		        <if condition="($finatype eq 1)">
+		        str+='<td style="width:300px;">&nbsp;</td>';
+		        </if>
+		        str+='</tr>';
+		        str += '<tr><td onClick="checkAll()">全选</td><td>日期</td><td style="width:20px;">ID</td><td>客户名称</td><td style="width:300px">课程信息</td><td style="background:#caeaf9;">类别</td><td style="background:#caeaf9;">数量</td><td style="background:#caeaf9;">总金额</td><td style="background:#caeaf9;width:4%;">进账金额</td><td style="background:#caeaf9; width:3%;">是否定金</td><td style="background:#caeaf9;width:4%;">分期数</td><td style="background:#caeaf9; width:3%;">是否完款</td><td style="background:#e0f2fc;">原因</td><td style="background:#e0f2fc;width:5%">备注</td><td style="background:#e0f2fc;">出账金额</td>';
+		        <if condition="($finatype eq 1)">
+		        str+='<td style="width:15%">操作</td>';
+		        </if>
+		        str+='</tr>';
+		        for(i in info){
+                    if(info[i].name == null)
+                    {
+                        info[i].name = " ";
+                    }
+                    courseorder=info[i]["courseorder"];
+
+		        	str+='<tr>';
+		        	str+='<td><input type="checkbox" name="delbill" value="'+info[i].id+'" did="'+info[i].deposit+'"></td><td>'+info[i].time+'</td><td>'+info[i].id+'</td><td><span>';
+                    if(info[i].fname==null){
+                        //str+="<span style=\"color:red;\">客户名称不存在</span>";
+                    }else{
+                        str+=info[i].fname;
+                    }
+                    str+='</span></td>';
+
+                    if(courseorder==null || info[i].cname==null){
+                        //str+='<td><span style="color:red;">课程信息不存在</span></td>'
+                        str+='<td>&nbsp;</td>'
+                    }else{
+                        str+='<td><span>'+info[i].cname+'<div> '+courseorder.id+'# '+courseorder["time"]+' 小票('+courseorder["ticket"]+') 九大规划门票('+courseorder["planning"]+') 卡会员('+courseorder["card"]+') 朋友圈('+courseorder["friends"]+') 弟子学员('+courseorder["disciple"]+') </div></span><input type="text" value="'+info[i].phone+'" id="biphone'+info[i].id+'" sid="2"  onblur="savebill('+info[i].id+',this)" style="display:none"></td>'
+                    }
+
+
+		        	if(info[i].fid==0&&info[i].num==0&&info[i].amount==0){
+		        		str+='<td style="background:#caeaf9;"></td><td style="background:#caeaf9;"></td><td style="background:#caeaf9;"></td><td style="background:#caeaf9;"></td><td style="background:#caeaf9;"></td><td style="background:#caeaf9;"></td><td style="background:#caeaf9;"></td>';
+		        		str+='<td style="background:#e0f2fc;"><span>'+info[i].reason+'</span><input type="text" value="'+info[i].reason+'" id="bireason'+info[i].id+'" sid="7" onblur="savebill('+info[i].id+',this)" style="display:none"></td><td style="background:#e0f2fc;">'+info[i].remarks+'</td><td style="background:#e0f2fc;"><span>'+info[i].outs+'</span><input type="text" value="'+info[i].outs+'" id="biouts'+info[i].id+'" sid="8" onblur="savebill('+info[i].id+',this)" style="display:none"/></td>';
+		        	}else{
+		        		if(info[i].type == 1)
+			        	{
+			        		  str += '<td style="background:#caeaf9;">小票</td>';
+			        	}else if(info[i].type == 2)
+			        	{
+			        		  str += '<td style="background:#caeaf9;">卡会员</td>';
+			        	}else if(info[i].type == 3)
+			        	{
+			        		  str += '<td style="background:#caeaf9;">朋友圈</td>';
+			        	}else if(info[i].type == 4)
+			        	{
+			        		  str += '<td style="background:#caeaf9;">弟子学员</td>';
+			        	}else if(info[i].type == 5)
+			        	{
+			        		  str +='<td style="background:#caeaf9;">九大规划门票</td>';
+			        	}else{
+			        		str+='<td  style="background:#caeaf9;">'+info[i].type+'</td>';
+			        	}
+
+			        	// str+='<td><span>'+stuts+'</span><input type="text" value="'+stuts+'" id="bitype'+info[i].id+'" sid="3"  onblur="savebill('+info[i].id+',this)"/></td>'
+			        	str+='<td style="background:#caeaf9;"><span>'+info[i].num+'</span><input type="text" value="'+info[i].num+'" id="binum'+info[i].id+'" sid="4"  onblur="savebill('+info[i].id+',this)" style="display:none"></td><td style="background:#caeaf9;"><span>'+info[i].amount+'</span><input type="text" value="'+info[i].amount+'" id="biamount'+info[i].id+'" sid="5"  onblur="savebill('+info[i].id+',this)" style="display:none"></td><td style="background:#caeaf9;"><span>'+info[i].houston+'</span><input type="text" value="'+info[i].houston+'" id="bihouston'+info[i].id+'" sid="6"  onblur="savebill('+info[i].id+',this)" style="display:none"></td>'
+			        	if(info[i].deposit == 0)
+			        	{
+			        		str+='<td style="background:#caeaf9;">否</td>'
+			        	}else
+			        	{
+			        		str+='<td style="background:#caeaf9;">是</td>'
+			        	}
+			        	if(info[i].period==null || info[i].period=="") {
+                            str+='<td style="background:#caeaf9;">-/-</td>';
+                        }else{
+                            str+='<td style="background:#caeaf9;">'+info[i].period+'</td>';
+                        }
+                        if(info[i].gonetype=="1"){
+                            str+='<td style="background:#caeaf9;">完款</td>';
+                        }else{
+                            str+='<td style="background:#caeaf9;">未完款</td>';
+                        }
+
+
+
+
+		        		str+='<td  style="background:#e0f2fc;"></td><td  style="background:#e0f2fc;"></td><td  style="background:#e0f2fc;"></td>';
+		        	}
+		        	<if condition="($finatype eq 1)">
+		        	str +='<td><input type="button" name="" value="删除" class="deltebtn" onClick="deldingdan('+info[i].id+','+info[i].deposit+',this)">';
+
+		        	str +='<input type="button" name="" value="编辑" class="editbtn" onClick="qiqiu('+info[i].id+',this)">';
+                    if(info[i].deposit != 0){
+                        str+='<input type="button" name="" value="还款" class="huankuanbtn" onClick="Alsomoney(\''+info[i].id+'\',\''+info[i].period+'\')">';
+                    }
+		        	str+="</td>";
+		        	</if>
+		        	str+='</tr>';
+		        }
+		        str+='<tr><td>';
+		        <if condition="($finatype eq 1)">
+		        str+='<input type="button" name="" class="alldelete" value="批量删除"  style="float:none;"  onclick="dels()">';
+		        </if>
+		        str+='</td><td colspan="4"></td><td colspan="5" style="text-align: right;"><div class="xian"></div><div>进账总额</div><div>'+fmoney(res.jz)+'元</div></td><td  colspan="2"></td><td colspan="3" style="text-align: right;">出账总额:<div>'+fmoney(res.cz)+'元</div></td>';
+		        <if condition="($finatype eq 1)">
+		        str+='<td></td>';
+		        </if>
+		        <if condition="($finatype eq 1)">
+		        str+='</tr><tr><td colspan="16" style="text-align: right;">总账:<div>'+fmoney(res.zz,0)+'元</div></td></tr>';
+		        <else/>
+		        str+='</tr><tr><td colspan="15" style="text-align: right;">总账:<div>'+fmoney(res.zz)+'元</div></td></tr>';
+		        </if>
+		        $("#llever").empty(str);
+		        $("#llever").append(str);
+
+	        }else{
+                  $("#llever").empty(str);
+
+	        	  $('.loding').css('display','none');
+            	return false;
+      		}
+      		$('.loding').css('display','none');
+      	},
+        error:function(){
+        	Showbo.Msg.alert('操作失败，请稍后重试！');
+            $('.loding').css('display','none');
+            return false;
+        }
+    })
+
+}
+function fmoney(s, n)
+{
+   if(s==null){
+       return 0;
+   }
+   n = n > 0 && n <= 20 ? n : 2;
+   s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+   var l = s.split(".")[0].split("").reverse(),
+   r = s.split(".")[1];
+   t = "";
+   if(s.length<=7){
+       return s;
+   }
+
+
+   for(i = 0; i < l.length; i ++ )
+   {
+      t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+   }
+
+   if(s=="NaN"){
+	   return 0;
+   }
+   return t.split("").reverse().join("") ;
+}
+
+function Alsomoney(id,period)
+{
+    var perio = period.substring(2);
+    $.ajax({
+        type: "post",
+        url: "__URL__/periods",
+        data: {id:id,getid:{$getid}},
+        dataType: "json",
+        success:function(data)
+        {
+            console.log(data);
+            var t = data.errmsg;
+            var str = '';
+            str+='<div class="TaskTablecount"><div class="Task_header" id="newTask"><h3 id="add" act="add" style="line-height: 40px;">添加还款</h3><i class=" icon-remove close_task" id="close2"></i></div><div style=" height:60px; width: 100%;"></div><div class="Task_cont" id="newPwd">';
+            str+='<p><span>进账金额:</span><input class="form-control" type="text" id="jzmoneyid"></p>';
+            str+='<p><span>还款日期</span><input class="form-control " readonly="readonly" type="text"  onclick="laydate()" id="Alsotime"></p>';
+            str+='<p><span>还款期数</span><select id="perioidls" class="form-control" onchange="pertishi()">';
+            if(data.errcode == 1){
+                for (o = 1; o <= perio; o++) {
+                    if(ifArrVal(t,o)<0){
+                        str+='<option value="'+o+'">'+o+'/'+perio+'期</option>';
+                    }
+                    // else{
+                    //     str+='<option value="0">已完款</option>';
+                    // }
+                }
+            }else{
+                for(i=1;i<=perio;i++){
+                    str+='<option value="'+i+'">'+i+'/'+perio+'期</option>';
+                }
+            }
+            str+='</select></p>';
+            str+='<p><input type="button" class=" btn-info" onclick="Alsomoneys(\''+id+'\')" value="提交"></p></div></div>';
+
+           $('#pwdshow').html(str).show();
+           $('.masker').fadeIn();
+           close_mask();
+        }
+    })
+
+
+ }
+
+function pertishi(){
+    var personval=$("#perioidls").val();
+    var personval0=$("#perioidls").find("option").eq(0).val();
+
+    if(personval!=personval0){
+        var text=$("#perioidls").find("option").eq(0).text();
+        var textnow=$("#perioidls option:checked").text();
+        Showbo.Msg.confirm("当前账务中没有"+text+"还款，确定选择"+textnow+"吗？");
+    }
+
+}
+
+function ifArrVal(arr,value){
+
+    for(var i = 0;i < arr.length;i++){
+        if(arr[i]["num"] == value){
+            return 1;
+        }
+    }
+    return -1;//不存在
+}
+
+function close_mask(){
+  $('.close_task').click(function(){
+    $('.TaskTable,.masker').fadeOut();
+  })
+
+}
+function Alsomoneys(id)
+{
+    var money = $('#jzmoneyid').val();
+    var Alsotime = $('#Alsotime').val();
+    var period = $('#perioidls').val(); //还款期数
+    var msg  = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+    if(!msg.test(money)){
+        Showbo.Msg.alert("进账额请输入有效数字,小数点后保留两位");
+        return false;
+    }
+    if(Alsotime == ''){
+        Showbo.Msg.alert('请填选择还款日期');
+        return false;
+    }
+    if(period == ''){
+        Showbo.Msg.alert('请填写分期数');
+        return false;
+    }
+    //if(period == 0){
+        //Showbo.Msg.alert('款项已还完');
+        //return false;
+    //}
+    $.ajax({
+        type: "post",
+        url: "__URL__/Alsomoney",
+        data: {money:money,Alsotime:Alsotime,period:period,id:id,getid:{$getid}},
+        dataType: "json",
+        success:function(data)
+        {
+            if(data.code == 1)
+            {
+              Showbo.Msg.alert(data.errmsg);
+              $(".masker").hide();
+              $('.TaskTablecount').remove();
+              close_mask();
+              var timeyear = $('#timeyear').val();
+              var timemonth = $('#timemonth').val();
+              var timeday = $('#timeday').val();
+              var beforeyea = $('#beforeyea').val();
+              var datayear = $('#datayear').val();
+              var day = $('#day').val();
+              var stype = $('#stype').val(); //类别
+              var smoney = $('#smoney').val(); //进出账
+              var lsor = $("#lsor").val(); //客户名称
+              if(lsor=="客户名称查询"){
+                 lsor="";
+              }
+              taskList(timeyear,timemonth,timeday,beforeyea,datayear,day,stype,smoney,lsor);
+            }else{
+              Showbo.Msg.alert(data.errmsg);
+              $('.masker').fadeIn();
+              close_mask();
+            }
+        }
+    })
+}
+
+function savebill(id,obj)
+{
+  var val = $(obj).val();
+  var sid = $(obj).attr('sid');
+  $(obj).hide().siblings("span").show();
+
+  $.ajax({
+            type: "post",
+            url: "__URL__/savebill",
+            data: {id:id,val:val,act:sid},
+            dataType: "json",
+            success:function(data)
+            {
+            	//$('.loding').css('display','block');
+                if(data == 1)
+                {
+                  //Showbo.Msg.alert('修改完毕');
+                  var timeyear = $('#timeyear').val();
+                  var timemonth = $('#timemonth').val();
+                  var timeday = $('#timeday').val();
+                  var beforeyea = $('#beforeyea').val();
+                  var datayear = $('#datayear').val();
+                  var day = $('#day').val();
+                  var stype = $('#stype').val(); //类别
+                  var smoney = $('#smoney').val(); //进出账
+                  var lsor = $("#lsor").val(); //客户名称
+                  if(lsor=="客户名称查询"){
+                      lsor="";
+                  }
+                  taskList(timeyear,timemonth,timeday,beforeyea,datayear,day,stype,smoney,lsor);
+                }
+                $(document.body).removeAttr("llever");
+            }
+          })
+
+
+}
+function deldingdan(id,stutu,obj)
+{
+    if(stutu == 1){
+        Showbo.Msg.confirm('检测到含有初始订单信息该操作将删除相关订单请谨慎操作?',function(a){
+            if(a == 'yes'){
+                $('.loding').css('display','block');
+                $.ajax({
+                    type: "GET",
+                    url: "__URL__/deldingdan",
+                    data: {id:id,stutu:stutu},
+                    dataType: "json",
+                    success:function(data)
+                    {
+                        if(data.errcode == 1){
+                            Showbo.Msg.alert(data.errmsg);
+                            $('.loding').css('display','none');
+                            var timeyear = $('#timeyear').val();
+                            var timemonth = $('#timemonth').val();
+                            var timeday = $('#timeday').val();
+                            var beforeyea = $('#beforeyea').val();
+                            var datayear = $('#datayear').val();
+                            var day = $('#day').val();
+                            var stype = $('#stype').val(); //类别
+                            var smoney = $('#smoney').val(); //进出账
+                            var lsor = $("#lsor").val(); //客户名称
+                            if(lsor=="客户名称查询"){
+                                lsor="";
+                            }
+                            taskList(timeyear,timemonth,timeday,beforeyea,datayear,day,stype,smoney,lsor);
+                        }else{
+                            Showbo.Msg.alert(data.errmsg);
+                            return false;
+                        }
+                    }
+                })
+            }
+        })
+    }else{
+        Showbo.Msg.confirm('确认删除?',function(a)
+        {
+        if(a == 'yes')
+        {
+        	$('.loding').css('display','block');
+            $.ajax({
+                type: "GET",
+                url: "__URL__/deldingdan",
+                data: {id:id},
+                dataType: "json",
+                success:function(data)
+                {
+                    if(data.errcode == 1){
+                        Showbo.Msg.alert(data.errmsg);
+                        $('.loding').css('display','none');
+                        var timeyear = $('#timeyear').val();
+                        var timemonth = $('#timemonth').val();
+                        var timeday = $('#timeday').val();
+                        var beforeyea = $('#beforeyea').val();
+                        var datayear = $('#datayear').val();
+                        var day = $('#day').val();
+                        var stype = $('#stype').val(); //类别
+                        var smoney = $('#smoney').val(); //进出账
+                        var lsor = $("#lsor").val(); //客户名称
+                        if(lsor=="客户名称查询"){
+                            lsor="";
+                        }
+                        taskList(timeyear,timemonth,timeday,beforeyea,datayear,day,stype,smoney,lsor);
+                    }else{
+                        Showbo.Msg.alert(data.errmsg);
+                        return false;
+                    }
+                }
+            })
+           }
+         })
+    }
+}
+//全选
+function checkAll(){
+  $(":checkbox").each(function(){
+      var bol = $(this).prop("checked");
+      $(this).prop("checked",!bol)
+  })
+}
+
+// 批量删除
+function dels(){
+    var val = '';
+    var did = '';
+    $("input[name='delbill']").each(function(){
+        var obj = $(this);
+        if($(this).prop('checked')){
+            if($(obj).attr('did') == 1){
+                if(did == ''){
+                    did = $(obj).val();
+                }else{
+                    did += ","+$(obj).val();
+                }
+            }else{
+                if(val == ''){
+                    val = $(this).val();
+                }else{
+                    val += ","+$(this).val();
+                }
+            }
+        }
+    })
+    var syr = '';
+    if(val != ''){
+        if(did != ''){
+            syr = '检测到含有初始订单信息该操作将删除相关订单请谨慎操作?';
+        }else{
+            syr = '确认删除?';
+        }
+    }else{
+        if(did != ''){
+            syr = '检测到含有初始订单信息该操作将删除相关订单请谨慎操作?';
+        }else{
+            Showbo.Msg.alert('没有选择项');
+            return false;
+        }
+    }
+    Showbo.Msg.confirm(syr,function(a){
+        if(a == 'yes'){
+            $.ajax({
+                type: "GET",
+                url: "__URL__/dels",
+                data: {val:val,did:did},
+                dataType: "json",
+                success:function(data){
+                  if(data.errcode == 1){
+                        Showbo.Msg.alert(data.errmsg);
+                      var timeyear = $('#timeyear').val();
+                      var timemonth = $('#timemonth').val();
+                      var timeday = $('#timeday').val();
+                      var beforeyea = $('#beforeyea').val();
+                      var datayear = $('#datayear').val();
+                      var day = $('#day').val();
+                      var stype = $('#stype').val(); //类别
+                      var smoney = $('#smoney').val(); //进出账
+                      var lsor = $("#lsor").val(); //客户名称
+                      if(lsor=="客户名称查询"){
+                          lsor="";
+                      }
+                      taskList(timeyear,timemonth,timeday,beforeyea,datayear,day,stype,smoney,lsor);
+                    }else{
+                        Showbo.Msg.alert(data.errmsg);
+                    }
+                }
+            })
+        }
+    })
+}
+function checkChangDate(obj,act){
+    var myDate = new Date();
+    var year = myDate.getFullYear();
+    var lrstrs = '';
+    var trsts = '';
+    var timeyear = $('#timeyear').val();//左侧年
+
+    var timemonth = $("#timemonth").val();//左侧月
+
+    var timeday = $("#timeday").val();//左侧日
+
+    var beforeyea = $("#beforeyea").val();//右侧年
+
+    var datayear = $('#datayear').val();//右侧月
+
+    var day = $('#day').val();//右侧日
+
+    // timeyear = parseInt(timeyear);
+    // beforeyea = parseInt(beforeyea);
+    // if(timeyear > beforeyea){
+    //     $("#beforeyea").val(timeyear);
+    // }
+
+    // timemonth = parseInt(timemonth);
+    // datayear = parseInt(datayear);
+    // if(timeyear == beforeyea){
+    //     if(timemonth > datayear){
+    //         $("#datayear").val(m);
+    //     }
+    //     if(timeyear == year){
+    //         if(timemonth >= m){
+    //             $("#timemonth").val(m);
+    //         }
+    //     }
+    //     if(beforeyea == year){
+    //         if(datayear >= m){
+    //             $("#datayear").val(m);
+    //         }
+    //     }
+    // }
+
+    // timemonth = $("#timemonth").val();
+    // timemonth = parseInt(timemonth);
+
+    // datayear = $("#datayear").val();
+    // datayear = parseInt(datayear);
+
+    // timeday = parseInt(timeday);
+    // day = parseInt(day);
+    // if(timeyear == beforeyea && timemonth == datayear){
+    //     if(timeday > day){
+    //         $("#day").val(timeday+1);
+    //     }
+    //     if(timeyear == year && timemonth == m){
+    //         if(timeday >= myDate.getDate()){
+    //             $("#timeday").val(myDate.getDate());
+    //         }
+    //     }
+    //     if(beforeyea == year && datayear == m){
+    //         if(day >= myDate.getDate()){
+    //             $("#day").val(myDate.getDate());
+    //         }
+    //     }
+    // }
+
+    if(act == 1){
+        var mm = getDays(timeyear,timemonth);    //当左侧月改变时执行
+    }else if(act == 2){
+        var mm = getDays(beforeyea,datayear);    //当右侧月改变时执行
+    }
+
+    for (var i = 1 ; i <= mm ; i++)
+    {
+        if(act == 1){
+            lrstrs += "<option value='" + i + "'> " + i + "日</option>";
+        }else if(act == 2){
+            if(i==myDate.getDate()){
+                trsts+="<option selected='selected' value='"+i+"'>"+i+"日</option>";
+            }else{
+                trsts+="<option  value='"+i+"'>"+i+"日</option>";
+            }
+        }
+    }
+
+    if(act == 1){
+        $('#timeday').html(lrstrs); //左侧变化的天数
+    }else if(act == 2){
+        $('#day').empty();
+        $('#day').append(trsts); //右侧变化的天数
+    }
+
+}
+
+function seove(){
+
+
+	$('.loding').css('display','block');
+    var xuanxiang=$("input[name=xuanxiang]:checked").val();
+
+	var timeyear = $('#timeyear').val();
+	var timemonth = $('#timemonth').val();
+	var timeday = $('#timeday').val();
+	var beforeyea = $('#beforeyea').val();
+	var datayear = $('#datayear').val();
+	var day = $('#day').val();
+    var stype = $('#stype').val(); //类别
+    var smoney = $('#smoney').val(); //进出账
+    var lsor = $("#lsor").val(); //客户名称
+    if(lsor=="客户名称查询"){
+        lsor="";
+    }
+	taskList(timeyear,timemonth,timeday,beforeyea,datayear,day,stype,smoney,lsor,xuanxiang);
+
+}
+
+function getDays(year,mouth){
+
+    //定义当月的天数；
+    var days ;
+
+    //当月份为二月时，根据闰年还是非闰年判断天数
+    if(mouth == 2){
+        days= year % 4 == 0 ? 29 : 28;
+
+    }
+    else if(mouth == 1 || mouth == 3 || mouth == 5 || mouth == 7 || mouth == 8 || mouth == 10 || mouth == 12){
+        //月份为：1,3,5,7,8,10,12 时，为大月.则天数为31；
+        days= 31;
+    }
+    else{
+        //其他月份，天数为：30.
+        days= 30;
+    }
+    return days;
+}
+function savepwd(t){
+        var str = '';
+        str+='<div class="TaskTablecount"><div class="Task_header" id="newTask"><h3 id="add" act="add" style="line-height: 40px;">';
+        if(t == 1){
+            str+='进账';
+        }else{
+            str+='编辑';
+        }
+        str+='</h3><i class=" icon-remove close_task" id="close2"></i></div><div style=" height:60px; width: 100%;"></div><div class="Task_cont" id="newPwd">';
+        str+='<p><span>类型:</span>';
+        str +='<select class="form-control " name="" id="typestut" onchange="order_ls()">';
+        if(t == 1){
+           str +='<option value="1">小票</option>';
+           str +='<option value="5">九大规划门票</option>';
+           str +='<option value="2">卡会员</option>';
+           str +='<option value="3">朋友圈</option>';
+           str +='<option value="4">弟子学员</option>';
+
+        }else{
+            if(t.pid != 0){
+                str +='<option value="'+t.type+'">';
+                if(t.type == 1){
+                    str +='小票';
+                }else if(t.type == 2){
+                    str +='卡会员';
+                }else if(t.type == 3){
+                    str +='朋友圈';
+                }else if(t.type == 4){
+                    str +='弟子学员';
+                }else if(t.type == 5){
+                    str +='九大规划门票';
+                }
+                str +='</option>';
+            }else{
+                if(t.type == 1){
+                  str +='<option value="1" selected = "selected">小票</option>';
+                }else
+                {
+                  str +='<option value="1">小票</option>';
+                }
+                if(t.type == 5)
+                {
+
+                    str +='<option value="5" selected = "selected" >九大规划门票</option>';
+                }else{
+
+                    str +='<option value="5">九大规划门票</option>';
+                }
+                if(t.type == 2)
+                {
+                   str +='<option value="2" selected = "selected" >卡会员</option>';
+                }else
+                {
+                   str +='<option value="2">卡会员</option>';
+                }
+                if(t.type == 3)
+                {
+                  str +='<option value="3" selected = "selected" >朋友圈</option>';
+                }else
+                {
+                  str +='<option value="3">朋友圈</option>';
+                }
+                if(t.type == 4)
+                {
+                  str +='<option value="4" selected = "selected" >弟子学员</option>';
+                }else
+                {
+                  str +='<option value="4">弟子学员</option>';
+                }
+            }
+        }
+        str +='</select>';
+        str+='</p>';
+
+        if(t == 1){
+            str += '<p><span>数量</span><input type="text" class="form-control"  id="sumnum"/></p>';
+        }else{
+            if(t.pid != 0){
+                str+='<p><span>数量</span><input type="text" readonly="readonly" value="'+t.num+'" class="form-control"  id="sumnum"/></p>';
+            }else{
+               str+='<p><span>数量</span><input type="text" value="'+t.num+'" class="form-control"  id="sumnum"/></p>';
+            }
+        }
+
+        if(t == 1){
+            str+='<p style="display:none"><span>总金额 </span><input type="text" class="form-control" id="numonye"/></p>';
+        }else{
+            if(t.pid != 0){
+                str+='<p style="display:none"><span>总金额 </span><input type="text" value="'+t.amount+'"  class="form-control" readonly="readonly" id="numonye"/></p>';
+            }else{
+                str+='<p style="display:none"><span>总金额 </span><input type="text" value="'+t.amount+'"  class="form-control" id="numonye"/></p>';
+            }
+        }
+
+        if(t == 1){
+            str+='<p style="display:none"><span>是否定金 </span>否<input type="radio" id="yeschek"  name="yeschek" value="0" checked>&nbsp;是<input type="radio" id="yeschek2" name="yeschek" value="1"></p>';
+        }else{
+            str+='<p style="display:none"><span>是否定金 </span>';
+            if(t.pid != 0){
+                if(t.deposit == 0)
+                {
+                 str +='否<input type="radio" id="yeschek" disabled name="yeschek" value="0" checked>&nbsp;';
+                }else
+                {
+                 str +='否<input type="radio" id="yeschek" disabled name="yeschek" value="0" >&nbsp;';
+                }
+
+                if(t.deposit == 1)
+                {
+                 str +='是<input type="radio" id="yeschek2" disabled name="yeschek" value="1" checked >';
+                }else
+                {
+                 str +='是<input type="radio" id="yeschek2" disabled name="yeschek" value="1">';
+                }
+            }else{
+                if(t.deposit == 0)
+                {
+                 str +='否<input type="radio" id="yeschek"  name="yeschek" value="0" checked>&nbsp;';
+                }else
+                {
+                 str +='否<input type="radio" id="yeschek"  name="yeschek" value="0" >&nbsp;';
+                }
+
+                if(t.deposit == 1)
+                {
+                 str +='是<input type="radio" id="yeschek2" name="yeschek" value="1" checked >';
+                }else
+                {
+                 str +='是<input type="radio" id="yeschek2" name="yeschek" value="1">';
+                }
+            }
+
+            str+='</p>';
+        }
+
+
+        if(t == 1){
+            str+='<p style="display:none"><span>分期数 </span><input type="text" class="form-control" id="refund"/></p>';
+        }else{
+            if(t.pid != 0){
+                str+='<p style="display:none"><span>分期数 </span><input type="text" value="'+t.period2+'/'+t.period+'"   class="form-control" readonly="readonly" id="refund"/></p>';
+            }else{
+                str+='<p style="display:none"><span>分期数 </span><input type="text" value="'+t.period+'"   class="form-control"   id="refund"/></p>';
+            }
+        }
+
+        if(t == 1){
+            str+='<p><span>进账金额 </span><input type="text" class="form-control" id="jzje"/></p>';
+        }else{
+            str+='<p><span>进账金额 </span><input type="text" value="'+t.houston+'"  class="form-control" id="jzje"/></p>';
+        }
+        if(t == 1){
+            str+='<p><span>日期 </span><input type="text" readonly="readonly" class="form-control"  onclick="laydate()" id="time"/></p>';
+        }else{
+            str+='<p><span>日期 </span><input type="text" value="'+t.time+'" readonly="readonly" class="form-control"  onclick="laydate()" id="time"/></p>';
+        }
+
+        if(t == 1){
+            str+='<p><span>客户名称:</span><input type="hidden" id="fid"><input type="text" class="form-control"  readonly="readonly" value="" onclick="showkh()" data-toggle="modal" data-target="#myModal" id="companyda"/></p>';
+        }else{
+            if(t.pid != 0){
+                str+='<p><span>客户名称:</span><input type="hidden" id="fid"  value="'+t.fid+'"  ><input type="text" value="'+t.kuname+'" readonly="readonly" class="form-control" id="companyda"/></p>';
+            }else{
+                str+='<p><span>客户名称:</span><input type="hidden" id="fid"  value="'+t.fid+'"  ><input type="text" value="'+t.kuname+'" readonly="readonly" class="form-control"  value="" onclick="showkh()" data-toggle="modal" data-target="#myModal" id="companyda"/></p>';
+            }
+        }
+
+        if(t == 1){
+            str+='<p><span>课程名称:</span>';
+            str+='<select class="form-control" id="formcid" onchange="changeformcid(this)">';
+            str+='<option value="">--选择课程--</option>';
+            str+='</select></p>';
+        }else{
+            str+='<p><span>课程名称:</span>';
+            if(t.pid != 0){
+                str+='<select class="form-control" id="formcid">';
+                for(var i in t["classname"]){
+                    var f=t["classname"][i];
+                    if(t.cid==f.id){
+                        str+='<option value="'+f.id+'" selected>'+f.classname+'</option>';
+                    }
+                }
+            }else{
+                str+='<select class="form-control" id="formcid" onchange="changeformcid(this)">';
+                str+='<option value="">--选择课程--</option>';
+                for(var i in t["classname"]){
+                    var f=t["classname"][i];
+                    if(t.cid==f.id){
+                       str+='<option value="'+f.id+'" selected>'+f.classname+'</option>';
+                    }else{
+                       str+='<option value="'+f.id+'">'+f.classname+'</option>';
+                    }
+                }
+            }
+            str+='</select></p>';
+        }
+
+        if(t == 1){
+            str+='<p><span>成交ID:</span>';
+            str+='<select class="form-control" id="formorderid" onchange="chengjiao()">';
+            str+='<option value="">--选择成交ID--</option>';
+            str+='</select></p>';
+        }else{
+            str+='<p><span>成交ID:</span>';
+            str+='<select class="form-control" id="formorderid">';
+            if(t.pid != 0){
+                for(var i in t["course_com_order"]){
+                    var f=t["course_com_order"][i];
+                    if(t.orderid==f.id){
+                        str+='<option value="'+f.id+'" selected>'+f.id+'# <div>'+f.time+' 小票('+f.ticket+') 九大规划门票('+f.planning+') 卡会员('+f.card+') 朋友圈('+f.friends+') 弟子学员('+f.disciple+')</div></option>';
+                    }
+                }
+            }else{
+                str+='<option value="">--选择成交ID--</option>';
+                for(var i in t["course_com_order"]){
+                    var f=t["course_com_order"][i];
+                    if(t.orderid==f.id){
+                        str+='<option value="'+f.id+'" selected>'+f.id+'# <div>'+f.time+' 小票('+f.ticket+') 九大规划门票('+f.planning+') 卡会员('+f.card+') 朋友圈('+f.friends+') 弟子学员('+f.disciple+')</div></option>';
+                    }else{
+                        str+='<option value="'+f.id+'">'+f.id+'# <div>'+f.time+' 小票('+f.ticket+') 九大规划门票('+f.planning+') 卡会员('+f.card+') 朋友圈('+f.friends+') 弟子学员('+f.disciple+')</div></option>';
+                    }
+                }
+            }
+            str+='</select></p>';
+        }
+
+        if(t.gonetype=="1"){
+            str +='<p><span><input name="Fruit" type="radio" value="0" />未完款</span>';
+            str +='<span style="text-align: left;"><input name="Fruit" type="radio" value="1" checked/>完款</span></p>';
+        }else{
+            str +='<p><span><input name="Fruit" type="radio" value="0" checked/>未完款</span>';
+            str +='<span style="text-align: left;"><input name="Fruit" type="radio" value="1" />完款</span></p>';
+        }
+
+
+        if(t == 1){
+            str+='<p><input type="button" class=" btn-info" onclick="addbill()" value="提交"></p></div></div>';
+        }else{
+            str+='<p><input type="button" class=" btn-info" onclick="qiqiadd('+t.id+','+t.pid+')" value="提交"></p></div></div>';
+        }
+        $('#pwdshow').html(str).show();
+        $('.masker').fadeIn();
+        close_mask();
+        order_ls();
+ }
+
+function order_ls(){
+          // console.log(ldata);
+  var val = $("#typestut").val();
+  if(val == 4){
+    $("#numonye").parent().css('display','block');
+    $("#yeschek").parent().css('display','block');
+    $("#refund").parent().css('display','block');
+  }else{
+    $("#numonye").parent().css('display','none');
+    $("#yeschek").parent().css('display','none');
+    $("#refund").parent().css('display','none');
+  }
+  $(".tishione").remove();
+  $.ajax({
+      url:"__URL__/prompt",
+      type:"POST",
+      dataType:"json",
+      data:{data:val},
+      success:function(data){
+
+          $("#typestut").after($("<b class='tishione'>&nbsp;"+data+"</b>"));
+      }
+  });
+
+
+}
+
+
+function chengjiao(){
+    var orderid=$("#formorderid").val();
+    if(orderid!="") {
+        var ordertext = $("#formorderid").find("option[value=" + orderid + "]").text();
+
+        var orderarray = ordertext.match(/\d+(?=\))/g);
+        var sumnum = parseInt($("#sumnum").val());
+        var typestut = parseInt($("#typestut").val());
+
+        switch (typestut) {
+            case 1:
+                if (sumnum > parseInt(orderarray[0])) {
+                    Showbo.Msg.alert('小票数量超出 成交ID 中小票的数量');
+                    return false;
+                }
+                break;
+            case 5:
+                if (sumnum > parseInt(orderarray[1])) {
+                    Showbo.Msg.alert('九大规划数量超出 成交ID 中小票的数量');
+                    return false;
+                }
+                break;
+            case 2:
+                if (sumnum > parseInt(orderarray[2])) {
+                    Showbo.Msg.alert('卡会员数量超出 成交ID 中小票的数量');
+                    return false;
+                }
+                break;
+            case 3:
+                if (sumnum > parseInt(orderarray[3])) {
+                    Showbo.Msg.alert('朋友圈数量超出 成交ID 中小票的数量');
+                    return false;
+                }
+                break;
+            case 4:
+                if (sumnum > parseInt(orderarray[4])) {
+                    Showbo.Msg.alert('弟子学员数量超出 成交ID 中小票的数量');
+                    return false;
+                }
+                break;
+        }
+    }
+}
+
+function chengjiao1(orderid){
+
+
+
+        var orderval=$("#ord"+orderid).val();
+
+        var ordertext = $("#ord"+orderid).find("option[value=" + orderval + "]").text();
+
+        var orderarray = ordertext.match(/\d+(?=\))/g);
+        var sumnum = parseInt($(".num"+orderid).text());
+        var typestut = $(".type"+orderid).text();
+
+        switch (typestut) {
+            case "小票":
+                if (sumnum > parseInt(orderarray[0])) {
+                    Showbo.Msg.alert('小票数量超出 成交ID 中小票的数量');
+                    return false;
+                }
+                break;
+            case "九大规划门票":
+                if (sumnum > parseInt(orderarray[1])) {
+                    Showbo.Msg.alert('九大规划数量超出 成交ID 中小票的数量');
+                    return false;
+                }
+                break;
+            case "朋友圈":
+                if (sumnum > parseInt(orderarray[2])) {
+                    Showbo.Msg.alert('卡会员数量超出 成交ID 中小票的数量');
+                    return false;
+                }
+                break;
+            case "卡会员":
+                if (sumnum > parseInt(orderarray[3])) {
+                    Showbo.Msg.alert('朋友圈数量超出 成交ID 中小票的数量');
+                    return false;
+                }
+                break;
+            case "弟子学员":
+                if (sumnum > parseInt(orderarray[4])) {
+                    Showbo.Msg.alert('弟子学员数量超出 成交ID 中小票的数量');
+                    return false;
+                }
+                break;
+        }
+
+}
+
+
+
+
+ function showkh(p)
+ {
+     $(".loding").show();
+     if(p==undefined){
+           p = 1;
+
+     }
+     $.ajax({
+          type: "post",
+          url: "__URL__/userdata",
+          data:{uid:{$getid},page:p},
+          dataType: "json",
+          success:function(data)
+          {
+        	  myModalStr(data);
+              page2(p);
+              $(".loding").hide();
+          }
+     })
+ }
+
+ function page2(page){
+    var nums ='';
+      $.ajax({
+        type: "post",
+        url:'{:U("Home/Bill/page2")}',
+        dataType:"json",
+        data:{uid:{$getid}},
+        async:false,
+        error: function(data){
+        },
+        success: function(data){
+            nums = eval(data);
+        }
+      });
+      $(".tcdPageCode").remove();
+      $("#myModal .table").after("<div class='tcdPageCode'></div>");
+
+      $(".tcdPageCode").css({
+             "width":"100%",
+             "text-align":"right",
+             "margin-bottom":"10px",
+             "padding":0
+     }).createPage({
+            pageCount:nums,
+            current:page,
+            backFn:function(p)
+            {
+              showkh(p);
+            }
+         });
+ }
+ function seekname()
+ {
+  var name = $('#actioname').val();
+
+      $.ajax({
+          type: "post",
+          url: "__URL__/seeknam",
+          data:{name:name},
+          dataType: "json",
+          success:function(data)
+          {
+        	  myModalStr(data);
+          }
+     })
+ }
+
+ function myModalStr(data){
+	  var str = '';
+
+      str +='<input type="text" placeholder="客户名称搜索" style="width:80%" id="actioname" class="form-control" value="'+name+'"><button onclick="seekname()" style=" margin-left:1%;width:15%; height:34px;" class="btn-info">搜索</button>';
+      str +='<table class="table table-bordered table-hover" border="1">';
+      str+='<tr><td>选择</td><td>客户名称</td></tr>';
+      for(i in data)
+      {
+        str +="<tr><td><input type='radio' name='khval' value="+data[i].id+"></td><td class='radioname"+data[i].id+"'>"+data[i].name+"</td></tr>";
+      }
+      str+='</table>';
+      str+='<p style="text-align: center;"><input type="button" class="btn btn-info btnInfo" onclick="Toobtain()" value="确认"></p>';
+
+      str += '<div id="pageedit"></div>';
+      $('#myModal .modal-body').html(str);
+ }
+
+
+
+ function Toobtain()
+ {
+
+    var khval=$("input[name=khval]:checked").val();
+    var khvaltext=$(".radioname"+khval).text();
+    $("#myModal .close").click();
+    $("#fid").val(khval);
+    $("#companyda").val(khvaltext);
+    $.ajax({
+         url:"__URL__/getcid",
+         data:{id:khval},
+         type:"POST",
+         dataType:"json",
+         success:function(data){
+             var str="<option value=''>--选择课程--</option>";
+             for(var i in data){
+                 str+="<option value='"+data[i]["id"]+"'>"+data[i]["classname"]+"</option>";
+             }
+             $("#formcid").html(str);
+         }
+    })
+ }
+
+ function changeformcid(element){
+      var fid=$("#fid").val();
+      $.ajax({
+         url:"__URL__/getorderid",
+         data:{cid:$(element).val(),fid:fid},
+         type:"POST",
+         dataType:"json",
+         success:function(data){
+             var str="<option value=''>--选择成交ID--</option>";
+             for(var i in data){
+                 str+="<option value='"+data[i]["id"]+"'>"+data[i]["id"]+"# <div>"+data[i]["time"]+" 小票("+data[i]["ticket"]+") 九大规划门票("+data[i]["planning"]+") 卡会员("+data[i]["card"]+") 朋友圈("+data[i]["friends"]+") 弟子学员("+data[i]["disciple"]+") </div></option>";
+             }
+             $("#formorderid").html(str);
+         }
+     })
+ }
+
+
+
+function infoshow(){
+	var str = '';
+
+    str+='<div class="TaskTablecount"><div class="Task_header" id="newTask"><h3 id="add" act="add" style="line-height: 40px;">添加出账</h3><i class=" icon-remove close_task" id="close2"></i></div><div style=" height:60px; width: 100%;"></div><div class="Task_cont" id="newPwd">';
+
+    str+='<p><span>原因</span><input type="text" class="form-control"  id="whysid"/></p>';
+
+    str+='<p><span>备注</span><input type="text" class="form-control" id="bz"/></p>';
+
+    str+='<p><span>出账金额</span><input type="text" class="form-control" id="refund"/></p>';
+
+    str+='<p><span>日期</span><input type="text" readonly="readonly" class="form-control" onclick="laydate()"  id="timesdemo"/></p>';
+    str+='<p><input type="button" class=" btn-info" onclick="addchz()" value="提交"></p></div></div>';
+
+    $('#pwdshow').html(str).show();
+    $('.masker').fadeIn();
+    close_mask();
+}
+
+
+
+ function close_mask(){
+  $('.close_task').click(function(){
+    $('.TaskTable,.masker').fadeOut();
+  })
+}
+function addbill()
+{
+
+    var typestut = $('#typestut').val(); //类型
+    var fid =$("#fid").val(); //客户id
+    var cid=$("#formcid").val(); //课程id
+    var orderid=$("#formorderid").val(); //成交id
+    var time = $('#time').val(); //时间
+    var sumnum = $('#sumnum').val(); //数量
+    var preg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+    var msg  = /^\+?(0|[1-9][0-9]*)$/;
+    var gonetype = $("input[name='Fruit']:checked").val();
+
+    if(orderid!="") {
+        var ordertext = $("#formorderid").find("option[value=" + orderid + "]").text();
+
+        var orderarray = ordertext.match(/\d+(?=\))/g);
+        var sumnum = parseInt($("#sumnum").val());
+        var typestut = parseInt($("#typestut").val());
+
+        switch (typestut) {
+            case 1:
+                if (sumnum > parseInt(orderarray[0])) {
+                    Showbo.Msg.alert('小票数量超出 成交ID 中小票的数量');
+                    return false;
+                }
+                break;
+            case 5:
+                if (sumnum > parseInt(orderarray[1])) {
+                    Showbo.Msg.alert('九大规划数量超出 成交ID 中小票的数量');
+                    return false;
+                }
+                break;
+            case 2:
+                if (sumnum > parseInt(orderarray[2])) {
+                    Showbo.Msg.alert('卡会员数量超出 成交ID 中小票的数量');
+                    return false;
+                }
+                break;
+            case 3:
+                if (sumnum > parseInt(orderarray[3])) {
+                    Showbo.Msg.alert('朋友圈数量超出 成交ID 中小票的数量');
+                    return false;
+                }
+                break;
+            case 4:
+                if (sumnum > parseInt(orderarray[4])) {
+                    Showbo.Msg.alert('弟子学员数量超出 成交ID 中小票的数量');
+                    return false;
+                }
+                break;
+        }
+    }
+
+    if(typestut == 4){
+        var val = $("input[name='yeschek']:checked").val(); //是否分期
+        var refund = $('#refund').val(); //分期数
+        var numonye = $('#numonye').val(); //总金额
+        var jzje = $('#jzje').val(); //总金额
+        if(val == 0){
+            if(refund != ''){
+                Showbo.Msg.alert("此条账单将以非定金及全款入账,则不需填写分期数");
+                return false;
+            }
+
+            if(jzje != numonye){
+                Showbo.Msg.alert("此条账单将以非定金及全款入账,进账金额与总金额不相等");
+                return false;
+            }
+            refund = '1/1';
+        }else{
+            if(!msg.test(refund)){
+                Showbo.Msg.alert("请填写正整数分期数");
+                return false;
+            }
+            if(refund == 0){
+                Showbo.Msg.alert("分期数不能为0");
+                return false;
+            }
+            if(parseFloat(jzje) >= parseFloat(numonye)){
+                Showbo.Msg.alert("进账金额不能大于等于总金额");
+                return false;
+            }
+        }
+        if(!preg.test(numonye)){
+            Showbo.Msg.alert("总金额请输入有效数字,小数点后保留两位");
+            return false;
+        }
+
+    }else{
+        var jzje = $('#jzje').val(); //进账金额
+        var numonye = $('#jzje').val(); //总金额
+    }
+    if(sumnum == ''){
+        Showbo.Msg.alert("数量请输入有效数字");
+        return false;
+    }
+    if(!msg.test(sumnum)){
+        Showbo.Msg.alert("数量请填写正整数");
+        return false;
+    }
+    if(!preg.test(jzje)){
+      Showbo.Msg.alert("进账金额请输入有效数字,小数点后保留两位");
+      return false;
+    }
+
+    if(time == ''){
+      Showbo.Msg.alert("请选择日期");
+      return false;
+    }
+    var currentdate = getNowFormatDate();
+    if(time > currentdate){
+      Showbo.Msg.alert("选择的日期大于当前日期");
+      return false;
+    }
+    if(fid == ''){
+      Showbo.Msg.alert("请选择客户名称");
+      return false;
+    }
+    if(cid == ''){
+      Showbo.Msg.alert("请选择课程名称");
+      return false;
+    }
+    if(orderid == ''){
+      Showbo.Msg.alert("请选择成交ID");
+      return false;
+    }
+
+
+
+
+
+    $.ajax({
+          type: "post",
+          url: "__URL__/addbill",
+          data: {gonetype:gonetype,fid:fid,cid:cid,orderid:orderid,typestut:typestut,sumnum:sumnum,numonye:numonye,val:val,refund:refund,time:time,getId:{$getid},jzje:jzje},
+          dataType: "json",
+          success:function(data)
+          {
+               if(data.errcode == 1)
+               {
+                   $("#pwdshow,.masker").hide();
+                   $("#TaskTablecount").remove();
+                   Showbo.Msg.alert('添加完毕');
+                   $("#dvMsgBtns input").click(function(){
+                       onload();
+                   });
+               }else{
+                Showbo.Msg.alert(data.errmsg);
+               }
+           }
+     })
+
+}
+function getNowFormatDate() {
+    var date = new Date();
+    var seperator1 = "-";
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+    if (month >= 1 && month <= 9) {
+        month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+    }
+    var currentdate = year + seperator1 + month + seperator1 + strDate;
+    return currentdate;
+}
+</script>
+<script>
+    function isIE(){
+        if(navigator.userAgent.indexOf("MSIE")>0)
+        {
+            flag = false;
+            if(navigator.userAgent.indexOf("MSIE 6.0")>0)
+            {
+                flag = true;
+            }
+            if(navigator.userAgent.indexOf("MSIE 7.0")>0)
+            {
+                flag = true;
+            }
+            if(navigator.userAgent.indexOf("MSIE 8.0")>0)
+            {
+                flag =true;
+            }
+
+        }else
+        {
+            flag = false;
+        }
+        return flag;
+    }
+	function uploadCate() {
+        if(isIE()){
+            Showbo.Msg.alert("当前浏览器不支持此项功能，请升级浏览器后，或更换其他浏览器使用此项功能");
+            return false;
+        }
+        Showbo.Msg.confirm('确认上传到{$lecturername}?',function(a) {
+            if (a == 'yes') {
+
+                $.upload({
+                            // 上传地址
+                            url: '{:U('Home/Bill/uploadCate')}',
+                            // 文件域名字
+                            fileName: 'file',
+                            // 其他表单数据
+                            params: {getid:{$getid}},
+                            // 上传完成后, 返回json, text
+                            dataType: 'json',
+                            // 上传之前回调,return true表示可继续上传
+                            onSend: function(){
+
+                                $(".loding").show();
+                                return true;
+                            },
+                            // 上传之后回调
+                            onComplate: function(data) {
+                                $(".loding").hide();
+                                 // console.log(data);
+                                if(data.error==1){
+                                    Showbo.Msg.alert(data.errormsg);
+                                }else if(data.code == 1){
+                                    $(".bb,.cc").show();
+                                    var msg=data.msg;  //errmsg
+                                    var errmsg=data.errmsg;  //errmsg
+                                    var msghtml='';
+
+                                    for(var i in msg){
+                                        msghtml+=msg[i]+'<br/>';
+
+                                    }
+                                    var errmsghtml='';
+
+                                    for(var i in errmsg){
+                                        errmsghtml+=errmsg[i]+'<br/>';
+                                    }
+
+                                    var errorleng=0;
+                                    for(var i in data.datalist){
+                                        if(data.datalist[i].error==1){
+                                            errorleng++;
+                                        }
+                                    }
+
+                                    if(data.datalist.length==errorleng){
+                                        $(".shagnchuan").hide();
+                                    }else{
+                                        $(".shagnchuan").show();
+                                    }
+
+
+                                    msghtml=(msghtml=="")?"提示消息：0条":msghtml;
+                                    errmsghtml=(errmsghtml=="")?"报错消息：0条":errmsghtml;
+                                    $(".tishi").html(msghtml);
+                                    $(".baocuo").html(errmsghtml);
+                                    $(".shagnchuan").off("click");
+                                    $(".shagnchuan").click(function(){
+                                        //uploadCategory(data.datalist);
+
+                                        changeUpload(data.datalist);
+                                    });
+                            //
+                        }else{
+                            Showbo.Msg.alert(data.errmsg);
+                        }
+                    }
+                });
+            }
+        });
+
+	}
+
+    //
+    function changeUpload(datalist1){
+
+        $(".bb,.cc").hide();
+         $(".loding").show();
+         $.ajax({
+             url:"__URL__/getRelationship",
+             data:{datalist:datalist1},
+             type:"POST",
+             dataType:"json",
+             success:function(datalist){
+                 var str="<tr><td>客户名称</td><td>课程</td><td>成交ID</td><td>日期</td><td>类别</td><td>数量</td><td>总金额</td><td>进账金额</td><td>定金</td><td>还款期数</td><td>是否完款</td></tr>";
+                 var arr=[];
+
+                 for(var i in datalist){
+
+
+                     if(datalist[i]["outs"]=="" && datalist[i]["error"]!=1){
+
+
+                         str+="<tr id='"+i+"'>";
+                         arr[i]=i;
+                         str+="<td><select onchange='changefid(this,"+i+")' name='fid' id='fid"+i+"'>";
+                         str+="<option value=''>--选择客户名称--</option>";
+                         for(var j in datalist[i].information){
+                             if(datalist[i]["fid"]==datalist[i].information[j]["id"]){
+                                 str+="<option value='"+datalist[i].information[j]["id"]+"' selected>"+datalist[i].information[j]["name"]+"</option>";
+                             }else{
+                                 str+="<option value='"+datalist[i].information[j]["id"]+"'>"+datalist[i].information[j]["name"]+"</option>";
+                             }
+                         }
+
+                         str+="</select></td>";
+                         str+="<td><select id='cid"+i+"'  onchange='changecid(this,"+i+")'>";
+                         str+="<option value=''>--选择课程--</option>";
+                         for(var j in datalist[i].course){
+                             if(datalist[i]["fid"]==datalist[i].course[j]["id"]){
+                                 str+="<option value='"+datalist[i].course[j]["id"]+"' selected>"+datalist[i].course[j]["classname"]+"</option>";
+                             }else{
+                                 str+="<option value='"+datalist[i].course[j]["id"]+"'>"+datalist[i].course[j]["classname"]+"</option>";
+                             }
+                         }
+                         str+="</select></td>";
+                         str+="<td><select id='ord"+i+"' onchange='chengjiao1("+i+")'>";
+                         str+="<option value=''>--选择成交ID--</option>";
+                         str+="</select></td>";
+                         str+="<td>"+datalist[i]["time"]+"</td>";
+                         str+="<td><span class='type"+i+"'>"+datalist[i]["type"]+"</span></td>";
+                         str+="<td><span class='num"+i+"'>"+datalist[i]["num"]+"</span></td>";
+                         str+="<td>"+datalist[i]["amount"]+"</td>";
+                         str+="<td>"+datalist[i]["houston"]+"</td>";
+                         str+="<td>"+datalist[i]["deposit"]+"</td>";
+
+                         if(datalist[i]["period"]==null||datalist[i]["period"]==""){
+                             str+="<td>-/-</td>";
+                         }else{
+                             str+="<td>"+datalist[i]["period"]+"</td>";
+                         }
+                         str+="<td  class='gonetype"+i+"'><input type='checkbox' value='1' name='gonetype'></td>";
+                         str+="</tr>";
+                     }
+                 }
+                 $(".loding").hide();
+                 $("#myModaljin .modal-body table").html(str);
+                 $("#savajin").off("click");
+                 $("#savajin").click(function(){
+
+                     for(var i in datalist){
+
+                         if($("#fid"+i).val()==""||$("#cid"+i).val()==""||$("#ord"+i).val()==""){
+                             Showbo.Msg.alert("请补充信息");
+                             return false;
+                         }
+                         datalist[i]["fid"]=$("#fid"+i).val();
+                         datalist[i]["cid"]=$("#cid"+i).val();
+                         datalist[i]["orderid"]=$("#ord"+i).val();
+                         datalist[i]["gonetype"]=($(".gonetype"+i+" input[name=gonetype]:checked").val()==undefined)?0:$(".gonetype"+i+" input[name=gonetype]:checked").val();
+                     }
+
+                     uploadCategory(datalist);
+                 });
+             },
+             error:function(){}
+         });
+    }
+
+    function changefid(element,id){
+         $.ajax({
+             url:"__URL__/getcid",
+             data:{id:$(element).val()},
+             type:"POST",
+             dataType:"json",
+             success:function(data){
+                 var str="<option value=''>--选择课程--</option>";
+                 for(var i in data){
+                     str+="<option value='"+data[i]["id"]+"'>"+data[i]["classname"]+"</option>";
+                 }
+                 $("#cid"+id).html(str);
+             }
+         })
+    }
+
+    function changecid(element,id){
+        var fid=$("#fid"+id).val();
+        $.ajax({
+            url:"__URL__/getorderid",
+            data:{cid:$(element).val(),fid:fid},
+            type:"POST",
+            dataType:"json",
+            success:function(data){
+                var str="<option value=''>--选择成交ID--</option>";
+                for(var i in data){
+                    str+="<option value='"+data[i]["id"]+"'>"+data[i]["id"]+"# <div>"+data[i]["time"]+" 小票("+data[i]["ticket"]+") 九大规划门票("+data[i]["planning"]+") 卡会员("+data[i]["card"]+") 朋友圈("+data[i]["friends"]+") 弟子学员("+data[i]["disciple"]+")</div> </option>";
+                }
+                $("#ord"+id).html(str);
+            }
+        })
+    }
+
+	function uploadCategory(datalist){
+
+        $("#myModaljin .close").click();
+		/* $('.loding').css('display','block'); */
+	    $.ajax({
+	            // 上传地址
+	            url: '{:U('Home/Bill/uploadCategory')}',
+	            // 其他表单数据
+	            data: {datalist:datalist,getid:{$getid}},
+	            // 上传完成后, 返回json, text
+	            type: "post",
+
+	            dataType:"json",
+
+	            // 上传之后回调
+	            success: function(data) {
+	               	// console.log(data);
+	            	if(data.errcode == 1){
+	            		Showbo.Msg.alert(data.errmsg);
+	            		/* $('.loding').css('display','none'); */
+	            	}else{
+	            		Showbo.Msg.alert(data.errmsg);
+	            		/* $('.loding').css('display','none'); */
+	            	}
+	            	$("#dvMsgBtns input").click(function(){
+	            		onload();
+	            	});
+
+
+	            }
+	    });
+	}
+    function dcli(id)
+    {
+
+      	var timeyear = $('#timeyear').val()+'-'+$('#timemonth').val()+'-'+$('#timeday').val();
+      	var beforeyea = $('#beforeyea').val()+'-'+$('#datayear').val()+'-'+$('#day').val();
+        var stype = $('#stype').val(); //类别
+
+        location.href="{:U('Home/Bill/jreport/id/"+id+"/timeyear/"+timeyear+"/beforeyea/"+beforeyea+"/stype/"+stype+"')}";
+
+    }
+
+   function qiqiu(ida,obj)
+   {
+
+	       $.ajax({
+            url:"{:U('Home/Bill/qiqiu')}",
+            data:{ida:ida},
+            type:"POST",
+            dataType:"json",
+            success:function(data){
+            	t = data.data;
+                // console.log(t.fid);
+                if(t.kuname == null)
+                {
+                    t.kuname = '';
+                }
+
+            	if(data.act == 2)
+            	{
+
+            		//出账
+            		var str = '';
+
+            	    str+='<div class="TaskTablecount"><div class="Task_header" id="newTask"><h3 id="add" act="add" style="line-height: 40px;">添加出账</h3><i class=" icon-remove close_task" id="close2"></i></div><div style=" height:60px; width: 100%;"></div><div class="Task_cont" id="newPwd">';
+
+            	    str+='<p><span>原因</span><input type="text" value="'+t.reason+'" class="form-control"  id="to1"/></p>';
+
+            	    str+='<p><span>备注</span><input type="text" value="'+t.remarks+'" class="form-control" id="to2"/></p>';
+
+            	    str+='<p><span>出账金额</span><input type="text" value="'+t.outs+'" class="form-control" id="to3"/></p>';
+
+            	    str+='<p><span>日期</span><input type="text" readonly="readonly" value="'+t.time+'" class="form-control" onclick="laydate()"  id="to4"/></p>';
+            	    str+='<p><input type="button" class=" btn-info" onclick="qiuxub('+t.id+')" value="提交"></p></div></div>';
+
+            	    $('#pwdshow').html(str).show();
+            	    $('.masker').fadeIn();
+            	    close_mask();
+
+
+            	}else
+            	{
+            		savepwd(t);
+            	//     var str = '';
+            	//     str+='<div class="TaskTablecount"><div class="Task_header" id="newTask"><h3 id="add" act="add" style="line-height: 40px;">进账</h3><i class=" icon-remove close_task" id="close2"></i></div><div style=" height:60px; width: 100%;"></div><div class="Task_cont" id="newPwd">';
+            	//     str+='<p><span>类型:</span>';
+
+            	//     str +='<select class="form-control " name="" id="typestut">';
+            	//     if(t.type == 1)
+            	//     {
+            	//     	 str +='<option value="1" selected = "selected">票</option>';
+            	//     }else
+            	//     {
+            	//     	 str +='<option value="1">票</option>';
+            	//     }
+            	//     if(t.type == 2)
+            	//     {
+            	//     	  str +='<option value="2" selected = "selected" >卡</option>';
+            	//     }else
+            	//     {
+            	//     	  str +='<option value="2">卡</option>';
+            	//     }
+            	//     if(t.type == 3)
+            	//     {
+            	//     	 str +='<option value="3" selected = "selected" >朋友圈</option>';
+            	//     }else
+            	//     {
+            	//     	 str +='<option value="3">朋友圈</option>';
+            	//     }
+            	//     if(t.type == 4)
+            	//     {
+            	//     	 str +='<option value="4" selected = "selected" >弟子</option>';
+            	//     }else
+            	//     {
+            	//     	 str +='<option value="4">弟子</option>';
+            	//     }
+            	//     if(t.type == 5)
+            	//     {
+
+             //    	    str +='<option value="5" selected = "selected" >九大规划门票</option>';
+            	//     }else
+            	//     {
+
+             //    	    str +='<option value="5">九大规划门票</option>';
+            	//     }
+
+            	//     str +='</select>';
+            	//     str+='</p>';
+            	//     str+='<p><span>数量</span><input type="text" value="'+t.num+'" class="form-control"  id="sumnum"/></p>';
+            	//     str+='<p><span>总金额 </span><input type="text" value="'+t.amount+'"  class="form-control" id="numonye"/></p>';
+             //        str+='<p><span>进账金额 </span><input type="text" value="'+t.houston+'"  class="form-control" id="jzje"/></p>';
+            	//     str+='<p><span>定金 </span>';
+            	//     if(t.deposit == 0)
+            	//     {
+            	//     	str +='否<input type="radio" id="yeschek"  name="yeschek" value="0" checked>&nbsp;';
+            	//     }else
+            	//     {
+            	//     	str +='否<input type="radio" id="yeschek"  name="yeschek" value="0" >&nbsp;';
+            	//     }
+            	//     if(t.deposit == 1)
+            	//     {
+            	//     	str +='是<input type="radio" id="yeschek2" name="yeschek" value="1" checked >';
+            	//     }else
+            	//     {
+            	//     	str +='是<input type="radio" id="yeschek2" name="yeschek" value="1">';
+            	//     }
+
+
+            	//     str+='</p>';
+            	//     str+='<p><span>日期 </span><input type="text" value="'+t.time+'" class="form-control"  onclick="laydate()" id="time"/></p>';
+            	//     str+='<p><span>还款期数 </span><input type="text" value="'+t.period+'"   class="form-control"   id="refund"/></p>';
+            	//     //<input class="form-control " type="text" onclick="laydate()" id="Alsotime">
+             //       str+='<p><span>客户名称:</span><input type="hidden" id="fid"  value="'+t.fid+'"  ><input type="text" value="'+t.kuname+'"  class="form-control"  value="" onclick="showkh()" data-toggle="modal" data-target="#myModal" id="companyda"/></p>';
+             //       str+='<p><span>课程名称:</span>';
+             //       str+='<select class="form-control" id="formcid" onchange="changeformcid(this)">';
+             //       str+='<option value="">--选择课程--</option>';
+             //       for(var i in t["classname"]){
+             //           var f=t["classname"][i];
+             //           if(t.cid==f.id){
+
+             //               str+='<option value="'+f.id+'" selected>'+f.classname+'</option>';
+             //           }else{
+             //               str+='<option value="'+f.id+'">'+f.classname+'</option>';
+             //           }
+             //       }
+             //       str+='</select></p>';
+
+             //       str+='<p><span>成交ID:</span>';
+             //       str+='<select class="form-control" id="formorderid">';
+             //       str+='<option value="">--选择成交ID--</option>';
+             //       for(var i in t["course_com_order"]){
+             //            var f=t["course_com_order"][i];
+             //            if(t.orderid==f.id){
+
+             //                str+='<option value="'+f.id+'" selected>'+f.id+'# '+f.time+' 小票('+f.ticket+') 九大规划门票('+f.planning+') 卡('+f.card+') 朋友圈('+f.friends+') 弟子学员('+f.disciple+')</option>';
+             //            }else{
+             //                str+='<option value="'+f.id+'">'+f.id+'# '+f.time+' 小票('+f.ticket+') 九大规划门票('+f.planning+') 卡('+f.card+') 朋友圈('+f.friends+') 弟子学员('+f.disciple+')</option>';
+             //            }
+             //       }
+
+
+             //       str+='</select></p>';
+             //       str+='<p><span>学员姓名 </span><input type="text" value="'+t.name+'"  class="form-control" id="xyname"/></p>';
+            	//    str+='<p><span>电话号码</span><input type="text" value="'+t.phone+'"  class="form-control"  id="xymobile"/></p>';
+            	//    str+='<p><input type="button" class=" btn-info" onclick="qiqiadd('+t.id+','+t.fid+')" value="提交"></p></div></div>';
+
+            	//    $('#pwdshow').html(str).show();
+            	//    $('.masker').fadeIn();
+            	//    close_mask();
+            	}
+
+
+
+
+
+                 }
+	       })
+   }
+
+   function qiqiadd(id,pid)
+   {
+        var typestut = $('#typestut').val(); //类型
+        var fid =$("#fid").val(); //客户id
+        var cid=$("#formcid").val(); //课程id
+        var formorderid=$("#formorderid").val(); //成交id
+        var time = $('#time').val(); //时间
+        var sumnum = $('#sumnum').val(); //数量
+        var preg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+        var msg  = /^\+?(0|[1-9][0-9]*)$/;
+
+        if(typestut == 4){
+            var val = $("input[name='yeschek']:checked").val(); //定金
+            var refund = $('#refund').val(); //分期数
+            var numonye = $('#numonye').val(); //总金额
+            var jzje = $('#jzje').val(); //总金额
+            if(val == 0){
+                if(refund != '1'){
+                    if(pid == 0){
+                        if(refund != ''){
+                            Showbo.Msg.alert("此条账单将以非定金入账,则不需填写分期数");
+                            return false;
+                        }
+                    }
+                }
+                if(pid == 0){
+                    if(jzje != numonye){
+                        Showbo.Msg.alert("进账金额与总金额不相等");
+                        return false;
+                    }
+                    refund = '1/1';
+                }
+            }else{
+                if(!msg.test(refund)){
+                    Showbo.Msg.alert("请填写正整数分期数");
+                    return false;
+                }
+                if(refund == 0){
+                    Showbo.Msg.alert("分期数不能为0");
+                    return false;
+                }
+                if(parseFloat(jzje) >= parseFloat(numonye)){
+                    Showbo.Msg.alert("进账金额不能大于等于总金额");
+                    return false;
+                }
+            }
+            if(!preg.test(numonye)){
+                Showbo.Msg.alert("总金额请输入有效数字,小数点后保留两位");
+                return false;
+            }
+        }else{
+            var jzje = $('#jzje').val(); //进账金额
+            var numonye = $('#jzje').val(); //总金额
+        }
+        if(sumnum == ''){
+            Showbo.Msg.alert("数量请输入有效数字");
+            return false;
+        }
+        if(!msg.test(sumnum)){
+          Showbo.Msg.alert("数量请填写正整数");
+          return false;
+        }
+        if(!preg.test(jzje)){
+          Showbo.Msg.alert("进账金额请输入有效数字,小数点后保留两位");
+          return false;
+        }
+        if(time == ''){
+          Showbo.Msg.alert("请选择日期");
+          return false;
+        }
+        var currentdate = getNowFormatDate();
+        if(time > currentdate){
+          Showbo.Msg.alert("选择的日期大于当前日期");
+          return false;
+        }
+        if(fid == ''){
+          Showbo.Msg.alert("请选择客户名称");
+          return false;
+        }
+        if(cid == ''){
+          Showbo.Msg.alert("请选择课程名称");
+          return false;
+        }
+        if(formorderid == ''){
+          Showbo.Msg.alert("请选择成交ID");
+          return false;
+        }
+
+	    $.ajax({
+           url:"{:U('Home/Bill/tgp')}",
+           data:{id:id,yesorno:val,typestut:typestut,sumnum:sumnum,numonye:numonye,jzje:jzje,time:time,refund:refund,fid:fid,formcid:cid,formorderid:formorderid,pid:pid},
+           type:"POST",
+           dataType:"json",
+           success:function(t){
+        	   if(t.errcode == 1)
+ 				{
+ 					$("#pwdshow,.masker").hide();
+                	$("#TaskTablecount").remove();
+                    Showbo.Msg.alert(t.errmsg);
+                    $("#dvMsgBtns input").click(function(){
+                    	onload();
+                    });
+ 				}else
+ 				{
+ 					Showbo.Msg.alert(t.errmsg);
+ 				}
+
+           }
+		})
+
+
+
+   }
+
+   function qiuxub(idn)
+   {
+    	var to1 = $('#to1').val();
+    	var to2 = $('#to2').val();
+    	var to3 = $('#to3').val();
+    	var to4 = $('#to4').val();
+        var preg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+        if(!preg.test(to3)){
+          Showbo.Msg.alert("请输入有效数字,小数点后保留两位");
+          return false;
+        }
+        if(to4 == ''){
+          Showbo.Msg.alert("请选择日期");
+          return false;
+        }
+        var currentdate = getNowFormatDate();
+        if(to4 > currentdate){
+          Showbo.Msg.alert("选择的日期大于当前日期");
+          return false;
+        }
+	    $.ajax({
+            url:"{:U('Home/Bill/qiqiusave')}",
+            data:{idn:idn,to1:to1,to2:to2,to3:to3,to4:to4},
+            type:"POST",
+            dataType:"json",
+            success:function(t){
+ 				if(t.act == 1){
+ 					Showbo.Msg.alert('修改成功');
+ 					$("#pwdshow,.masker").hide();
+                	$("#TaskTablecount").remove();
+                    Showbo.Msg.alert('修改完毕');
+                    $("#dvMsgBtns input").click(function(){
+                    	onload();
+                    });
+ 				}else{
+ 					Showbo.Msg.alert('修改失败');
+ 				}
+            }
+	    })
+   }
+
+
+</script>
+
+</html>

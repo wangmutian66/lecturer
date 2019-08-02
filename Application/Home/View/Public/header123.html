@@ -1,0 +1,171 @@
+<!DOCTYPE HTML>
+<html lang="en" >
+  <head>
+      <title>助企软件 · 一线讲师追踪系统</title>
+        <!-- agreement -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="ptagma" content="no-cache"><!-- 清除缓存 -->
+      <meta name="description" content="">
+      <meta name="author" content="templatemo">
+      <meta name="applicable-device" content="mobile" />
+      <meta name="format-detection" content="telephone=no" />
+      <meta http-equiv="X-UA-Compatible"content="IE=9; IE=8; IE=7; IE=EDGE">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <!--   css -->
+      <!--[if IE]> <link href="__PUBLIC__/css/IE.css" rel="stylesheet" type="text/css" /> <![endif]-->
+      <link rel="shortcut icon" href="__PUBLIC__/images/login-image/title.png">
+      <link href="__PUBLIC__/css/bootstrap.min.css"  rel="stylesheet" >
+      <link href="__PUBLIC__/css/lecturer.css" rel="stylesheet">
+      <link href="__PUBLIC__/fonts/css/font-awesome.min.css" rel="stylesheet">
+      <link href="__PUBLIC__/fonts/css/font-awesome-ie7.min.css" rel="stylesheet">
+      
+
+        <!-- JS -->
+      <script type="text/javascript" src="__PUBLIC__/js/jquery-1.11.2.min.js"></script>
+      <script type="text/javascript" src="__PUBLIC__/js/showBo.js"></script>
+      <script type="text/javascript" src="__PUBLIC__/js/table-common.js"></script>
+      <script type="text/javascript" src="__PUBLIC__/js/ajaxfileupload.js"></script>
+      <script type="text/javascript" src="__PUBLIC__/js/myslideup.js"></script>
+      <script type="text/javascript" src="__PUBLIC__/js/jquery.page.js"></script>
+      <!--<script type="text/javascript" src="__PUBLIC__/js/highcharts.js"></script>-->
+      <script type="text/javascript" src="__PUBLIC__/js/jquery.upload.js"></script>
+      <script type="text/javascript" src="__PUBLIC__/js/laydate/laydate.js"></script>
+     
+    </head>
+<body>
+<div class="contment">
+  <div class="masker"></div>
+  <div class="top"></div>
+  <div class="header"><i></i>
+    <if condition="($Think.session.id neq '') ">
+      <input  type="button" value="一线讲师">
+      <input  type="button" value="财务系统">
+      <input  type="button" value="消息通知">
+      <input  type="button" value="系统设置">
+      <span>{$Think.session.name}</span>
+
+    <else/>
+      <input  class="but1" type="button" id="login" value="登录"  onclick="login()"  />
+      <input  class="but2" type="button" id="" value="下载APP" onclick="" />
+      <h3>企航集团</h3>
+      
+    </if>
+  </div>
+
+ <div class="menu">
+    <ul>
+      <li>主菜单</li>
+
+      <if condition="($Think.session.admin neq 1)">
+        <li>
+            <if condition="($Think.session.enterprise eq 1)">
+              <a href="{:U('Home/Enterprise/index')}">
+            <elseif condition="($Think.session.alsystem eq 1)"/>
+              <a href="{:U('Home/Alsystem/index')}">
+            <elseif condition="($Think.session.affairs eq 1)"/>
+              <a href="{:U('Home/Affairs/index')}">
+            </if>
+            <span><i class="icon-home icon-large"></i></span><span>主　　页</span>
+            </a>
+        </li>
+      </if>
+
+      <if condition="($Think.session.admin eq 1)">
+          <li>
+          <a href="{:U('Home/Admin/index')}"> <span><i class="icon-info-sign icon-large"></i></span><span>企业信息</span></a>
+          </li>
+      </if>
+
+
+      <if condition="($Think.session.affairs eq 1) ">
+        <li>
+          <a href="{:U('Home/Student/index')}">
+          <span><i class="icon-plus-sign icon-large"></i></span><span>添加学员</span></a>
+        </li>
+      <elseif condition="($Think.session.alsystem eq 1)"/>
+        <li>
+          <a href="{:U('Home/Alsystem/sysaddschol')}">
+          <span><i class="icon-plus-sign icon-large"></i></span><span>添加学员</span></a>
+        </li>
+      </if>
+
+      <if condition="($Think.session.enterprise eq 1)">
+        <li><a href="{:U('Home/Enterprise/lecturer')}"><span><i class="icon-dashboard icon-large"></i></span><span>讲师数据</span></a></li>
+        <li><a href="{:U('Home/Enterprise/account')}"><span><i class="icon-wrench icon-large"></i></span><span>账号管理</span></a></li>
+      </if>
+
+      <if condition="($Think.session.affairs eq 1) ">
+      <li>
+          <a href="{:U('Home/Personal/index')}">
+          <span><i class="icon-user icon-large"></i></span><span>个人信息</span></a>
+      </li>
+      <elseif condition="($Think.session.alsystem eq 1)"/>
+          <li>
+              <a href="{:U('Home/Alsystem/sysprivacy')}">
+              <span><i class="icon-user icon-large"></i></span><span>个人信息</span></a>
+          </li>
+      </if>
+         <if condition="($Think.session.type gt 9)">
+         
+          <li>
+              <a href="{:U('Home/Setsail/management')}">
+              <span><i class="icon-user icon-large"></i></span><span>企业财务总监</span></a>
+          </li>
+           <li>
+              <a href="{:U('Home/Setsail/manager')}">
+              <span><i class="icon-user icon-large"></i></span><span>大区总裁管理</span></a>
+          </li>
+           <li>
+              <a href="{:U('Home/Setsail/branch')}">
+              <span><i class="icon-user icon-large"></i></span><span>公司管理</span></a>
+          </li>
+          </if>
+          <if condition="($Think.session.type gt 8) ">
+           <li>
+              <a href="{:U('Home/Enterprise/vicezong/role/9')}">
+              <span><i class="icon-user icon-large"></i></span><span>分公司总经理</span></a>
+          </li>
+           </if>
+           <li>
+              <a href="{:U('Home/Enterprise/vicezong/role/7')}">
+              <span><i class="icon-user icon-large"></i></span><span>分公司副总经理</span></a>
+          </li>
+          <li>
+              <a href="{:U('Home/Enterprise/vicezong/role/6')}">
+              <span><i class="icon-user icon-large"></i></span><span>业务总监</span></a>
+          </li>
+            <li>
+              <a href="{:U('Home/Enterprise/vicezong/role/5')}">
+              <span><i class="icon-user icon-large"></i></span><span>业务副总监</span></a>
+          </li>
+           <li>
+              <a href="{:U('Home/Riskfee/index')}">
+              <span><i class="icon-user icon-large"></i></span><span>风险金</span></a>
+          </li>
+           <!--  <li>
+              <a href="{:U('Home/Alsystem/sysprivacy')}">
+              <span><i class="icon-user icon-large"></i></span><span>业务经理</span></a>
+          </li>
+            <li>
+              <a href="{:U('Home/Alsystem/sysprivacy')}">
+              <span><i class="icon-user icon-large"></i></span><span>业务副经理</span></a>
+          </li>
+           <li>
+              <a href="{:U('Home/Alsystem/sysprivacy')}">
+              <span><i class="icon-user icon-large"></i></span><span>业务主管</span></a>
+          </li>
+           <li>
+              <a href="{:U('Home/Alsystem/sysprivacy')}">
+              <span><i class="icon-user icon-large"></i></span><span>业务副主管</span></a>
+          </li>
+           <li>
+              <a href="{:U('Home/Alsystem/sysprivacy')}">
+              <span><i class="icon-user icon-large"></i></span><span>业务员</span></a>
+          </li> -->
+      <li><a href="{:U('Home/Login/login')}"><span><i class="icon-signin icon-large"></i></span><span>退出登录</span></a>
+      </li>
+    </ul>
+  </div>
+
+

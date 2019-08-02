@@ -1,0 +1,190 @@
+<include file="Public/header" />
+<script src="__PUBLIC__/js/slider.js"></script>
+<script>
+$(".loding").hide();
+</script>
+<style type="text/css">.menu{display: none;}body,html{ background:white; }</style>
+	<div class="main">
+			<div id="loginpage"></div>
+			<div id="banner_tabs" class="flexslider">
+			  <ul class="slides">
+			    <li>
+			      <a title="" target="_blank" href="#">
+			        <img width="1920" height="482" alt="" src="__PUBLIC__/images/login-image/banner1.jpg" no-repeat center;" >
+			      </a>
+			    </li>
+			    <li>
+			      <a title="" href="#">
+			        <img width="1920" height="482" alt="" src="__PUBLIC__/images/login-image/banner2.jpg" no-repeat center;" >
+			      </a>
+			    </li>
+			    <li>
+			      <a title="" href="#">
+			        <img width="1920" height="482" alt="" src="__PUBLIC__/images/login-image/banner3.jpg" no-repeat center;">
+			      </a>
+			    </li>
+			  </ul>
+			  <ul class="flex-direction-nav">
+			    <li><a class="flex-prev" href="javascript:;">Previous</a></li>
+			    <li><a class="flex-next" href="javascript:;">Next</a></li>
+			  </ul>
+			  <ol id="bannerCtrl" class="flex-control-nav flex-control-paging">
+			    <li><a>1</a></li>
+			    <li><a>2</a></li>
+			    <li><a>2</a></li>
+			  </ol>
+			</div>
+		<!-- banner end -->
+		 <div class="main_bottom">
+		
+   <div class="aa">
+     <p>SOFTWARE ADVANTAGE</p>
+     <a>软件优势</a>
+     <p><img src="__PUBLIC__/images/login-image/con8.jpg" alt="">  </p>
+   </div>
+   <ul>
+
+     <li>
+       <img src="__PUBLIC__/images/login-image/yanzi/con1.jpg" alt="">
+       <p>一线讲师追踪</p><a>讲师学员信息公开，及时查看，清晰明了，方便操作</a>
+     </li>
+     <li>
+       <img src="__PUBLIC__/images/login-image/yanzi/con2.jpg" alt="">
+       <p>公司财务上报</p><a>财务数据精准，反馈及时，提高企业信息化管理水平</a>
+     </li>
+     <li>
+       <img src="__PUBLIC__/images/login-image/yanzi/con3.jpg" alt="">
+       <p>客户关系管理</p><a>吸引新客户，保留老客户以及将已有客户转为忠实客户，增加市场份额</a>
+     </li>
+     <li>
+       <img src="__PUBLIC__/images/login-image/yanzi/con4.jpg" alt="">
+       <p>会员卡服务</p><a>只需持一张会员卡即可消费，方便会员，操作简单，功能实用</a>
+     </li>
+     <li>
+       <img src="__PUBLIC__/images/login-image/yanzi/con5.jpg" alt="">
+       <p>公司员工管理</p><a>提高企业管理效益，进一步了解员工工作情况，升职加薪不再难</a>
+     </li>
+     <li>
+       <img src="__PUBLIC__/images/login-image/yanzi/con6.jpg" alt="">
+       <p>客户财务追踪</p><a>方便查询，追踪，不会出现假账,错账的情况，让账单进出一览无余</a>
+     </li>
+   </ul>  
+  </div>
+  
+<include file="Public/footer" />
+</body>
+</html>
+<script type="text/javascript">
+$(function() {
+  var bannerSlider = new Slider($('#banner_tabs'), {
+    time: 5000,
+    delay: 400,
+    event: 'hover',
+    auto: true,
+    mode: 'fade',
+    controller: $('#bannerCtrl'),
+    activeControllerCls: 'active'
+  });
+  $('#banner_tabs .flex-prev').click(function() {
+    bannerSlider.prev()
+  });
+  $('#banner_tabs .flex-next').click(function() {
+    bannerSlider.next()
+  });
+})
+</script>
+<script>
+$(document).keydown(function(event){ 
+	if(event.keyCode == 13){ //绑定回车 
+		$('#ton').click(); //自动触发登录按钮 
+	} 
+});
+function login(){
+			$('.masker,#loginpage').fadeIn();
+		    var str = '<div class="login"><b class="icon-remove"></b> <div class="from"><i class="icon-user"></i> <input type="text" placeholder="请输入账号" id="user"/></div> <div class="from"><i class="icon-lock" > </i> <input type="password" placeholder="请输入密码" id="pwd" /></div><input class="bornone btn-info" type="button" value="立即登录"  id="ton" onclick="Btn()" /></div>';
+	        $('#loginpage').html(str);
+	        $('b.icon-remove').click(function(){
+	        	$('.masker,#loginpage').fadeOut();
+	        })
+}
+// $(function(){
+// 		document.onkeydown = function(e){
+// 			var ev = document.all ? window.event : e;
+// 			if(ev.keyCode==13) {
+// 				Btn();
+// 			}
+// 		}
+// 	});
+
+	function Btn(){
+		
+		     var username=$('#user').val();
+		     username = trim(username);
+			 var pwd=$('#pwd').val();
+
+			 if(username=="" && pwd==""){
+			 	Showbo.Msg.alert('请输入账号密码');
+			 	return false;
+			 }
+			if(pwd==""){
+				Showbo.Msg.alert('请输入密码');
+				return false;
+			}
+			if(username==""){
+				Showbo.Msg.alert('请输入账号');
+				 return false;
+			}
+
+			$.post("{:U('Home/Login/loginverify')}",{user:username,pwd:pwd},function(t){
+				if(t.errcode == 0){
+					location.href = "{:U('Home/Relationship/index')}";
+				}else if(t.errcode == 1){
+					Showbo.Msg.alert(t.errmsg);					
+				}else if(t.errcode == 2){
+					location.href = "{:U('Home/Admin/branch')}";
+									
+				}
+		},"json");
+
+	
+}
+function trim(str){ //删除左右两端的空格
+　　return str.replace(/(^\s*)|(\s*$)/g, "");
+}
+			
+   
+</script>
+	<!-- // 	$.post("{:U('Home/Login/loginverify')}",{user:username,pwd:pwd},function(t){
+		// 		if(t.errcode == 0){
+		// 			Showbo.Msg.alert(t.errmsg);
+		// 		}else if(t.errcode == 1){
+		// 			if(t.errmsg == 'admin'){
+		// 				location.href = "{:U('Home/Admin/index')}";						
+		// 			}else if(t.errmsg == 'enterprise'){
+		// 				location.href = "{:U('Home/Enterprise/index')}";
+		// 			}else if(t.errmsg == 'alsystem'){
+		// 				location.href = "{:U('Home/Alsystem/index')}";
+		// 			}else if(t.errmsg == 'affairs'){
+		// 				location.href = "{:U('Home/Affairs/index')}";
+		// 			}
+		// 		}else if(t.errcode == 2){
+		// 			Showbo.Msg.alert(t.errmsg);
+		// 		}else if(t.errcode == 3){
+		// 			Showbo.Msg.alert(t.errmsg);
+		// 		}
+		// },"json");
+	// if(t.errmsg == 'admin'){
+					// 	location.href = "{:U('Home/Admin/index')}";	//超级管理员页面					
+					// }else if(t.errmsg == 'enterprise'){
+					// 	location.href = "{:U('Home/Enterprise/index')}";//跳转分公司页面
+					// }else if(t.errmsg == 'alsystem'){
+					// 	location.href = "{:U('Home/Alsystem/index')}";//跳讲师页面
+					// }else if(t.errmsg == 'affairs'){
+					// 	location.href = "{:U('Home/Affairs/index')}";//跳财务页面
+					// }else if(t.errmsg == 'caiwu'){
+					// 	location.href = "{:U('Home//')}";//跳财务总监页面
+					// }else if(t.errmsg == 'dqzc'){
+					// 	location.href = "{:U('Home//')}";//跳大区总裁页面
+					// }else if(t.errmsg == 'jiangshi'){
+					// 	location.href = "{:U('Home//')}";//跳讲师页面
+					// } -->

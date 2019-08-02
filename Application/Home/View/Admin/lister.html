@@ -1,0 +1,773 @@
+<!-- <include file="Public/header" />
+<style type="text/css">.container:first-child{ height: auto!important; padding-bottom:20px; }</style> -->
+<script type="text/javascript">
+  $(function(){
+   $('.shows').siblings('.hides').remove(); 
+   $('.menu_botton input').click(function(){
+      $('.menu_botton input').removeClass('shadow');
+      $(this).addClass('shadow');
+   })
+  })
+</script>
+<div class="wrap">
+
+<div class="container" id="stuleate">
+    <div class="menu_botton">  <input type="button" class="btn btn-info bornone shadow" value="学员数据" onclick="stulet(1)" /> <input type="button" class="btn btn-info bornone" value="讲师数据" onclick="stulet(2)" />
+ </div>
+ <div class="tab_two" style="display:none">
+       <h3>讲师业绩情况</h3>
+        <div  class="content Teacher_achievement">
+            <div class="date"><span>从</span><span>
+                    <select  id="timeyear"  class="form-control" onchange="checkChangDate(this)"></select>
+                    <select id="timemonth"  class="form-control" onchange="checkChangDate(this,1)"></select>
+                    <select id="timeday"  class="form-control" onchange="checkChangDate(this)"></select>
+                    
+                </span> <span>至</span> <span>
+                    <select id="beforeyea"  class="form-control" onchange="checkChangDate(this)"></select>
+                    <select id="datayear"  class="form-control" onchange="checkChangDate(this,2)"></select>
+                    <select id="day"  class="form-control" onchange="checkChangDate(this)"></select> <span>的招生情况</span>
+                    <input type="button" class="btn-default"  onclick ="seove()" value="搜索" />
+                    </span>
+            </div>
+              <table id ="llever" class="table content table-striped">
+             
+        
+            </table>
+           
+            <div id="setBudgetPage"></div>
+        </div>
+         <input type="button" class="btn  btn-success bornone" value="生成表格文档" onclick="jexcel()" />
+    </div>
+    <div class="tab_one">
+	   <h3>学员数据</h3>
+    <div>
+         <table class="content enter_table" id="yeerborder">
+          <tr>
+            <td>姓名</td>
+            <td>联系电话</td>
+            <td>备注</td>
+            <td>讲师</td>
+            <td>讲师电话</td>
+            <td>时间及分类</td>
+            <td>数量</td>
+            <td>提成</td>
+            <td>金额</td>
+            <td>状态</td>
+            <td>操作</td>
+          </tr>
+
+          <foreach name="data" item="vo" >
+              <tr name="orde{$vo['id']}">
+                <td class="shows">{$vo.name}</td>
+                 <td tid="1" onclick="telone(this)"  ><span class="nie">{$vo.mobile}</span><span  style="display:none" class="cver"><input type="text" value="{$vo.mobile}"  /><a tid="1" onclick="savewang({$vo.id},this)"  href="javascript:;">修改</a></span></td>
+                <td tid="2" onclick="telone(this)"  ><span class="nie">{$vo.note}</span><span  style="display:none" class="cver"><input type="text"  value="{$vo.note}"   /><a tid="2" onclick="savewang({$vo.id},this)" href="javascript:;">修改</a></span></td>
+                <foreach name="orders" item="vi" >
+                  <if condition="$vo['id'] eq $vi['sid']">
+                        <td class="hides"></td>
+                        <td class="hides"></td>
+                        <td class="hides"></td>
+                        <td>{$vi.name}</td>
+                        <td>{$vi.mobile}</td>
+                        <td>{$vi.times}</td>
+              </tr>
+
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>票</td>
+                    <td>{$vi.ticket}</td>
+                    <td>{$info['tc']}%</td>
+                    <td>{:money($vi['ticket'],$info['tc'],$info['leafletstc'])}元</td>
+                    <td>
+                       <if condition="$vi['ptype'] eq 1">
+                      已发
+                      <elseif condition="$vi['ptype'] eq 0"/>
+                      取消
+                      <else/>
+                      未发
+                      </if>
+                     
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>卡</td>
+                    <td>{$vi.card}</td>
+                    <td>{$info['cc']}%</td> 
+                    <td>{:money($vi['card'],$info['cc'],$info['leafletscc'])}元</td>
+                    <td>
+                    
+                       <if condition="$vi['ctype'] eq 1">
+                      已发
+                      <elseif condition="$vi['ctype'] eq 0"/>
+                      取消
+                      <else/>
+                      未发
+                      </if>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>朋友圈</td>
+                    <td>{$vi.friends}</td>
+                    <td>{$info['fc']}% </td> 
+                    <td>{:money($vi['friends'],$info['fc'],$info['leafletsfc'])}元</td>
+                    <td>
+                      
+                        <if condition="$vi['ftype'] eq 1">
+                      已发
+                      <elseif condition="$vi['ftype'] eq 0"/>
+                      取消
+                      <else/>
+                      未发
+                      </if>
+                    </td>
+                  </tr>
+
+                  <tr class="sign">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>弟子</td>
+                    <td>{$vi.disciple}</td>
+                    <td>{$info['dc']}%</td> 
+                    <td>{:money($vi['disciple'],$info['dc'],$info['leafletsdc'])}元</td>
+                    <td>
+                      
+                    
+                      <if condition="$vi['dtype'] eq 1">
+                      已发
+                      <elseif condition="$vi['dtype'] eq 0"/>
+                      取消
+                      <else/>
+                      未发
+                      </if>
+                    </td>
+                  <td></td>
+                  </tr>
+      <!-- =========================================新增的九大规划start====================================================== -->
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>九大规划</td>
+                    <td>{$vi.planning}</td>
+                    <td>{$info['nc']}%</td> 
+                    <td>{:money($vi['planning'],$info['nc'],$info['leafletsnc'])}元</td>
+                    <td>
+                      
+                    
+                      <if condition="$vi['ntype'] eq 1">
+                      已发
+                      <elseif condition="$vi['ntype'] eq 0"/>
+                      取消
+                      <else/>
+                      未发
+                      </if>
+                    </td>
+                  <td></td>
+                  </tr>
+      <!-- =========================================新增的九大规划end====================================================== -->       
+                  <else />
+                  </if>
+                  
+              </foreach>
+              </tr>
+          </foreach>
+        </table>
+        
+    </div>
+    <div class="">
+        <input type="button" class="btn btn-success bornone" name="" value="生成表格文档" onclick="excel()"> 
+    </div>
+    </div>
+  </div>
+
+<include file="Public/footer" />
+
+  <script>
+  var uid = {};
+  $(document).ready(function($){
+        //默认加载
+        //aler
+      uid = eval({$uid});
+      // alert(uid)
+  });
+
+    function blocks(act){
+        setTimeout(function(){
+          if(act == 1){
+            $("#fedit").css('display','inline-block');
+          }else if(act == 2){
+            $("#medit").css('display','inline-block');
+          }
+        }, 300);
+    }
+
+    function namenones(act){
+      setTimeout(function(){
+          if(act == 1){
+            $("#fedit").css('display','none');
+            var old = $("#fname").attr('old');
+            $("#fname").val(old);
+          }else if(act == 2){
+            $("#medit").css('display','none');
+            var old = $("#fphone").attr('old');
+            $("#fphone").val(old);
+          }
+      }, 300); 
+    }
+     //学员讲师选项卡
+    function stulet(data)
+    {
+    	if(data == 1)
+    	{
+    		$('.tab_one').css('display','block');
+    		$('.tab_two').css('display','none');
+    	}else
+    	{
+    		$('.tab_one').css('display','none');
+    		$('.tab_two').css('display','block');
+    	}
+    }
+
+    function upSystem (act) {
+        if(act == 1){
+          var old = $("#fname").attr('old');
+          var value = $("#fname").val();
+          if(value != ''){
+            if(old == value){
+              Showbo.Msg.alert('新用户名不能与原用户一样');
+              return false;
+            }
+          }else{
+            Showbo.Msg.alert('用户名不能为空');
+            return false;
+          }
+        }else if(act == 2){
+          var old = $("#fphone").attr('old');
+          var value = $("#fphone").val();
+          if(value != ''){
+            if(!(/^13[\d]{9}$|^14[5,7]{1}\d{8}$|^15[\d]{9}$|^17[0,6,7,8]{1}\d{8}$|^18[\d]{9}$/.test(value))){
+                Showbo.Msg.alert('您输入的手机号格式不对或填写号码不足11位');
+                return false;
+            }else{
+              if(old == value){
+                Showbo.Msg.alert('新手机号不能与原手机号一样');
+                return false;
+              }              
+            }
+          }else{
+            Showbo.Msg.alert('手机号不能为空');
+            return false;            
+          }
+        }
+        $.ajax({
+          url:"{:U('Home/Enterprise/fedit')}",
+          dataType:"json",
+          type:'post',
+          data:{type:act,value:value},
+          success:function(res){
+            console.log(res);
+            if(res.errcode == 0){
+                Showbo.Msg.alert(res.errmsg);
+            }else if(res.errcode == 1){
+                window.location.href="{:U('Home/enterprise/index')}";
+            }else if(res.errcode == 2){
+                Showbo.Msg.alert(res.errmsg);
+            }
+            
+          }
+        })
+    }
+
+    $(function(){
+      $(".js").change(function(e) {
+          var js = $(this).val();
+          var did = $(this).attr('did');
+          $.post('{:U('Home/Enterprise/jmobile')}',{js:js},function(d){
+                // console.log(d);
+                if(d.errcode == 1){
+                    var str = '';
+                    str = '<span>'+d.errmsg+'</span>';
+                    $("#jd"+did).empty();
+                    $("#jd"+did).append(str);
+                }else if(d.errcode == 0){
+                    Showbo.Msg.alert(d.errmsg);
+                }              
+            },"json")
+      });
+    })
+
+    $(function(){
+      $(".type").change(function(e){
+        var orderV = $(this).val(); //订单id
+        var orderI = $(this).attr('did');
+        var orderN = $(this).attr('name');
+        var old = $(this).attr('old');
+        Showbo.Msg.confirm('确认修改?',function(a)
+        {
+          if(a == "yes")
+          {
+            $.post('{:U('Home/Enterprise/orderedit')}',{val:orderV,id:orderI,name:orderN},function(d){
+                  console.log(d);
+                  if(d.errcode == 1){
+                    Showbo.Msg.alert(d.errmsg);
+                    setTimeout(function(){
+                      window.location.href="{:U('Home/enterprise/index')}";
+                    }, 1000);
+                  }else if(d.errcode == 0){
+                      Showbo.Msg.alert(d.errmsg);
+                  }else if(d.errcode == 2){
+                      Showbo.Msg.alert(d.errmsg);
+                  }              
+              },"json")
+          }else{
+              window.location.href="{:U('Home/enterprise/index')}";
+          }
+        })
+      })
+    })
+
+    function submit(id){
+      var jid = $("#lm"+id).val();
+
+      var ticket = $("#ticket"+id).val();
+      var card = $("#card"+id).val();
+      var friends = $("#friends"+id).val();
+      var disciple = $("#disciple"+id).val();
+
+      var sticket = $("#sticket"+id).val();
+      var scard = $("#scard"+id).val();
+      var sfriends = $("#sfriends"+id).val();
+      var sdisciple = $("#sdisciple"+id).val();
+
+      if(jid == ''){
+        Showbo.Msg.alert('请选择讲师');
+        return false;
+      }
+
+      if(ticket != ''){
+        if(!(/^[0-9]*$/.test(ticket))){
+          Showbo.Msg.alert('票只能输入正整数');
+          return false;
+        }
+      }else{
+        Showbo.Msg.alert('票选项不能为空');
+        return false;
+      }
+
+      if(card != ''){
+        if(!(/^[0-9]*$/.test(card))){
+          Showbo.Msg.alert('卡只能输入正整数');
+          return false;
+        }
+      }else{
+        Showbo.Msg.alert('卡选项不能为空');
+        return false;
+      }
+
+      if(friends != ''){
+        if(!(/^[0-9]*$/.test(friends))){
+          Showbo.Msg.alert('朋友圈只能输入正整数');
+          return false;
+        }
+      }else{
+        Showbo.Msg.alert('朋友圈选项不能为空');
+        return false;
+      }
+
+      if(disciple != ''){
+        if(!(/^[0-9]*$/.test(disciple))){
+          Showbo.Msg.alert('弟子只能输入正整数');
+          return false;
+        }
+      }else{
+        Showbo.Msg.alert('弟子选项不能为空');
+        return false;
+      } 
+
+      $.post('{:U('Home/Enterprise/order')}',{sid:id,uid:jid,ticket:ticket,card:card,friends:friends,disciple:disciple,ptype:sticket,ctype:scard,ftype:sfriends,dtype:sdisciple},function(d){
+            console.log(d);
+            if(d.errcode == 1){
+                Showbo.Msg.alert(d.errmsg);
+                setTimeout(function(){
+                  window.location.href="{:U('Home/enterprise/index')}";
+                }, 1000);    
+            }else if(d.errcode == 0){
+                Showbo.Msg.alert(d.errmsg);
+            }              
+        },"json")      
+    }
+
+    function telone(obj)
+    {
+      $tid = $(obj).attr('tid');
+      
+      if($tid == 1)
+      { 
+        $('.cver').css('display','none');
+        $('.nie').css('display','block');
+        $(obj).find(".nie").css('display','none');
+          $(obj).find(".cver").css('display','block');
+          
+          
+      }else
+      {
+        $('.cver').css('display','none');
+        $('.nie').css('display','block');
+        $(obj).find(".nie").css('display','none');
+          $(obj).find(".cver").css('display','block');
+      }
+    }
+
+    function savewang(id,obj)
+    {
+      var tid = $(obj).attr('tid');
+      
+      var cin = $(obj).prev().val();
+      if(tid == 1)
+      {
+        if(!(/^1[3|4|5|8][0-9]\d{8}$/.test(cin)))
+        {
+             Showbo.Msg.alert("您输入的手机号格式不对或填写号码不足11位");
+             return false;
+        }
+      }else
+      {
+        if(cin == "")
+        {
+          Showbo.Msg.alert("不能为空");
+        }
+      }
+      $.post('{:U("Home/Enterprise/savewang")}',{id:id,tid:tid,cin:cin},function(t)
+          {
+            if(t == 1)
+            {
+              Showbo.Msg.alert('修改成功');
+              var sibnole = $(obj).prev().val();
+              $(obj).parent().prev().html(sibnole);
+              $(obj).parent().css('display','none');
+              $(obj).parent().prev().css('display','block');
+            }else if(t == 2)
+            {
+              Showbo.Msg.alert('修改失败');
+            }else
+            {
+              Showbo.Msg.alert('请修改内容');
+            }
+        
+        
+          },'json')
+    }
+
+    function excel(){
+      // alert(uid)
+      $.ajax({
+         url:'{:U("Home/Admin/hata")}',
+         dataType:'json',
+         data:{uid:uid},
+         type:'post',
+       success:function(result)
+       {
+        // alert(1)
+        console.log(result);
+          if(result['code'] == 1)
+          {
+            // alert(1)
+            // return false;
+              window.location.href="{:U('Home/Admin/report/uid/"+uid+"')}";
+          }else{
+             Showbo.Msg.alert('没有数据'); 
+             return false;
+          }
+
+       }
+      })
+     
+    }
+  </script>
+<div class='tcdPageCode'></div>  
+
+ <!-- <div class="container"  id="alurer" >
+   
+</div> -->
+ <script>
+ var p = 1;
+var data = {};
+var table = {};
+var myDate = new Date();
+var m = myDate.getMonth()+1;
+var lnstr ="";
+var lyst ="";
+var lrstr ="";
+
+var tnst ="";
+var tystr ="";
+var trst ="";
+
+var y = new Date().getFullYear(); //当前年份
+
+$(document).ready(function($){
+
+    for (var i = (y-2); i < (y+1); i++) {
+        lnstr += '<option selected value="'+i+'">'+i+'年</option>';
+        if(i==y){
+            tnst+="<option selected='selected' value='"+i+"'>"+i+"年</option>";
+        }else{  
+            tnst+="<option  value='"+i+"'>"+i+"年</option>";
+        }
+    }
+    $('#timeyear').append(lnstr); //前两年年份
+    $('#beforeyea').append(tnst); //今年年份
+
+/********************************年份赋值****************************************/
+
+    for (var i = 1; i < 13; i++)  
+    {  
+        lyst += "<option value='" + i + "'> " + i + "月</option>"; 
+        if(i==m){
+            tystr+="<option selected='selected' value='"+i+"'>"+i+"月</option>";
+        }else{
+            tystr+="<option  value='"+i+"'>"+i+"月</option>";
+        } 
+    }  
+    $('#timemonth').append(lyst); //前两年月份
+    $('#datayear').append(tystr); //今年月份
+
+/********************************月份赋值****************************************/
+
+    for (var i = 1; i <= 31; i++)  
+    {  
+        lrstr += "<option value='" + i + "'> " + i + "日</option>"; 
+        if(i==myDate.getDate()){
+            trst+="<option selected='selected' value='"+i+"'>"+i+"日</option>";
+        }else{
+            trst+="<option  value='"+i+"'>"+i+"日</option>";
+        } 
+    }  
+    $('#timeday').append(lrstr); //前两年月份
+    $('#day').append(trst); //今年月份
+
+/********************************天数赋值****************************************/
+
+  var timeyear = $('#timeyear').val();
+  var timemonth = $('#timemonth').val();
+  var timeday = $('#timeday').val();
+  var beforeyea = $('#beforeyea').val();
+  var datayear = $('#datayear').val();
+  var day = $('#day').val();
+    taskList(1,timeyear,timemonth,timeday,beforeyea,datayear,day);
+
+});
+
+
+function taskList(p,timeyear,timemonth,timeday,beforeyea,datayear,day){
+
+    $('.loding').show();
+
+    $.ajax({
+      url:"{:U('Home/Admin/jsajax')}",
+      type:'post',
+      dataType:'json',
+      data:{page:p,type:1,timeyear:timeyear,timemonth:timemonth,timeday:timeday,beforeyea:beforeyea,datayear:datayear,day:day,uid:uid},
+      success:function(res){
+        result = eval(res);
+        // console.log(result);
+        p = result.p;
+        num = result.num;
+        var info = result.data;
+        var str = '';
+        str += '<tr><td>姓名</td><td>联系电话</td><td>学员人数</td><td>应发</td><td>已发</td><td>未发</td></tr>';
+        for(i in info){
+        	str+="<tr><td>"+info[i].name+"</td><td>"+info[i].mobile+"</td>";
+        	if(info[i].nums == undefined){
+        		str+="<td>未有</td>";
+        	}else{
+        		str+="<td>"+info[i].nums+"</td>";
+        	}
+
+        	if(info[i].zje == undefined){
+        		str+="<td>未有</td>";
+        	}else{
+        		str+="<td>"+info[i].zje+"</td>";
+        	}
+
+        	if(info[i].yf == undefined){
+        		str+="<td>未有</td>";
+        	}else{
+        		str+="<td>"+info[i].yf+"</td>";
+        	}
+
+        	if(info[i].wf == undefined){
+        		str+="<td>未有</td>";
+        	}else{
+        		str+="<td>"+info[i].wf+"</td>";
+        	}
+        	str+="</tr>";	
+        }
+        $("#llever").empty(str);
+        $("#llever").append(str);
+        $("#setBudgetPage").html("");
+        $("#setBudgetPage").html('<div class="tcdPageCode"></div>');
+
+        $("#setBudgetPage .tcdPageCode").createPage({
+            pageCount:num,
+            current:p,
+            backFn:function(p){
+                newPage = p;
+                $("#llever").empty();
+                $("#setBudgetPage").empty();
+
+                taskList(newPage);
+            }
+        })
+      }
+    })
+}
+
+function seove(p){	
+	if(p==undefined){
+		p=1;
+	} 
+	var timeyear = $('#timeyear').val();
+	var timemonth = $('#timemonth').val();
+	var timeday = $('#timeday').val();
+	var beforeyea = $('#beforeyea').val();
+	var datayear = $('#datayear').val();
+	var day = $('#day').val();
+	taskList(p,timeyear,timemonth,timeday,beforeyea,datayear,day);
+}
+function checkChangDate(obj,act){
+    var myDate = new Date();
+    var lrstrs = '';
+    var trsts = '';
+    var timeyear = $('#timeyear').val();//左侧年
+
+    var timemonth = $("#timemonth").val();//左侧月 
+
+    var timeday = $("#timeday").val();//左侧日
+
+    var beforeyea = $("#beforeyea").val();//右侧年
+
+    var datayear = $('#datayear').val();//右侧月
+
+    var day = $('#day').val();//右侧日
+
+    timeyear = parseInt(timeyear);
+    beforeyea = parseInt(beforeyea);
+    if(timeyear > beforeyea){
+        $("#beforeyea").val(timeyear);
+    }
+
+    if(timeyear == beforeyea){
+        if(timemonth > datayear){
+            $("#datayear").val(timemonth);
+        }
+    }
+
+    timemonth = $("#timemonth").val();
+    timemonth = parseInt(timemonth);
+
+    datayear = $("#datayear").val();
+    datayear = parseInt(datayear);
+
+    timeday = parseInt(timeday);
+    day = parseInt(day);
+    if(timeyear == beforeyea && timemonth == datayear){
+        if(timeday > day){
+            $("#day").val(timeday+1);
+        }
+    }
+
+    if(act == 1){
+        var mm = getDays(timeyear,timemonth);    //当左侧月改变时执行
+    }else if(act == 2){
+        var mm = getDays(beforeyea,datayear);    //当右侧月改变时执行
+    }
+
+    for (var i = 1 ; i <= mm ; i++)  
+    {  
+        if(act == 1){   
+            lrstrs += "<option value='" + i + "'> " + i + "日</option>"; 
+        }else if(act == 2){
+            if(i==myDate.getDate()){
+                trsts+="<option selected='selected' value='"+i+"'>"+i+"日</option>";
+            }else{
+                trsts+="<option  value='"+i+"'>"+i+"日</option>";
+            } 
+        }
+    } 
+    
+    if(act == 1){
+        $('#timeday').html(lrstrs); //左侧变化的天数
+    }else if(act == 2){
+        $('#day').empty();
+        $('#day').append(trsts); //右侧变化的天数
+    }
+    
+}
+
+function getDays(year,mouth){
+
+    //定义当月的天数；
+    var days ;
+     
+    //当月份为二月时，根据闰年还是非闰年判断天数
+    if(mouth == 2){
+        days= year % 4 == 0 ? 29 : 28;
+         
+    }
+    else if(mouth == 1 || mouth == 3 || mouth == 5 || mouth == 7 || mouth == 8 || mouth == 10 || mouth == 12){
+        //月份为：1,3,5,7,8,10,12 时，为大月.则天数为31；
+        days= 31;
+    }
+    else{
+        //其他月份，天数为：30.
+        days= 30;   
+    }
+    return days;
+}
+
+
+</script>
+<script>
+function jexcel(){
+   $.ajax({
+         url:'{:U("Home/Admin/hataa")}',
+         dataType:'json',
+         data:{uid:uid},
+         type:'post',
+       success:function(result)
+       {
+          if(result['code'] == 1)
+          {
+              window.location.href="{:U('Home/Admin/jreport/uid/"+uid+"')}";
+          }else if(result['code'] == 2){
+             Showbo.Msg.alert('没有数据'); 
+          }
+       }
+     })
+}
+
+</script>
+  
+</body>
+</html>

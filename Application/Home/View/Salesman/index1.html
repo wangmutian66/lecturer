@@ -1,0 +1,627 @@
+<include file="Public/header" />
+<style>
+	.Task_cont p:first-child input{width:auto;}
+</style>
+<div class="wrap">
+     <div class="container"> <!-- 导航↓ -->
+ <?php if($_SESSION['type']==11 ||$_SESSION['type']==12 ||$_SESSION['type']==10 || $_SESSION['type']==9){ ?>
+ <div id="selename">
+			
+		</div>
+  <?php }else{ ?>
+   <?php } ?>
+		
+
+		<div id="addsal"></div>
+		<table class="table content table-striped account_manage" id="data" bordercolor="#2294d3">
+		</table>
+		 <div class="TaskTable" id="pwdshow">
+		</div>
+		 <div class="TaskTable" id="adds">
+		</div>	
+	</div>
+</div>
+<script type="text/javascript">
+$(function(){
+	listsal();
+ 	selename();
+ })
+ function selename()
+{
+   $.ajax({
+ 		url:'{:U("Home/Enterprise/selename")}',
+			dataType:'json',
+			data:{},
+			type:'post',
+			success:function(data){
+				
+				html = '选择公司：';
+	            html +='<select name="" id="enterpid" class="form-control" onchange="chanenter()" >';
+	            html +='<option value="">--请选择--</option>';
+				for(i in data)
+				{
+					html +='<option value="'+data[i].id+'">'+data[i].Qyname+'</option>';
+				}
+				html +='</select>';
+				$('#selename').html(html);	
+				
+		}
+ 	})
+}
+
+function chanenter(page){
+	var enterpid=$("#enterpid").val();
+	
+	if(enterpid==""){
+		listsal();
+		return false;
+	}
+	$('.loding').show();
+	$.ajax({
+		url:'{:U("Home/Salesman/chanenter")}',
+		type:'POST',
+		dataType:'json',
+		data:{id:enterpid,page:page},
+		success:function(data){
+		   //console.log(data);
+		   var count=data.count;
+		   var data=data.list;
+		   $('#data').html("");
+		   str ="";
+		   for(i in data){
+			    //str += '<tr><td><input value="'+data[i].account+'" type="text" id="dbn'+data[i].id+'"><input value="确认" type="button" onclick="savacc('+data[i].id+',1)" class="btn btn-info"></td><td><input id="dname'+data[i].id+'" value="'+data[i].name+'" type="text"><input type="button" value="确认" onclick="savacc('+data[i].id+',2)" class="btn btn-info"></td><td><input type="button" value="修改密码" onclick="savepwd('+data[i].id+')" class="btn btn-info"></td><td><input value="删除" type="button" onclick="delacc('+data[i].id+')" class="btn btn-info"></td></tr>'
+			   str += '<tr><td>'+data[i].account+'</td><td>'+data[i].name+'</td><td>'+rolename(data[i].role)+'</td><td>'+data[i].mobile+'</td><td><input type="button" value="修改密码" onclick="savepwd('+data[i].id+')" class="btn btn-info"><input value="编辑" type="button" onclick="updataacc('+data[i].id+')" class="btn btn-info"><input value="删除" type="button" onclick="delacc('+data[i].id+')" class="btn btn-info"></td></tr>'
+		   }
+			if(str==""){
+				str+="<tr><td colspan='5'><span style='color:#999;'>当前没有销售人员</span></td></tr>";
+			}
+		   $('#data').html(str);
+		   $('#data').prepend('<tr><td>账号</td><td>名称</td><td>职位</td><td>手机号</td><td>操作</td></tr>');
+		   $('.loding').hide();
+		   $(".tcdPageCode").remove();
+		   $("#data").after("<div class='tcdPageCode'></div>");
+		   $(".tcdPageCode").createPage({
+	          pageCount:count,
+	          current:page,
+	          backFn:function(p){
+	        	  chanenter(p);
+	          }
+		   });
+		}		
+	});
+}
+
+
+
+ //业务员列表展示
+ function listsal(p){
+ 	if(p==undefined){
+             p = 1;
+             page(p);
+  		   }
+ 	$('.loding').css('display','block');
+ 	$.ajax({
+ 		    url:'{:U("Home/Salesman/listsal")}',
+			dataType:'json',
+			data:{page:p},
+			type:'post',
+			success:function(json){
+				var data = json.salesman;
+				type  = json.type;
+				str = '';
+				stt = '';
+			
+				//user表添加销售人员
+				if(type == 333){
+					stt += '<input type="button" class="btn btn-success bornone" value="添加销售人员" onclick="addsal()">'
+				}else if(type == 444){
+					stt ="";
+				}else if(type == 111){
+					stt += '<input type="button" class="btn btn-success bornone" value="添加销售人员" onclick="addsaladmin()">'
+				}
+
+				
+				
+			    for(i in data){
+				    //str += '<tr><td><input value="'+data[i].account+'" type="text" id="dbn'+data[i].id+'"><input value="确认" type="button" onclick="savacc('+data[i].id+',1)" class="btn btn-info"></td><td><input id="dname'+data[i].id+'" value="'+data[i].name+'" type="text"><input type="button" value="确认" onclick="savacc('+data[i].id+',2)" class="btn btn-info"></td><td><input type="button" value="修改密码" onclick="savepwd('+data[i].id+')" class="btn btn-info"></td><td><input value="删除" type="button" onclick="delacc('+data[i].id+')" class="btn btn-info"></td></tr>'
+			    	str += '<tr><td>'+data[i].account+'</td><td>'+data[i].name+'</td><td>'+rolename(data[i].role)+'</td><td>'+data[i].mobile+'</td><td><input type="button" value="修改密码" onclick="savepwd('+data[i].id+')" class="btn btn-info"><input value="编辑" type="button" onclick="updataacc('+data[i].id+')" class="btn btn-info"><input value="删除" type="button" onclick="delacc('+data[i].id+')" class="btn btn-info"></td></tr>'
+			    }
+				if(str==""){
+					str+="<tr><td colspan='5'><span style='color:#999;'>当前没有销售人员</span></td></tr>";
+				}
+				$('#data').html(str);
+				$('#addsal').html(stt);
+				$('#data').prepend('<tr><td>账号</td><td>名称</td><td>职位</td><td>手机号</td><td>操作</td></tr>');
+				$('.loding').css('display','none');	
+			}
+ 	})
+ }
+ 
+ 
+ function rolename(role){
+	 role=parseInt(role);
+	 switch (role){
+	     case 1:
+	    	 return '业务员';
+	    	 break;
+	     case 2:
+	    	 return '业务副主管';
+	    	 break;
+	     case 3:
+	    	 return '业务主管';
+	    	 break;
+	     case 4:
+	    	 return '业务副经理';
+	         break;
+	     case 5:
+	    	 return '业务经理';
+	    	 break;
+	     default:
+	    	 return '未选择任何色';
+	    	 break;	 
+	 }
+ }
+
+ //修改账号
+ function savacc(id,v){
+ 	if(v == 1){
+ 		var val = $('#dbn'+id).val();
+ 		var type = 1;
+ 	}else{
+ 		var val = $('#dname'+id).val();
+ 		var type = 2;
+ 	}
+ 	if(val == ""){
+ 		Showbo.Msg.alert('账号或名字不能为空');
+		return false;
+ 	}
+ 	$.ajax({
+ 		    url:'{:U("Home/Salesman/savacc")}',
+			dataType:'json',
+			data:{id:id,val:val,type:type},
+			type:'post',
+			success:function(data){
+				if(data.code == 1){
+					Showbo.Msg.alert(data.msg);
+				}else{
+					Showbo.Msg.alert(data.msg);
+				}
+			}
+		})
+ }
+
+ //删除
+ function delacc(id){
+ 	 Showbo.Msg.confirm('确认删除?',function(a){
+		if(a == 'yes'){
+	 	$.ajax({
+	 		    url:'{:U("Home/Salesman/delacc")}',
+				dataType:'json',
+				data:{id:id},
+				type:'post',
+				success:function(data){
+					if(data.code == 1){
+						Showbo.Msg.alert(data.msg);
+						listsal();
+					}else{
+						Showbo.Msg.alert(data.msg);
+					}
+				}
+			})
+ 		}
+	})
+
+ }
+
+function savepwd(id){
+ 	var str ='';
+	str +=' <div class="TaskTablecount"><div class="Task_header" id="newTask"><h3 id="add" act="add">修改密码</h3><i class=" icon-remove close_task" id="close2" ></i></div><div style=" height:60px; width: 100%;"></div><div  class="Task_cont" id="newPwd"><p><span>请输入旧密码</span><input  class="form-control" type="password" id="oldpwd"></p><p><span>请输入新密码</span><input  class="form-control" type="password" id="newpwd"></p><p><span>再次确认新密码</span><input  class="form-control" type="password" id="townewpwd" /><input type="hidden" id="yid" value="" /></p><p><input type="button" class=" btn-info" onclick="editpwd('+id+')" value="提交" /></p></div></div>';
+	$('#pwdshow').html(str).show();
+	$('.masker').fadeIn();
+	close_mask();
+ }
+ function close_mask(){
+  $('.close_task').click(function(){
+    $('.TaskTable,.masker').fadeOut();
+  })
+}
+ //修改密码
+ function editpwd(id){
+ 	var oldpwd = $('#oldpwd').val();
+	var newpwd = $('#newpwd').val();
+	var townewpwd = $('#townewpwd').val();
+	if(oldpwd == ""){
+		Showbo.Msg.alert('旧密码不能为空,请重新输入');
+		return false;
+	}if(newpwd == ""){
+		Showbo.Msg.alert('新密码不能为空,请重新输入');
+		return false;
+	}
+	if(newpwd != townewpwd){
+		Showbo.Msg.alert('两次密码输入不一致,请重新输入');
+		return false;
+	}
+	if(oldpwd == newpwd ){
+		Showbo.Msg.alert('新旧密码一致,请重新输入');
+		return false;
+	}
+	if(oldpwd == townewpwd ){
+		Showbo.Msg.alert('新旧密码一致,请重新输入');
+		return false;
+	}
+
+ 	$.ajax({
+	 		    url:'{:U("Home/Salesman/savepwd")}',
+				dataType:'json',
+				data:{oldpwd:oldpwd,newpwd:newpwd,id:id},
+				type:'post',
+				success:function(data){
+					
+						if(data.errcode == 1){
+							Showbo.Msg.alert(data.errmsg);
+							$('#pwdshow').hide();
+							$('.masker').hide();
+							listsal();
+						}else if(data.errcode == 3){
+							Showbo.Msg.alert(data.errmsg);
+						}else{
+							Showbo.Msg.alert(data.errmsg);
+							
+						}
+				}
+			})
+ }
+
+ //分页
+function page(page)
+{
+   var nums ='';
+    $.ajax({
+	    type: "GET",
+	    url:'{:U("Home/Salesman/page")}',
+	    dataType:"json",
+	    async:false,
+	    error: function(data){
+	    },
+	    success: function(data){
+	           nums = eval(data);
+	    	}
+	    });
+
+    $(".tcdPageCode").remove();
+    $("#data").after("<div class='tcdPageCode'></div>");
+    $(".tcdPageCode").createPage({
+          pageCount:nums,
+          current:page,
+          backFn:function(p){
+            listsal(p);
+          }
+       });
+}
+
+//添加
+function addsal(){
+	var str ='';
+	str += '<div class="TaskTablecount"><div class="Task_header" id="newTask"><h3 id="add" act="add">销售人员添加</h3><i class=" icon-remove close_task" id="close"></i></div><div style=" height:60px; width: 100%;"></div><div class="Task_cont"><p><span>职位:</span><select id="jiaose"><option>-请选择职位-</option><option value="5">业务经理</option><option value="4">业务副经理</option><option value="3">业务主管</option><option value="2">业务副主管</option><option value="1">业务员</option></select></p><p><span>账号:</span><input  class="form-control" type="text" id="acc"></p><p><span>名称:</span><input  class="form-control" type="text" id="name"></p><p><span>手机号:</span><input  class="form-control" type="text" id="mob1"></p><p><span>密码:</span><input  class="form-control" type="password" id="pwd"></p><p><span>确认密码:</span><input  class="form-control" type="password" id="agpwd"></p><p><button class=" btn-info" type="button"  onclick="addregion()">确定</button></p></div></div>';
+	$('#adds').html(str).show();
+	$('.masker').fadeIn();
+	close_mask();
+}
+
+//企业添加
+function addsaladmin(){
+	$.ajax({
+ 	     	url:'{:U("Home/Salesman/addsaladmin")}',
+			dataType:'json',
+			data:{},
+			type:'post',
+			success:function(data){
+				acc  = data.acc;
+				ent  = data.ent;
+				var str ='';
+				str += '<div class="TaskTablecount"><div class="Task_header" id="newTask"><h3 id="add" act="add">添加销售人员</h3><i class=" icon-remove close_task" id="close"></i></div><div style=" height:60px; width: 100%;"></div><div class="Task_cont">';
+				if(data.status==10){
+					str+='<p><span>大区总裁</span><select  id="province" class="form-control" onchange="dxchange(this)"><option value="">--请选择--</option>';
+					for(i in acc){
+						str += '<option value="'+acc[i].id+'" >'+acc[i].mname+'</option>';
+					}
+					str += '</select></p>';
+				}else{
+					str+='<input type="hidden" id="province" value="'+acc+'">';
+				}
+				
+				str+='<div class="Task_cont">';
+				if(data.status>=9){
+					str+='<p><span>分公司</span><select class="form-control" id="city"><option value="">--请选择--</option>';
+					for(o in ent){
+						str += '<option value="'+ent[o].id+'" >'+ent[o].Qyname+'</option>';
+					}
+					str += '</select></p>';
+				}else{
+					str+='<input type="hidden" id="city" value="'+ent+'">';
+				}
+				str += '</p><p><span>职位:</span><select id="jiaose1" class="form-control"><option>-请选择职位-</option><option value="5">业务经理</option><option value="4">业务副经理</option><option value="3">业务主管</option><option value="2">业务副主管</option><option value="1">业务员</option></select></p><p><span>账号:</span><input  class="form-control" type="text" id="acc"></p><p><span>名称:</span><input  class="form-control" type="text" id="name"></p><p><span>手机号:</span><input  class="form-control" type="text" id="mob"></p><p><span>密码:</span><input  class="form-control" type="password" id="pwd"></p><p><span>确认密码:</span><input  class="form-control" type="password" id="agpwd"></p><p><button class=" btn-info" type="button"  onclick="addregionadmin()">确定</button></p></div></div>';
+				$('#adds').html(str).show();
+				$('.masker').fadeIn();
+				close_mask();
+			}
+		})
+}
+
+function updataacc(id){
+	$.ajax({
+	    url:'{:U("Home/Salesman/editsalesman")}',
+		dataType:'json',
+		data:{id:id},
+		type:'post',
+		success:function(data){
+			console.log(data);
+			acc  = data.acc;
+			ent  = data.ent;
+			salesman  = data.salesman;
+			var str ='';
+			str += '<div class="TaskTablecount"><div class="Task_header" id="newTask"><h3 id="add" act="add">修改销售人员</h3><i class=" icon-remove close_task" id="close"></i></div><div style=" height:60px; width: 100%;"></div><div class="Task_cont">';
+			if(data.status==10){
+				str+='<p><span>大区总裁</span><select  id="province" class="form-control" onchange="dxchange(this)"><option value="">--请选择--</option>';
+				for(i in acc){
+					if(acc[i].id==salesman.aid){
+						str += '<option value="'+acc[i].id+'" selected>'+acc[i].mname+'</option>';
+					}else{
+						str += '<option value="'+acc[i].id+'" >'+acc[i].mname+'</option>';
+					}
+					
+				}
+				str += '</select></p>';
+			}else{
+				str+='<input type="hidden" id="province" value="'+acc+'">';
+			}
+			
+			str+='<div class="Task_cont">';
+			if(data.status>=9){
+				str+='<p><span>分公司</span><select class="form-control" id="city"><option value="">--请选择--</option>';
+				for(o in ent){
+					if(ent[o].id==salesman.uid){
+					     str += '<option value="'+ent[o].id+'" selected>'+ent[o].Qyname+'</option>';
+					}else{
+						 str += '<option value="'+ent[o].id+'" >'+ent[o].Qyname+'</option>';
+					}
+				}
+				str += '</select></p>';
+			}else{
+				str+='<input type="hidden" id="city" value="'+ent+'">';
+			}
+			str += '</p><p><span>职位:</span><select id="jiaose1" class="form-control"><option>-请选择职位-</option><option value="5">业务经理</option><option value="4">业务副经理</option><option value="3">业务主管</option><option value="2">业务副主管</option><option value="1">业务员</option></select></p><p><span>账号:</span><input  class="form-control" type="text" id="acc" value="'+salesman.account+'"></p><p><span>名称:</span><input  class="form-control" type="text" id="name"  value="'+salesman.name+'"></p><p><span>手机号:</span><input  class="form-control" type="text" id="mob2"  value="'+salesman.mobile+'"></p><p><button class=" btn-info" type="button"  onclick="saveregionadmin('+id+')">确定</button></p></div></div>';
+			$('#adds').html(str).show();
+			$("#jiaose1").find("option").removeAttr("selected");
+			$("#jiaose1").find("option[value="+salesman.role+"]").attr("selected",true);
+			$('.masker').fadeIn();
+			close_mask();
+		}
+	})
+}
+
+
+
+function dxchange(element){
+	$id=$(element).val();
+	$.ajax({
+		url:"__URL__/dxchange",
+		type:"POST",
+		dataType:"json",
+		data:{id:$id},
+		success:function(data){
+			
+			var html="";
+			for(var i in data){
+				html+="<option value='"+data[i].id+"'>"+data[i].Qyname+"</option>";
+			}
+			$("#city option:gt(0)").remove();
+			$("#city").append(html);
+		}
+	});
+}
+function addregion(){
+ 	var acc = $('#acc').val();
+ 	var pwd = $('#pwd').val();
+ 	var agpwd = $('#agpwd').val();
+ 	var name = $('#name').val();
+ 	var jiaose = $('#jiaose').val();
+ 	var mob = $('#mob1').val();
+	var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/; 
+ 	if(jiaose == ""){
+ 		Showbo.Msg.alert('职位不能为空,请重新输入');
+		return false;
+ 	}
+ 	if(acc == ""){
+ 		Showbo.Msg.alert('企业账号不能为空,请重新输入');
+		return false;
+ 	}
+ 	if(name == ""){
+ 		Showbo.Msg.alert('企业名称不能为空,请重新输入');
+		return false;
+ 	}
+ 	if(mob == ""){
+ 		Showbo.Msg.alert('手机号不能为空,请重新输入');
+		return false;
+ 	}
+ 	if(!myreg.test(mob))
+    { 
+        Showbo.Msg.alert("您输入的手机号格式不对或填写号码不足11位"); 
+        return false;
+    }
+ 	if(pwd == ""){
+ 		Showbo.Msg.alert('密码不能为空,请重新输入');
+		return false;
+ 	}
+ 	if(agpwd == ""){
+ 		Showbo.Msg.alert('确认密码不能为空,请重新输入');
+		return false;
+ 	}
+ 	if(pwd != agpwd){
+ 		Showbo.Msg.alert('两次密码不一致,请重新输入');
+		return false;
+ 	}
+ 	$.ajax({
+ 	     	url:'{:U("Home/Salesman/addregion")}',
+			dataType:'json',
+			data:{acc:acc,pwd:pwd,name:name,jiaose:jiaose,mob:mob},
+			type:'post',
+			success:function(data){
+				
+				if(data.code == 1){
+					Showbo.Msg.alert(data.errmsg);
+					$('#adds').hide();
+					$('.masker').hide();
+					listsal();
+				}else if(data.code == 3){
+					Showbo.Msg.alert(data.errmsg);
+				}else if(data == 10){
+					Showbo.Msg.alert('手机号码已存在');
+				}
+			}
+
+ 	})
+ }
+ 
+ function saveregionadmin(id){
+	var param=new Object(); 
+	param["province"] = $('#province').val();  //大区总裁id
+	param["uid"]= $('#city').val();
+	param["role"]= $('#jiaose1').val();
+	param["name"] = $('#name').val(); // 公司名称
+	param["account"] = $('#acc').val();   //账号
+	param["name"] = $('#name').val();   //账号 	
+	param["id"] = id;   //账号
+	param["mobile"]= $('#mob2').val();
+	mob = $('#mob2').val();
+	var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/; 
+
+	if(param["province"] == ''){
+		Showbo.Msg.alert('请选择大区总裁！');
+		return false;
+	}
+	if(param["uid"] == ''){
+		Showbo.Msg.alert('请选择分公司！');
+		return false;
+	}
+ 	if(param["role"] == ''){
+		Showbo.Msg.alert('请选择职位！');
+		return false;
+	}
+	if(param["account"] == ''){
+		Showbo.Msg.alert('请填写账号！');
+		return false;
+	}
+	if(param["name"] == ''){
+		Showbo.Msg.alert('请填写名称！');
+		return false;
+	}
+	if(param["mobile"] == ''){
+		Showbo.Msg.alert('请填写手机号！');
+		return false;
+	}
+	if(!myreg.test(mob))
+    { 
+        Showbo.Msg.alert("您输入的手机号格式不对或填写号码不足11位"); 
+        return false;
+    }
+	$.ajax({
+	      url:"{:U('Home/Salesman/saveregionadmin')}",
+	      type:'post',
+	      data:param,
+	      dataType:'json',
+	      success:function(data){
+	      		if(data.errcode==1){
+	      			listsal();
+	      		}else if(data.errcode == 3){
+	      			Showbo.Msg.alert(data.errmsg);
+	      		}
+      			if(data.errcode == 0){
+      				Showbo.Msg.alert('账号已存在');
+      			}
+      			$('#adds').hide();
+				$('.masker').hide();
+				
+	      		
+    	}
+	  })
+ 	
+ }
+ 
+ function addregionadmin(){
+ 	var presid = $('#province').val();  //大区总裁id
+ 	var cid = $('#city').val();
+ 	var gsname = $('#name').val(); // 公司名称
+ 	var gspwd = $('#pwd').val();  // 公司密码
+ 	var account = $('#acc').val();   //账号
+ 	var pwdtow = $("#agpwd").val();
+ 	var jiaose = $('#jiaose1').val();
+ 	var mob = $('#mob').val();
+	var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/; 
+ 	if(presid == '')
+ 	{
+ 		Showbo.Msg.alert('请选择大区总裁');
+ 		return false;
+ 	}
+ 	if(cid == '')
+ 	{
+ 		Showbo.Msg.alert('请选择分公司');
+ 		return false;
+ 	}
+ 	if(jiaose == '')
+ 	{
+ 		Showbo.Msg.alert('请选择职位');
+ 		return false;
+ 	}
+ 	if(account == '')
+ 	{
+ 		Showbo.Msg.alert('请填写账号');
+ 		return false;
+ 	}
+ 	if(gsname == '')
+ 	{
+ 		Showbo.Msg.alert('请填写公司名称');
+ 		return false;
+ 	}
+ 	if(mob == ""){
+ 		Showbo.Msg.alert('请输入手机号');
+ 		return false;
+ 	}
+ 	if(!myreg.test(mob))
+    { 
+        Showbo.Msg.alert("您输入的手机号格式不对或填写号码不足11位"); 
+        return false;
+    }
+ 	if(gspwd == '')
+ 	{
+ 		Showbo.Msg.alert('请填写密码');
+ 		return false;
+ 	}
+    
+ 	if(pwdtow != gspwd)
+ 	{
+ 		Showbo.Msg.alert('您输入的两次密码不一致,请重新输入');
+ 		return false;
+ 	}
+	$.ajax({
+	      url:"{:U('Home/Salesman/addregionadmin')}",
+	      type:'post',
+	      data:{presid:presid,gsname:gsname,gspwd:gspwd,account:account,cid:cid,jiaose:jiaose,mob:mob},
+	      dataType:'json',
+	      success:function(res){
+	      		if(res == 1){
+	      			Showbo.Msg.alert('添加完毕');
+	      			$('#adds').hide();
+					$('.masker').hide();
+					listsal();
+	      		}
+	      		if(res == 3){
+	      			Showbo.Msg.alert('此账号已存在');
+	      		}
+	      		if(res == 10){
+	      			Showbo.Msg.alert('手机号码已存在');
+	      		}
+      	}
+ 	  })
+ }
+ </script>

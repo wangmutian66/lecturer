@@ -1,0 +1,356 @@
+<include file="Public/header" />
+<link rel="stylesheet" href="__PUBLIC__/css/zhangweiyan.css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.date.mt.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/city.js"></script>
+<style>
+	.tcdPageCode{ padding: 0;}
+</style>
+</head>
+<body>
+<!-- 模态框（Modal） -->
+<div class="modal fade tianjiacss" id="myModalxq" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">详情</h4>
+			</div>
+			<div class="modal-body">
+                 <table id="orderxq" class="table table-bordered table-hover">
+
+				 </table>
+			</div>
+
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade tianjiacss" id="myModalmove" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">选择客户名称</h4>
+			</div>
+			<div class="modal-body">
+				<div id="hi">
+					<div class="tjform">
+					     <input type="text" id="kname" style="width: 75%;"><input value="搜索" type="button" onclick="maybe()">
+					</div>
+					<table class="table table-striped table-hover table-bordered search_header_list widthfull" id="neihtml" >
+
+					</table>
+					<div id ='tablerangborder' ></div>
+					<div class="tablebtn"><input type="button" onclick="btnmove('23,')" value="确定" id="savebtnmove"><input type="button" onclick="btnnext()" value="确定" id="nextbtnmove" style="margin-top:10px;"></div>
+				</div>
+			</div>
+
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+	<div class="yixianjiangshi kehukecheng">
+
+		<div class="Modinfo date" style=" margin-left: 0; width:100%;">
+		         <form name="form">       
+	                 <span>
+	             	     <select name="se1" id="se1"  onchange="selectcityarea('se1','se2','form')"><option value="0">请选择省份</option></select>
+	                 </span>
+
+	                 <span>
+	             	     <select name="se2" id="se2"><option value="0">请选择城市</option></select>
+	                 </span>
+				 </form>
+                  <span >
+             	  <select id="fuid">
+             	  <option value="0">请选择分公司</option>
+					<foreach name="enterprise" item="vo">
+					 <option value="{$vo.id}" >{$vo.Qyname}</option>
+					</foreach>
+             	  </select>
+                 </span>
+
+                  <span>
+             	  <select id="status">
+					<option value="-1">全部</option>
+					<option value="1">成交</option>
+					<option value="0">听课</option>
+             	  </select>
+                 </span>
+
+                 <span class="searcinput1" style="border-left: 1px solid #038ace;border-right: 1px solid #038ace;margin-right: 15px;">
+                   <input type="button" class="btn-default1" onclick="searove()" value="搜索客户名称"  data-toggle="modal" data-target="#myModalmove" id="yy">
+
+                 </span>
+                 
+		                 
+		 </div>
+		 <div id="lister"> </div>
+		 <div id="data" >
+			 <div class="htmlmessage">您需要精确条件</div>
+		 </div>
+		  <table id="data1" class="table table-bordered table-hover"></table>
+	 </div>
+
+	 <script type="text/javascript">
+
+first("se1","se2","form",0,0)
+
+function searove(p){
+	if(p==undefined){
+        p = 1;
+	}
+	$('.loding').show();
+
+	$('#neihtml').html('');
+	//$('#neihtml').html('<tbody><tr><td>客户名称</td></tr></tbody>');
+	var uid = document.getElementById("fuid").value;
+	se1text = $("select[name=se1] option:checked").text();
+	se2text = $("select[name=se2] option:checked").text();
+	se1val = $("select[name=se1] option:checked").val();
+	se2val = $("select[name=se2] option:checked").val();
+
+    var se1=se1val+":"+se1text;
+	var se2=se2val+":"+se2text;
+    var param=new Object();
+	param["p"]=p;
+	param["uid"]=uid;
+	if(se1val!=0){
+		param["se1"]=se1;
+	}
+	if(se2val!=0){
+		param["se2"]=se2;
+	}
+	$.ajax({
+ 		    url:'{:U("Home/Client/searove")}',
+			dataType:'json',
+			data:param,
+			type:'post',
+			success:function(data){
+				str = '<tr><td>客户名称</td></tr>';
+
+				for(i in data){
+					str += '<tr onclick="client(this,'+data[i].id+')"><td fid="'+data[i].id+'">'+data[i].name+'</td></tr>'
+				}
+				page(p);
+				$('#neihtml').html(str);
+				$('.loding').hide();
+
+
+
+			}
+		})
+	
+}
+
+function page(p) {
+  var nums ='';
+  var uid = document.getElementById("fuid").value;
+  se1 = $("select[name=se1] option:checked").text()
+  se2 = $("select[name=se2] option:checked").text()
+    $.ajax({
+	    type: "GET",
+	    url:'{:U("Home/Client/page")}',
+	    data:{uid:uid,se1:se1,se2:se2},
+	    dataType:"json",
+	    async:false,
+	    error: function(data){
+	    },
+	    success: function(data){
+	           nums = eval(data);
+	    	}
+	    });
+
+    $(".tcdPageCode").remove();
+    $("#tablerangborder").after("<div class='tcdPageCode'></div>");
+    $(".tcdPageCode").createPage({
+		  pageCount:nums,
+		  current:p,
+		  backFn:function(p){
+		    searove(p);
+		  }
+	});
+}
+
+function page1(p) {
+  var val = $('#kname').val();
+  var nums ='';
+  var uid = document.getElementById("fuid").value;
+    $.ajax({
+	    type: "GET",
+	    url:'{:U("Home/Client/page1")}',
+	    data:{val:val,uid:uid},
+	    dataType:"json",
+	    async:false,
+	    error: function(data){
+	    },
+	    success: function(data){
+	           nums = eval(data);
+	    	}
+	    });
+
+    $(".tcdPageCode").remove();
+    $("#tablerangborder").after("<div class='tcdPageCode'></div>");
+    $(".tcdPageCode").createPage({
+		  pageCount:nums,
+		  current:p,
+		  backFn:function(p){
+		    maybe(p);
+		  }
+	});
+}
+
+function client(element,id){
+	$(element).addClass("sas").siblings().removeClass();
+	if(id == undefined){
+		var val = $('#kname').val();
+		if(val == ''){
+			Showbo.Msg.alert('请选择客户');
+			return false;
+		}else{
+			data = {val:val};
+		}
+		
+	}else{
+		data = {id:id};
+	}
+	//$('#hi').hide();
+
+}
+
+function btnnext(){
+	var fid=$("#neihtml tr.sas td").attr("fid");
+
+	if(fid==undefined){
+		Showbo.Msg.alert('请选择客户');
+		return false;
+	}
+
+	var status=$("#status").val();
+
+
+
+	clickque(fid,status,1);
+}
+
+function clickque(fid,status,page){
+
+	var param=new Object();
+	param["id"]=fid;
+	if(status>=0){
+		param["turnover"]=status;
+	}
+	param["page"]=page;
+	$("#myModalmove .close").click();
+	$(".loding").show();
+	$.ajax({
+		url:'{:U("Home/Client/client")}',
+		dataType:'json',
+		data:param,
+		type:'post',
+		success:function(data){
+			information = data.information;
+			order = data.order;
+
+			str = '';
+			stt = '';
+			sttt= '';
+			str += '<table class="indextable"><tr><td>客户名称:<span class="blurcolor">'+information['name']+'</span></td><td>联系人:<span class="blurcolor">'+information['contact']+'</span></td><td>电话:<span class="blurcolor">'+information['tel']+'</span></td><td>地址:<span class="blurcolor">'+information['address']+'</span></td><td>剩余听课次数:<span class="blurcolor">'+information['remaining']+'</span></td></tr></table>';
+
+			for(i in order){
+				stt +='<table class="table table-bordered table-hover">';
+				stt +='<tr><td style="width: 10%;">状态</td><td style="width: 10%;">成交时间</td><td style="width: 10%;">数量</td><td style="width: 10%;">课程时间</td><td style="width: 10%;">课程名称</td><td style="width: 17%;">讲师</td><td style="width: 10%;">分公司</td><td style="width: 17%;">地点</td>';
+				if(order[i].turnover!=0){
+				    stt +='<td style="width: 17%;">操作</td>';
+				}
+				stt +='</tr>';
+				stt +='<tr><td>'+((order[i].turnover==0)?"听课":"成交")+'</td><td>'+order[i].time+'</td><td>'+((order[i].pnum==0)?0:((order[i].turnover==0)?"-"+order[i].pnum:"+"+order[i].pnum))+'</td><td>'+order[i].starttime+'至'+order[i].endtime+'</td><td>'+order[i].classname+'</td><td>'+order[i].uname+'</td><td>'+order[i].Qyname+'</td><td>'+order[i].place+'</td>';
+				if(order[i].turnover!=0) {
+					stt += '<td><input type="button" class="xiangqing" value="详情" data-toggle="modal" data-target="#myModalxq"  onclick="xq('+order[i].cid+','+order[i].fid+')"></td>';
+				}
+				stt +='</tr>'
+			    stt +="</table>";
+			}
+
+
+			$('#data').html	(stt);
+
+			$('#lister').html(str);
+			$(".loding").hide();
+
+			$(".newpage").remove();
+			$("#data").after("<div class='tcdPageCode newpage'></div>");
+			$(".newpage").createPage({
+				pageCount:data.pagecount,
+				current:page,
+				backFn:function(p){
+					clickque(fid,status,p)
+				}
+			});
+
+
+
+		}
+	})
+}
+
+function xq(cid,fid){
+	$.ajax({
+		url:"__URL__/orderxq",
+		data:{cid:cid,fid:fid},
+		type:"post",
+		dataType:"json",
+		success:function(data){
+			var str="<tr><td>时间</td><td>订单详情</td><td>听课次数</td></tr>";
+			$num=0;
+			for(var i in data){
+				$num+=parseInt(data[i]["ticket"]);
+				str+="<tr><td>"+data[i]["time"]+"</td><td>小票("+data[i]["ticket"]+") 九大规划门票("+data[i]["planning"]+") 卡会员("+data[i]["card"]+") 朋友圈("+data[i]["friends"]+") 弟子学员("+data[i]["disciple"]+")</td><td>"+data[i]["ticket"]+"次</td></tr>";
+			}
+			str+="<tr><td colspan='3'>共计听课次数："+$num+"次</td></tr>";
+            $("#myModalxq #orderxq").html(str);
+		}
+	});
+}
+
+
+function maybe(p){
+	var val = $('#kname').val();
+	if(val ==''){
+		Showbo.Msg.alert('请选择客户');
+			return false;
+	}
+	if(p==undefined){
+        p = 1;
+	}
+	page1(p);
+	
+
+	var uid = document.getElementById("fuid").value;
+	$.ajax({
+ 		    url:'{:U("Home/Client/maybe")}',
+			dataType:'json',
+			data:{val:val,uid:uid,p:p},
+			type:'post',
+			success:function(data){
+				if(data.errcode == 0){
+					Showbo.Msg.alert(data.errmsg);
+				}else if(data.errcode == 1){
+					Showbo.Msg.alert(data.errmsg);
+				}else{
+					$('#neihtml').hide;
+					user = data.user;
+					str = '';
+					str += '<tr><td>客户名称</td></tr>'
+					for(i in user){
+						str += '<tr onclick="client(this,'+user[i].id+')"><td fid="'+user[i].id+'">'+user[i].name+'</td></tr>'
+					}
+					
+					$('#neihtml').html(str);
+				}
+			}
+		})
+
+}
+	 </script>
+</body>
+</html>

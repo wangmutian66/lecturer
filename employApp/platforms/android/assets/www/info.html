@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+    <title>助企软件一线讲师追踪系统</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, minimal-ui">
+    <!--<script type="text/javascript" src="js/showBo.js"></script>-->
+    <script type="text/javascript" charset="utf-8" src="js/jquery.2.1.1.min.js"></script>
+	<script type="text/javascript" src="js/showalert.js"></script>
+	<script type="text/javascript" src="cordova.js"></script>
+	<script type="text/javascript" src="js/fastclick.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			FastClick.attach(document.body);
+		});
+	</script>
+    <script type="text/javascript" src="js/index.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+ </head>
+<body style="background: #f3f3f3;">
+	<script type="text/javascript">
+	 //var path_url = "http://192.168.0.160/lecturer/";
+	 //var path_url = "http://192.168.0.223:8086/";
+	 var path_url="http://192.168.0.250:8082/";
+	 var mobile= window.localStorage.getItem('mobile');//账户名称
+	 var jid = window.localStorage.getItem('jid');//讲师ID
+ </script>
+	<div class="loading1">
+		<div class="loader-inner ball-clip-rotate-multiple">
+			<div></div>
+			<div></div>
+		</div>
+	</div>
+	<header class="header3">
+		<span class="spanleft" onclick="password()">修改密码</span><span>个人中心</span><span class="spanright" onclick="exit()">退出账号</span>
+	</header>
+<div>
+	<div>
+		<div class="showtableinfo"><table id="showinfo"></table></div>
+		<div class="showtableinfo"><table id="showuid"></table></div>
+	</div>
+</div>	
+<script type="text/javascript">
+	$(function(){
+		showinfo();
+	})
+
+	function showinfo(){
+		$(".loading1").show();
+		var data = {jid:jid};
+		url = path_url+"index.php/Home/Interface/showinfo/";
+	    var str = '';
+	    $.ajax({
+	        url:url,        //跨域到http://www.wp.com，另，http://test.com也算跨域
+	        type:'POST',             //jsonp 类型下只能使用GET,不能用POST,这里不写默认为GET
+	        dataType:'json',  
+	        data:data,            //回调函数名
+	        success:function(result) {
+	    
+	        	user = result.user;
+	        	enterprise = result.enterprise;
+	        	j_list = result.j_list;
+	        		
+	        	str = '';
+	        	stt = '';
+	        	str += '<tr><td>用户名:</td><td>'+user.name+'</td></tr>';
+	        	str += '<tr><td>手机号:</td><td>'+user.mobile+'</td></tr>';
+
+	        	stt += '<tr><td colspan="2"><select id="select_id" onchange="change()"><option value="'+enterprise.id+'">'+enterprise.Qyname+'</option>'
+	        	for(i in j_list){
+
+	        			stt += '<option value="'+j_list[i].id+'">'+j_list[i].Qyname+'</option>'
+	        		
+	        	}
+	        	stt += '</select></td></tr>'
+	        	stt += '<tr><td>单张票比例:</td><td>'+enterprise.tc+'%</td></tr>'
+	        	stt += '<tr><td>单张卡会员比例:</td><td>'+enterprise.cc+'%</td></tr>'
+	        	stt += '<tr><td>单张朋友圈比例:</td><td>'+enterprise.fc+'%</td></tr>'
+	        	stt += '<tr><td>单张九大规划门票比例:</td><td>'+enterprise.nc+'%</td></tr>'
+	        	stt += '<tr><td>单张弟子学员比例:</td><td>'+enterprise.dc+'%</td></tr>'
+
+	        	$('#showinfo').html(str);
+	        	$('#showuid').html(stt);
+				$(".loading1").hide();
+	        }
+	    })
+	}
+
+	 function change(){
+		$(".loading1").show();
+	 	var uid = $('#select_id').val();
+	 	var data = {uid:uid};
+		url = path_url+"index.php/Home/Interface/change/";
+	    var str = '';
+	    $.ajax({
+	        url:url,        //跨域到http://www.wp.com，另，http://test.com也算跨域
+	        type:'POST',             //jsonp 类型下只能使用GET,不能用POST,这里不写默认为GET
+	        dataType:'json',  
+	        data:data,            //回调函数名
+	        success:function(result) {
+	        	
+	        	stt = '';
+	        	stt += '<tr><td>单张票比例:</td><td>'+result.tc+'%<td></tr>'
+	        	stt += '<tr><td>单张卡会员比例:</td><td>'+result.cc+'%<td></tr>'
+	        	stt += '<tr><td>单张朋友圈比例:</td><td>'+result.fc+'%<td></tr>'
+	        	stt += '<tr><td>单张九大规划门票比例:</td><td>'+result.nc+'%<td></tr>'
+	        	stt += '<tr><td>单张弟子学员比例:</td><td>'+result.dc+'%<td></tr>'
+	        	$('#showuid tr:gt(0)').remove();
+	        	$('#showuid tr').eq(0).after(stt);
+				$(".loading1").hide();
+	        }
+	    })
+	        
+	 }
+
+	 function password(){
+	 	window.location.href="password.html";
+	 }
+
+	 function exit(){	
+		    window.localStorage['mobile'] = ""; //本地存值
+		    window.localStorage['jid'] = ""; //本地存值
+		    window.localStorage['password'] = ""; //本地存值
+		    window.localStorage['uid'] = ""; //本地存值
+	     	window.location.href="index.html";
+	}
+	function home(){
+ 		   window.location.href="applist.html";
+	}
+	function personage(){
+	       window.location.href="info.html";
+	}
+</script>
+
+<div class="footerdiv">
+	 <div class="f-navindex" onclick="home()"><div class="indeximg"></div><div class="indextitle" >首页</div></div>
+     <div class="f-navren hover" onclick="personage()"><div class="indeximg"></div><div class="indextitle">个人中心</div></div>
+</div>
+</body>
+</html>

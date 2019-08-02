@@ -1,0 +1,266 @@
+<include file="Public/header" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.upload.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.tabso_yeso.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.date.mt.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/highcharts.js"></script>
+<body>
+
+<div class="container yui_sorcl">
+	<div class="ctitle">
+	  业绩排行
+	</div>
+	 <div class="Modinfo date"><span>
+	                    <select  id="timeyear"  class="form-control" onchange="checkChangDate(this)"></select>
+	                    <select id="timemonth"  class="form-control" onchange="checkChangDate(this,1)"></select>
+	                    <select id="timeday"  class="form-control" onchange="checkChangDate(this)"></select>
+	                    
+	                </span> <span>至</span> 
+	                    <span>
+		                    <select id="beforeyea"  class="form-control" onchange="checkChangDate(this)"></select>
+		                    <select id="datayear"  class="form-control" onchange="checkChangDate(this,2)"></select>
+		                    <select id="day"  class="form-control" onchange="checkChangDate(this)"></select> 
+	                    </span>
+	                    <span class="searcinput">
+		                    <input type="text" id="lsor" placeholder="公司查询" />
+		                    <input type="button" class="btn-default"  onclick ="searove()" value="" />
+	                    </span>
+	                    
+	            </div>
+	  
+	<div >
+	<table id= "rang" class="table content table-striped account_manage table-border"></table>
+	
+	</div>
+</div>
+</body>
+<script>
+!function(){
+laydate({
+   elem: '#demo'
+})
+}();
+
+
+
+function checkChangDate(){
+	search();
+	
+}
+
+$(function(){
+	ranking();
+	$(".loding").hide();
+})
+
+function searove(){
+	var lsor=$("#lsor").val();
+	$.ajax({
+ 		url:'{:U("Home/Admin/ranking")}',
+			dataType:'json',
+			data:{"name":lsor},
+			type:'post',
+			success:function(data){
+				console.log(data)
+				str = '';
+				var k = 1;
+				for(i in data){
+                    var url=data[i].id;
+                    var href="{:U('Home/Bill/index/id/"+url+"')}";
+               
+					str += '<tr><td>NO.'+k+'</td><td>'+data[i].Qyname+'</td><td>'+data[i].count+'</td><td>'+data[i].riskfee+'</td><td><input type="button" value="进入财务" onclick="window.location.href=\''+href+'\'"><button onclick="hichars('+data[i].id+',this)" class="btn btn-info">本年财务详情<i class="icon-arrow-down"></i></button></td></tr>';
+					k++;
+				}
+				$('#rang').html(str);
+				$('#rang').prepend('<tr><td>排名</td><td>名称</td><td>业绩</td><td>风险金</td><td style="width:150px">操作</td></tr>');
+			}
+		})
+}
+
+function ranking(){
+	var etime = $('#timeyear').val()+"-"+$('#timemonth').val()+"-"+$('#timeday').val();//开始时间
+	var stime = $('#beforeyea').val()+"-"+$('#datayear').val()+"-"+$('#day').val();//结束时间
+	$.ajax({
+ 		url:'{:U("Home/Admin/ranking")}',
+			dataType:'json',
+		    data:{etime:etime,stime:stime},
+			type:'post',
+			success:function(data){
+				str = '';
+				var k = 1;
+				for(i in data){
+					var url=data[i].id;
+					var href="{:U('Home/Bill/index/id/"+url+"')}";
+					var colorarray=["#e33109","#24a227","#0588ce"];
+					if(i%2==0){
+						str += '<tr>';
+					}else{
+						str += '<tr style="background-color: #fff;">';
+					}
+					str += '<td><span style="color:'+colorarray[data[i].numk-1]+'">NO.'+data[i].numk+'</span></td><td>'+data[i].Qyname+'</td><td>'+data[i].count+'</td><td>'+data[i].riskfee+'</td><td style="width:157px;width:290px\\0;left: 1px;"><div class="btnposition"><input type="button" value="进入财务" onclick="window.location.href=\''+href+'\'" style="margin:0;"><div class="btn btn-info button" onclick="hichars('+data[i].id+',this)">本年财务详情<i class="icon-arrow-down"></i></div></div></td></tr>';
+					str+='<tr style="display:none;" class="classhight" id="hight'+data[i].id+'" ><td colspan="5"><div id="container'+data[i].id+'" style="min-width:400px;height:400px"></div><div class="tablediv table'+data[i].id+'"></td></tr>';
+					k++;
+				}
+				$('#rang').html(str);
+				$('#rang').prepend('<tr><td>排名</td><td>名称</td><td>业绩</td><td>风险金</td><td style="width:150px;">操作</td></tr>');
+				$('.loding').css('display','none');
+			}
+		})
+}
+function hichars(id,element)
+{
+	 
+	 if(!$(".tablediv").is(":visible")){
+		 $(".loding").show();
+		 $(element).children("i").removeClass();
+		 $(element).append("<i class='icon-arrow-up'></i>");
+		 $(".tablediv").hide();
+		 $(".classhight").hide();
+	      
+		 $("#hight"+id).show();
+		 $.ajax({
+		    type: "post",
+		    url: "{:U('Home/Loss/Highch')}",
+		    data:{id:id},
+		    dataType: "json",
+		    success:function(data)
+		    {
+			    	var houston = data.houston;
+			    	var outsarr = data.outsarr;
+			    	var loss = data.loss;
+			    	
+	
+			        setHichart('#container'+id,houston,outsarr,loss);
+			        str1="<table class='table table-bordered  table-striped' width='100%'>";
+			        str1+="<tr><td></td><td>一月</td><td>二月</td><td>三月</td><td>四月</td><td>五月</td><td>六月</td><td>七月</td><td>八月</td><td>九月</td><td>十月</td><td>十一月</td><td>十二月</td></tr>";
+			        str1+="<tr>";
+			        str1+="<td>进账</td>";
+			        for(var i =0;i<12;i++){
+			        	
+			        	if(houston[i]==undefined){
+			        		str1+="<td>0元</td>";
+			        	}else{
+			        		str1+="<td>"+houston[i]+"元</td>";
+			        	}
+			        }
+			        str1+="</tr>";
+			        str1+="<tr>";
+			        str1+="<td>出账</td>";
+			        for(var i =0;i<12;i++){
+			        	
+			        	if(outsarr[i]==undefined){
+			        		str1+="<td>0元</td>";
+			        	}else{
+			        		str1+="<td>"+outsarr[i]+"元</td>";
+			        	}
+			        	
+			        }
+			        str1+="</tr>";
+			        str1+="<tr>";
+			        str1+="<td>盈亏</td>";
+			        for(var i =0;i<12;i++){
+			        	if(loss[i]==undefined){
+			        		str1+="<td>0元</td>";
+			        	}else{
+			        		str1+="<td>"+loss[i]+"元</td>";
+			        	}
+			        }
+			        str1+="</tr>";
+			        str1+="</table>";
+			        $('.table'+id).html("")
+			        $('.table'+id).show().append(str1);
+			        $(".loding").hide();
+		        }	    
+		        
+		    
+		 })
+	  }else{
+		  $(element).children("i").removeClass();
+		  $(element).append("<i class='icon-arrow-down'></i>");
+		  $(".tablediv").hide();
+		  $(".classhight").hide();
+	  }
+	  
+ 
+}
+
+function setHichart(element,houston,outsarr,loss)
+{
+	
+    $(element).highcharts({
+        title: {
+            // text: '进出账数据图',
+            text: '',
+            x: -20 //center
+        },
+        subtitle: {
+            // text: 'Source: WorldClimate',
+            text: '',
+            x: -20
+        },
+        xAxis: {
+            categories: ['一月', '二月', '三月', '四月', '五月', '六月',
+                         '七月', '八月', '九月', '十月', '十一月', '十二月']
+        },
+        yAxis: {
+            title: {
+                text: '进出账明细$'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: '元'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: '进账',
+            data: [houston[0],houston[1],houston[2],houston[3],houston[4],houston[5],houston[6],houston[7],houston[8],houston[9],houston[10],houston[11]]
+        },  {
+            name: '出账',
+            data: [outsarr[0],outsarr[1],outsarr[2],outsarr[3],outsarr[4],outsarr[5],outsarr[6],outsarr[7],outsarr[8],outsarr[9],outsarr[10],outsarr[11]]
+        },{
+            name: '盈亏',
+            data: [loss[0],loss[1],loss[2],loss[3],loss[4],loss[5],loss[6],loss[7],loss[8],loss[9],loss[10],loss[11]]
+        }]
+    });
+
+}
+
+function search(){
+	//var etime = $('#demosd').val();//开始时间
+	//var stime = $('#demo').val();//结束时间
+	
+	
+	var etime = $('#timeyear').val()+"-"+$('#timemonth').val()+"-"+$('#timeday').val();//开始时间
+	var stime = $('#beforeyea').val()+"-"+$('#datayear').val()+"-"+$('#day').val();//结束时间
+	$.ajax({
+ 		url:'{:U("Home/Admin/ranking")}',
+			dataType:'json',
+			data:{etime:etime,stime:stime,type:1},
+			type:'post',
+			success:function(data){
+				str = '';
+				var k = 1;
+				for(i in data){
+					var url=data[i].id;
+                    var href="{:U('Home/Bill/index/id/"+url+"/act/ad')}";
+
+					str += '<tr><td>NO.'+data[i].numk+'</td><td>'+data[i].Qyname+'</td><td>'+data[i].count+'</td><td>'+data[i].riskfee+'</td><td><input type="button" value="进入财务"  onclick="window.location.href=\''+href+'\'"><button class="btn btn-info" onclick="hichars('+data[i].id+',this)">本年财务详情<i class="icon-arrow-down"></i></button></td></tr>';
+					k++;
+				}
+				$('#rang').html(str);
+				$('#rang').prepend('<tr><td>排名</td><td>名称</td><td>业绩</td><td>风险金</td><td style="width:150px;">操作</td></tr>');
+			}
+		})
+}
+
+</script>
+</html>

@@ -1,0 +1,581 @@
+<include file="Public/header" />
+<!-- 首页：搜索页 -->
+<style>
+	#asdzxc{
+		color: red;
+	}
+	.tcdPeCodes, .tcdPageCode{ padding: 0; margin-bottom: 10px;}
+	.prevPage, .nextPage, .tcdNumber, .pagecurrent, .disabled, .tcdPageCode a, .num{ margin-bottom: 10px;}
+	.tcdPageCode span.pagecurrent,.tcdPageCode span.disabled{ margin-top: -10px;}
+	.newpage{ width:100%;text-align: right;}
+	body{ overflow: hidden; }
+	html{background: #fff;}
+
+</style>
+<!-- 模态框（Modal） -->
+<div class="modal fade tianjiacss" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">选择搜索内容</h4>
+			</div>
+			<div class="modal-body">
+				<div id="zxc">
+
+					<div class="gundongtable">
+						<table id= "bianji" class="table table-bordered table-hover" ></table>
+						<div id="editpage"> </div>
+					</div>
+
+					<div id="strbtn"><input type="button" value="确认" onclick="addsearch()"></div>
+
+
+				</div>
+			</div>
+
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+<img src="__PUBLIC__/images/login-image/shouye.jpg" alt="" style="width: 100%;    position: absolute;">
+<div class="yunduo"></div>
+<div class="comdiv"><div class="img1"></div><div class="img2"></div><div class="img3"></div></div>
+<div class="image indeximage">
+
+
+  
+  <div class="image1 ">
+	 <div class="inputsearch">
+		  <select name="" id="acid" style="float: left;" onchange="searchtype()"><option value="1">客户</option><option value="2">员工</option> </select>
+		  <input type="text" placeholder="请在输入框中输入(客户名称/手机号)"  id="counts" />
+		  <input type="button" class="button" onclick="searchbtn(1)" data-toggle="modal" data-target="#myModal" value="搜索"/>
+    </div>
+  <div class="indexmessage">
+
+  </div>
+  <div class="indexnav">
+	  <input type="button" value="课程" class="click" onc="sele()" >
+	  <input type="button" value="财务" onc="setsail()">
+	  <input type="button" value="跟踪" onc="followinfo()">
+  </div>
+ </div>
+
+ <div style="  position: absolute; top: 30%;left:30%;" id="searchcontent">
+    <div class="rangdiv">
+		<table id= "rang" border="0" class="table table-bordered table-hover">
+
+		</table>
+	</div>
+ </div>
+
+
+
+</div>
+
+
+
+
+<style>
+*{padding: 0;margin: 0;}
+
+
+</style>
+
+
+<script>
+function searchtype(){
+	var acid=$("#acid").val();
+	acid=parseInt(acid);
+    switch (acid){
+		case 1:
+			$("#counts").attr("placeholder","请在输入框中输入(客户名称/手机号)");
+			break;
+		case 2:
+			$("#counts").attr("placeholder","请在输入框中输入(员工名称/员工手机号)");
+			break;
+	}
+
+    if($("#counts").val()!=""){
+		var oncdef=$(".indexnav .click").attr("onc");
+		eval(oncdef);
+	}
+
+}
+$(".indexnav input").click(function(){
+	$(this).addClass("click").siblings().removeClass();
+	//var onc=$(this).attr("onc");
+	//$(".inputsearch > button").attr("onclick",onc);
+});
+$(".inputsearch > button").click(function(){
+
+});
+
+function addsearch(){
+	var searchtext=$("#bianji tr.click td").eq(1).text();
+
+	if(searchtext==""){
+		Showbo.Msg.alert('您还没有选择搜索内容');
+		return false;
+	}
+	$("#counts").val(searchtext);
+	var onc=$(".indexnav .click").attr("onc");
+	eval(onc);
+	$("#myModal .close").click();
+	$(".indeximage .image1").css({"top":"5%","left":"5%","margin-left":"0","margin-top":"30px"});
+	$("#searchcontent").css({"top":"30%","left":"5%"});
+	$("#searchcontent #rang").show();
+	$(".indexnav input").each(function(key,element){
+         var onc=$(element).attr("onc");
+		$(element).attr("onclick",onc);
+	});
+    return false;
+}
+
+
+
+function searchbtn(page){
+	$(".loding").show();
+	var value=$("#counts").val();
+	var acid=$("#acid").val();
+	$.ajax({
+		url:"__URL__/searchword",
+		type:"post",
+		data:{value:value,acid:acid,page:page},
+		dataType:"json",
+		success:function(t){
+			$(".loding").hide();
+			data=t.info_name;
+			var html="<tr><td>ID</td><td>搜索内容</td></tr>";
+			for(var i in data){
+				html+="<tr><td>"+data[i]["id"]+"</td><td>"+data[i]["name"].replace(value,"<b>"+value+"</b>")+"</td></tr>";
+			}
+            $("#bianji").html(html);
+			$("#bianji tr").click(function(){
+				if($(this).index()>0){
+					$(this).addClass("click").siblings().removeClass();
+				}
+			});
+
+			$(".newpage").remove();
+			$(".gundongtable").after("<div class='tcdPageCode newpage'></div>");
+			$(".newpage").createPage({
+				pageCount:t.info_count,
+				current:page,
+				backFn:function(p)
+				{
+					searchbtn(p);
+				}
+			});
+
+		}
+	});
+}
+
+
+
+function indexblur(){
+	$(".indexmessage>div").click(function(){
+
+		 return false;
+	});
+	$(".image1").hover(function(){
+		$(".indexmessage").hide();
+	});
+
+}
+
+function indexfocus(){
+	$(".indexmessage").show();
+}
+
+
+
+function sele(page)
+{
+
+	var acid = $('#acid').val();//下拉菜单选择项
+	var counts = $('#counts').val();//文本框输入的内容
+    $(".indexnav > div").eq(0).addClass("click").siblings().removeClass();
+	if(counts == "")
+	{
+		Showbo.Msg.alert('请输入查询内容');
+		return false;
+		
+	}
+	$(".loding").show();
+	$.post("{:U('Home/Index/chunfet')}",{acid:acid,name:counts,page:page},function(t){
+
+			var data = t.course;
+
+		    var countpage = t.countpage;
+		    var person = t.person;
+			var str = '';
+
+		    if(t.error==1||data==""){
+				str +='<tr><td colspan="9">'+t.msg+'</td></tr>';
+			}else{
+				for(i in data){
+					str += '<tr><td>kc'+data[i].id+'</td><td>'+data[i].starttime+'至'+data[i].endtime+'</td><td>'+person["information"]+'</td><td>'+data[i].classname+'</td>';
+					if(data[i].name == null){
+						str += '<td id="asdzxc">讲师不存在</td>';
+					}else{
+						str +='<td>'+data[i].name+'</td>';
+					}
+
+					str +='<td>'+data[i].Qyname+'</td><td>'+data[i].place+'</td><td>'+data[i].number+'</td><td>';
+
+					if(data[i].conduct=="1"){
+						str+="已进行";
+					}else{
+						str+="未进行";
+					}
+					str+="</td></tr>";
+					str+="<tr><td colspan='9'>";
+					if(data[i].order.length>0){
+					str+="<table style='border: 1px solid #000;	background: #F1EEEE'>";
+
+						str+="<tr><td colspan='8' bgcolor='#F5F5F5'>成交记录</td></tr>";
+						for(var j in data[i].order){
+							str+="<tr><td>jy"+data[i].order[j]["id"]+"</td><td>"+data[i].order[j]["time"]+"</td><td>小票("+data[i].order[j]["ticket"]+")</td><td>九大规划门票("+data[i].order[j]["planning"]+")</td><td>卡会员("+data[i].order[j]["card"]+")</td><td>朋友圈("+data[i].order[j]["friends"]+")</td><td>弟子学员("+data[i].order[j]["disciple"]+")</td><td>成交人："+data[i].order[j]["salesmanname"]+"</td></tr>";
+						}
+
+					str+="</table>";
+					}else{
+						str+="<span style=' color: #999;'>暂无成交记录</span>";
+					}
+					str+="</td></tr>";
+
+				}
+			}
+
+
+			$('#rang').html("");
+
+		    if(str==""){
+				str="<tr><td colspan='9'><span style=' color: #999;'>课程信息不存在</span></td></tr>";
+			}
+		    $('#rang').html(str);
+			$('#rang').prepend('<tr><th width="5%">ID</th><th width="20%">课程时间</th><th>客户名称</th><th>课程名称</th><th width="10%">讲师姓名</th><th>分公司</th><th>地点</th><th width="5%">人数</th><th width="5%">状态</th></tr>');
+		    $(".loding").hide();
+			$(".tcdPageCode").remove();
+			$(".rangdiv").after("<div class='tcdPageCode'></div>");
+			$(".tcdPageCode").createPage({
+				pageCount:countpage,
+				current:page,
+				backFn:function(p)
+				{
+					sele(p);
+				}
+			});
+		$(".indexmessage").hide();
+
+	},'json')
+	
+}
+
+
+function setsail(page){
+	var acid=$("#acid").val();
+	var name=$("#counts").val();
+	var param=new Object();
+	param["acid"]=acid;
+	param["name"]=name;
+	param["page"]=page;
+	$(".loding").show();
+    $.ajax({
+		url:"__URL__/setsail",
+		type:"POST",
+		data:param,
+		dataType:"json",
+		success:function(t){
+			countpage=t.pagelimit;
+			error=t.error;
+			data=t.bill;
+
+			str="<tr><td>日期</td><td>所属分公司</td><td>负责人</td><td>客户名称</td><td>课程信息</td><td>类别</td><td>数量</td><td>总金额</td><td>进账金额</td><td>定金</td><td>还款期数</td></tr>";
+            if(error==0&&data!=""){
+
+				for(var i in data){
+					       //data[i]["orderid"]+"# "+data[i]["cname"]+" "+data[i]["corder"]
+					kccontent=data[i]["orderid"]+"# "+data[i]["cname"]+" "+data[i]["corder"];
+					kccontent=(data[i]["cname"]==null||data[i]["corderisset"]==0)?"<span style='color:red'>课程信息不存在</span>":kccontent;
+
+					str+="<tr><td>"+data[i]["time"]+"</td><td>"+data[i]["qyname"]+"</td><td>"+((data[i]["rname"]==null)?"":data[i]["rname"])+"</td><td>"+data[i]["fname"]+"</td><td>"+kccontent+"</td><td>"+getType123(data[i]["type"])+"</td><td>"+data[i]["num"]+"</td><td>"+data[i]["amount"]+"</td><td>"+data[i]["houston"]+"</td>";
+					if(data[i]["deposit"] == 1){
+						str+="<td>是</td>";
+					}else{
+						str+="<td>否</td>";
+					}
+					str+="<td>"+data[i]["period"]+"</td></tr>";
+				}
+			}else if(error==1){
+				countpage=0;
+				str+="<tr><td colspan='11'><span style=' color: #999;'>"+t.msg+"</span></td></tr>";
+			}else{
+				countpage=0;
+				str+="<tr><td colspan='11'><span style=' color: #999;'>没有相关课程信息</span></td></tr>";
+			}
+            $("#rang").html(str);
+			$(".loding").hide();
+			$(".tcdPageCode").remove();
+			$(".rangdiv").after("<div class='tcdPageCode'></div>");
+			$(".tcdPageCode").createPage({
+				pageCount:countpage,
+				current:page,
+				backFn:function(p)
+				{
+					setsail(p);
+				}
+			});
+		}
+	})
+
+}
+
+function getType123(type){
+
+   switch (parseInt(type)){
+	   case 1:
+		   return "小票";
+		   break;
+	   case 2:
+		   return "会员卡";
+		   break;
+	   case 3:
+		   return "朋友圈";
+		   break;
+	   case 4:
+		   return "弟子学员";
+		   break;
+	   case 5:
+		   return "九大规划门票";
+		   break;
+   }
+}
+
+function followinfo(page){
+	var acid=$("#acid").val();
+	var name=$("#counts").val();
+	var param=new Object();
+	param["acid"]=acid;
+	param["name"]=name;
+	param["page"]=page;
+	$(".loding").show();
+	$.ajax({
+		url:"__URL__/followinfo",
+		type:"POST",
+		data:param,
+		dataType:"json",
+		success:function(t){
+			countpage=t.pagelimit;
+			error=t.error;
+			data=t.infofind;
+			str="<tr><td>负责人</td><td>客户名称</td><td>类型</td><td>客户状态</td><td>客户性质</td><td>客户分级</td><td>客户行业</td><td>重要程度</td><td>客户来源</td><td>联系电话</td><td>详细地址</td><td>联系人</td></tr>";
+			if(error==0&&data!=""){
+                for(var i in data){
+					str+="<tr><td>"+((data[i]["rname"]==null)?"":data[i]["rname"])+"</td><td>"+data[i]["name"]+"</td><td>"+getType(parseInt(data[i]["type"]))+"</td><td>"+getState(parseInt(data[i]["state"]))+"</td><td>"+getnature(parseInt(data[i]["nature"]))+"</td><td>"+getlevel(parseInt(data[i]["level"]))+"</td><td>"+getindustry(parseInt(data[i]["industry"]))+"</td><td><div class=\"start start"+data[i]["star"]+"\"></div></td><td>"+data[i]["source"]+"</td><td>"+data[i]["tel"]+"</td><td>"+data[i]["address"]+"</td><td>"+data[i]["contact"]+"</td></tr>";
+					str+="<tr><td colspan='12'>";
+                    str+="<table style='border:1px solid #000;background: #F1EEEE;'>";
+					str+="<tr><td>移交时间</td><td>移交前负责人</td><td>移交后负责人</td><td>移交人</td><td>移交人角色</td><td>原因</td></tr>";
+
+					if(data[i]["followinfocontent"]!=""){
+						for(var j in data[i]["followinfocontent"]){
+							row=data[i]["followinfocontent"][j];
+							str+="<tr>";
+							str+="<td>"+row["ctime"]+"</td>";
+							str+="<td>"+((row["yname"]=="")?"<span style='color:red;'>公海池</span>":row["yname"])+"</td>";
+							str+="<td>"+((row["nname"]=="")?"<span style='color:red;'>公海池</span>":row["nname"])+"</td>";
+							str+="<td>"+((row["username"]==null)?"":row["username"])+"</td>";
+							str+="<td>"+((row["role"]==null)?"":row["role"])+"</td>";
+							str+="<td>"+getfollowcontent(parseInt(row["status"]),row["reason"])+"</td>";
+							str+="</tr>";
+						}
+					}else{
+						str+="<tr><td colspan='6'><span style=' color: #999;'>暂无跟踪记录</span></td></tr>";
+					}
+					str+="</table>";
+					str+="</td></tr>";
+				}
+			}else if(error==1){
+				countpage=0;
+				str+="<tr><td colspan='12'><span style=' color: #999;'>"+t.msg+"</span></td></tr>";
+			}else{
+				countpage=0;
+				str+="<tr><td colspan='12'><span style=' color: #999;'>没有相关客户</span></td></tr>";
+			}
+			$("#rang").html(str);
+			$(".loding").hide();
+			$(".tcdPageCode").remove();
+			$(".rangdiv").after("<div class='tcdPageCode'></div>");
+			$(".tcdPageCode").createPage({
+				pageCount:countpage,
+				current:page,
+				backFn:function(p)
+				{
+					followinfo(p);
+				}
+			});
+
+		}
+	});
+}
+
+function getfollowcontent(num,reason){
+	switch(num){
+		case 1:
+			return "工作分配";
+			break;
+		case 2:
+			return "员工交接";
+			break;
+		case 3:
+			return reason;
+			break;
+		case 4:
+			return "成交时负责人发生变动";
+			break;
+		case 5:
+			return "新创建客户";
+			break;
+		default :
+			return "未设置";
+			break;
+	}
+}
+//客户类型 1:最终客户,2:渠道客户,3:竞争对手
+//客户状态,1:潜在客户,2:初步接触,3:持续跟进,4:成交客户,5:忠诚客户,6:无效客户
+
+function getType(num){
+    switch(num){
+		case 1:
+			return "最终客户";
+			break;
+		case 2:
+			return "渠道客户";
+			break;
+		case 3:
+			return "竞争对手";
+			break;
+		default :
+			return "未设置";
+			break;
+	}
+}
+
+function getState(num){
+	switch(num){
+		case 1:
+			return "潜在客户";
+			break;
+		case 2:
+			return "初步接触";
+			break;
+		case 3:
+			return "持续跟进";
+			break;
+		case 4:
+			return "成交客户";
+			break;
+		case 5:
+			return "忠诚客户";
+			break;
+		case 6:
+			return "无效客户";
+			break;
+		default :
+			return "未设置";
+			break;
+	}
+}
+
+
+
+function getnature(num){
+	switch(num){
+		case 1:
+			return "企业客户";
+			break;
+		case 2:
+			return "个人客户";
+			break;
+		case 3:
+			return "政府企业单位";
+			break;
+		default :
+			return "未设置";
+			break;
+	}
+}
+//客户分级,1:小型,2:中型,3:大型
+function getlevel(num){
+	switch(num){
+		case 1:
+			return "小型";
+			break;
+		case 2:
+			return "中型";
+			break;
+		case 3:
+			return "大型";
+			break;
+		default :
+			return "未设置";
+			break;
+	}
+}
+
+////客户行业 1:金融,2:电信,3:教育,4:高科技,5:政府,6:制造业,7:服务业,8:能源,9:零售,10:媒体,11:娱乐,12:咨询,13:非盈利事业,14:公用事业,15:其他
+function getindustry(num){
+	switch(num){
+		case 1:
+			return "金融";
+			break;
+		case 2:
+			return "电信";
+			break;
+		case 3:
+			return "教育";
+			break;
+		case 4:
+			return "高科技";
+			break;
+		case 5:
+			return "政府";
+			break;
+		case 6:
+			return "制造业";
+			break;
+		case 7:
+			return "服务业";
+			break;
+		case 8:
+			return "能源";
+			break;
+		case 9:
+			return "零售";
+			break;
+		case 10:
+			return "媒体";
+			break;
+		case 11:
+			return "娱乐";
+			break;
+		case 12:
+			return "咨询";
+			break;
+		case 13:
+			return "非盈利事业";
+			break;
+		case 14:
+			return "公用事业";
+			break;
+		case 15:
+			return "其他";
+			break;
+		default :
+			return "未设置";
+			break;
+	}
+}
+</script>
+

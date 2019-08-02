@@ -1,0 +1,150 @@
+<include file="Public/header" />
+<link rel="stylesheet" href="__PUBLIC__/css/zhangweiyan.css" />
+<style>
+	.container table tr:first-child td{    font-weight: 100;}
+</style>
+<div class="container yui_sorcl" style="padding-top: 10px;">
+    <div>
+       <table class="aa" width="99%" cellspacing="0" cellpadding="0" border="3" bordercolor="#2294d3" id="messageid">
+        
+       
+       </table>
+    </div>
+</div>       
+
+
+<script>
+	
+$(function(){
+	message();
+})
+function message(p){
+	
+	
+ 	if(p==undefined){
+	   p = 1;
+    }
+ 	page(p);
+	$(document.body).attr("page",p);
+	$(".loding").show();
+	$.ajax({
+ 		    url:'{:U("Home/Message/Msgdata")}',
+	        data:{page:p},
+			dataType:'json',
+			type:'post',
+			success:function(data){
+				if(data == 111){
+					$('.tcdPageCode').hide();
+				}
+				str = '';
+				if(data.length<=0&&p>1){
+					message(p-1);
+				}
+				for(i in data){
+					
+					if(data[i].flag == false || data[i].flaga == false){
+						str+='<tr onClick="read('+data[i].id+')"><td>';
+						str+='<img src="__PUBLIC__/images/login-image/xiaoxi_02.png" alt="">';
+						//str += '<tr><td><input type="button" value="确认" onClick="read('+data[i].id+')" id="btn"/></td><td>'+data[i].stuname+'</td><td>在'+data[i].time+'</td><td>'+data[i].content+'</td><td><input type="button" value="删除" onclick="delmes('+data[i].id+',this)" class="bornone btn-info"></td></tr>';
+					}else if(data[i].flag == true || data[i].flaga == true){
+						str+='<tr><td>';
+						str+='<img src="__PUBLIC__/images/login-image/xiaoxi_01.png" alt="">';
+						//str += '<tr><td><input type="button" value="确认" disabled="disabled"/></td><td>'+data[i].stuname+'</td><td>在'+data[i].time+'</td><td>'+data[i].content+'</td><td><input type="button" value="删除" onclick="delmes('+data[i].id+',this)" class="bornone btn-info"></td></tr>';
+					}
+					
+			        
+			         str+='<span>'+data[i].stuname+' <a href="javascript:;">在'+data[i].time+' '+data[i].content+'</a></span>';
+			         if(data[i].close==1){
+			        	 str+='<p onclick="delmes('+data[i].id+',this)">删除</p>';
+			         }
+			         
+			         str+='</td></tr>';
+			          
+			          
+			        
+				}
+				if(str==""){
+					str+="<tr><td colspan='1'><span style='color:#999;margin: 0 auto; float:none;text-align: center;'>当前没有消息通知</span></td></tr>";
+				}
+				$('.aa').html(str);
+				
+				$(".loding").hide();
+			}
+		})
+}
+
+//分页
+function page(page)
+{	
+	
+	
+	
+   var nums ='';
+    $.ajax({
+	    type: "GET",
+	    url:'{:U("Home/Message/page")}',
+	    dataType:"json",
+	    async:false,
+	    error: function(data){
+	    },
+	    success: function(data){
+	           nums = eval(data);
+	    	}
+	    });
+   
+    $(".tcdPageCode").remove();
+    $("#messageid").after("<div class='tcdPageCode'></div>");
+    $(".tcdPageCode").createPage({
+    	
+          pageCount:nums,
+          current:page,
+          backFn:function(p)
+          {
+            message(p);
+
+          }
+       });
+}
+function read(mid){
+	 $.ajax({
+ 			url:'{:U("Home/Message/saveid")}',
+ 			data:{mid:mid},
+			dataType:'json',
+			type:'post',
+			success:function(data){
+					if(data.result == 1){
+						var page=$(document.body).attr("page");//记录p的页数
+						
+						message();
+						if(data.isread==0){
+							$(".messageweidu1").remove();
+						}
+					}
+				}
+			})
+}
+
+function delmes(id,obj){
+     Showbo.Msg.confirm('确认删除?',function(a){
+        if(a == 'yes'){
+          $.ajax({
+ 			url:'{:U("Home/Message/delmes")}',
+ 			data:{id:id},
+			dataType:'json',
+			type:'get',
+			success:function(data){
+					if(data == 1){
+					    //$(obj).parent().parent().remove();
+						// var page=$(document.body).attr("page");
+						message()
+					}
+				}
+			})
+        }
+     })
+}
+
+	
+
+
+</script>

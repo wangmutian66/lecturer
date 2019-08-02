@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>助企六脉神剑管理系统</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" href="font/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <link rel="stylesheet" type="text/css" href="css/mui.min.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="css/style.css" /> -->
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/jquery.2.1.1.min.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/appframework.ui.min.js"></script>
+    <script type="text/javascript" src="js/Url.js"></script>
+    <script type="text/javascript" src="js/mui.min.js"></script>
+    <script type="text/javascript" src="js/showalert.js"></script>
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+        headerios();
+        $(window).load(function(){
+            $(".pullDown").css("display","block");
+             // $("#chart").css({"top":"40px","padding-bottom":"60px"});
+        });
+
+    });
+    function upimg(){
+          $('.masked2,.masked').on("tap",function(){
+                  return false;
+          });
+          $('.uploadimgp,.uploadimg').on("tap",function(){
+            $('.alert_backgroung,.revise-img-header').show();
+         })
+
+          $('#closepicture').on("tap",function(){
+              $('.revise-img-header,.alert_backgroung').hide();
+          })
+
+    }
+
+    </script>
+    <style>
+
+
+    </style>
+   <body>
+    <!-- <body> -->
+
+    <div class="view yui-main" id="mainview">
+    <!-- HEADER BEGIN-->
+    <header>
+    <DIV class="header_menu">
+    <!-- <li><a href="javascript:;" data-left-menu="left" data-transition="push"><span class="iconmenu" onclick="grade()"></a></li> -->
+    <li><a style="display: none"><i class="iconleft go_home"></i></a></li>
+    <li id="head"><h1 id="biaoti" mark="basicsystem">一线讲师追踪系统</h1></li>
+    <li class='select-all'> 　</li>
+    </DIV>
+    </header>
+    <!-- HEADER END-->
+    <div class="panel" id="wrapper">
+
+    <!-- <div class="mui-control-content"> -->
+    <div id="pullrefresh" class="mui-content wrapapp" style="display: none;">
+            <!--首页-->
+        <ul id="list" class="mui-table-view mui-table-view-chevron yui_ul">
+        <li class="mui-table-view-cell data_select">
+        <div class="mui-content-padded" id="datearr" >
+          <div class="seach_box" id = "times">
+            
+            <select  id="timeyear" onchange="checkChangDate(this)"></select>
+            <select id="timemonth" onchange="checkChangDate(this,1)"></select>
+            <select id="timeday" onchange="checkChangDate(this)"></select>
+            <span>至</span>
+            <select id="beforeyea" onchange="checkChangDate(this)"></select>
+            <select id="datayear" onchange="checkChangDate(this,2)"></select>
+            <select id="day" onchange="checkChangDate(this)"></select> 
+          </div>
+           <button type="button" class="mui-btn mui-btn-primary yui-btn-block" onclick ="seove()">搜索</button>
+        </div>
+          
+        </li>
+        <li class="mui-table-view-cell student_info">
+          <div class="mui-content-padded" id="conutd"></div>
+        </li>
+        <div class="yui-content address_info">
+        <ul id="student" class="mui-table-view mui-table-view-chevron">
+          
+        </ul>
+    </div>
+            <div id="savezhu"  style="display: none;">
+            <div class="mui-content-padded">
+              <form class="mui-input-group"  id="folg">
+                <div class="mui-input-row">
+                  <label>姓名</label>
+                  <input type="text" placeholder="请输入学员姓名" id="sname">
+                </div>
+                <div class="mui-input-row">
+                  <label>电话</label>
+                  <input type="text" placeholder="请输入联系方式" id="stel">
+                </div>
+                <div class="mui-input-row">
+                  <label>备注</label>
+                  <input type="text" placeholder="请输入备注信息" id="sbent">
+                </div>
+                <input type="hidden" id="shidd" />
+                <br>
+                <div class="mui-button-row">
+                  <button type="button" class="mui-btn mui-btn-primary" onclick="ssloge()"  >修改</button>&nbsp;&nbsp;
+                </div>
+              </form>
+          </div>
+
+        </div>
+    </ul>
+
+        <!-- 学员添加 -->
+        <ul id ="addher" style="display: none;" class="mui-table-view mui-table-view-chevron" >
+        <div class="mui-content-padded">
+        <form class="mui-input-group">
+          <div class="mui-input-row">
+            <label>学员姓名</label>
+            <input type="text" value="请输入学员姓名" onFocus="if(value==defaultValue){value='';this.style.color='#000'}" onBlur="if(!value){value=defaultValue;this.style.color='#999'}" style="color:#999999" id="name">
+          </div>
+          <div class="mui-input-row">
+            <label>联系电话</label>
+            <input type="text" placeholder="请输入联系方式" id="tel">
+          </div>
+          <div class="mui-input-row">
+            <label>备　　注</label>
+            <input type="text" placeholder="请输入备注信息" id="bent">
+          </div>
+         
+          <br>
+          <div class="mui-button-row">
+            <button type="button" class="mui-btn mui-btn-primary"  style="width:100px;"  onclick="upadage()" >确认</button>&nbsp;&nbsp;
+          </div>
+        </form>
+        </div>
+
+        </ul>
+         <!--个人中心-->
+        <ul id ="check" style="display: none;" class="mui-table-view mui-table-view-chevron info_center" >
+      
+        </ul>     
+
+
+ 
+    
+
+    </div>
+
+        </div>
+
+        <footer class="tab yui_footer">
+            <a href="javascript:;" class="list1 pressed" aid="task" data-transition="slide" onclick="taskList()"  id="check"  >
+              <i class="one"></i>  <span> </span></a>
+            <a href="javascript:;" class="list2 " aid="cfee" data-transition="slide" onclick="SetFee()"  id="cfee" >
+             <i class="two"></i><span></span></a>
+            <a href="javascript:;" class="list3  " aid="audit" data-transition="slide" onclick="personal()"  id="record">
+            <i class="three"></i><span></span></a>
+        </footer>
+        <!-- FOOT END-->
+    </div>
+</body>
+<script>
+  $(function(){
+    $('.yui_footer a i').click(function(){
+      $('.yui_footer a').removeClass('pressed');
+     $(this).parent('a').addClass('pressed');
+    })
+
+          //获取焦点事件
+      $('form.mui-input-group input[type=text]').addClass('burl');
+      $('form.mui-input-group .mui-input-row:nth-child(1) input[type=text]').removeClass('burl');
+      $('form.mui-input-group .mui-input-row:nth-child(2) input[type=text]').removeClass('burl');
+      $("form.mui-input-group input[type=text].burl").focusout(function(){
+        $('.mui-android form.mui-input-group').css('top','0px');
+      });
+
+      $("form.mui-input-group input[type=text].burl").focusin(function(){
+        $('.mui-android form.mui-input-group').css('top','-60px');
+      });
+  });
+
+  function focu(){
+          //获取焦点事件
+      $('form.mui-input-group input[type=text]').addClass('burl');
+      $('form.mui-input-group .mui-input-row:nth-child(1) input[type=text]').removeClass('burl');
+      $('form.mui-input-group .mui-input-row:nth-child(2) input[type=text]').removeClass('burl');
+      $("form.mui-input-group input[type=text].burl").focusout(function(){
+        $('.mui-android form.mui-input-group').css('top','0px');
+      });
+
+      $("form.mui-input-group input[type=text].burl").focusin(function(){
+        $('.mui-android form.mui-input-group').css('top','-60px');
+      });
+  }
+
+</script>
+<script>
+  $(function(){  
+      $('#pullrefresh').css('display','block');
+      $('.header_menu li a').tap(function(){
+        $('#savezhu,.header_menu li a').hide();
+        $('.address_info,.student_info,.data_select').show();
+      })
+  });
+
+</script>
+<script type="text/javascript">
+      // var path_url = "http://192.168.0.146/";
+     // var path_url = "http://prof.zhuqiyun.com/"; 
+     //var path_url = "http://192.168.0.146/lecturer/";
+     var path_url="http://192.168.0.250:8082/";
+</script>
+<script>
+var user = getUser();
+uid = user.uid;
+id = user.id;
+console.log(user)
+function personal()
+{
+    $('#check').css('display','block');
+    $('.yui_ul').hide();
+    $('#addher').hide();
+    data = 'rest/'+encodeURI('{"id":"' + id + '"}');
+    url = path_url+"index.php/Home/Interface/personal/"+data;
+    var str = '';
+    $.ajax({
+        url:url,        //跨域到http://www.wp.com，另，http://test.com也算跨域
+        type:'GET',             //jsonp 类型下只能使用GET,不能用POST,这里不写默认为GET
+        dataType:'jsonp',                          //指定为jsonp类型
+        jsonp:'callback',                          //服务器端获取回调函数名的key，对应后台有$_GET['callback']='getName';callback是默认值
+        success:function(result)
+        {
+          var user = result.user;
+          if(result.code == 1)
+          {
+            str +='<li class="mui-table-view-cell"><span>讲师姓名</span><span>'+user.name+'</span></li><li class="mui-table-view-cell"><span>所属公司</span><span>'+user.qyname+'</span></li><li class="mui-table-view-cell"><span>手机号码</span><span>'+user.mobile+'</span></li><li class="mui-table-view-cell"  onclick="exit()" style="text-align:center">退出登录</li>';
+            $('#check').html(str)
+          }
+          else
+          {
+            Showbo.Msg.alert(result.errmsg);
+          }
+          
+        },  
+
+    });
+}
+
+function exit()
+{
+   window.localStorage['mobile'] = ""; //本地存值
+    window.localStorage['account'] = ""; //本地存值
+    window.localStorage['pwd'] = ""; //本地存值
+    
+  locationUrl('index.html',user);
+}
+</script>
+
+<script>
+  //主页修改
+  function datename(id)//学生详情
+  {
+     $('.address_info,.student_info,.data_select').hide();
+     $('#savezhu,.header_menu li a').show();
+     // $('.header_menu li h1').html('修改信息');
+      data = 'rest/'+encodeURI('{"id":"' + id + '"}');
+      url = path_url+"index.php/Home/Interface/saveever/"+data;
+      $.ajax({
+      url:url,        //跨域到http://www.wp.com，另，http://test.com也算跨域
+      type:'GET',             //jsonp 类型下只能使用GET,不能用POST,这里不写默认为GET
+      dataType:'jsonp',                          //指定为jsonp类型
+      jsonp:'callback',                          //服务器端获取回调函数名的key，对应后台有$_GET['callback']='getName';callback是默认值                 /
+      success: function(data)
+      {
+      
+    		  $('#sname').val(data.name);
+    		  $('#stel').val(data.mobile);
+    		  $('#sbent').val(data.note);
+    		  $('#shidd').val(data.id);
+    		
+      }
+      })
+  }
+
+  function SetFee()//选项卡
+  {
+      $('#addher').css('display','block');
+      $('.yui_ul').hide();
+      $('.info_center').hide();
+  }
+
+  function upadage()//添加学员
+  {
+	 var name = $('#name').val();
+		var tel = $('#tel').val();
+		var bent = $('#bent').val();
+	
+    if(name == '')
+    {
+      Showbo.Msg.alert('请输入学员姓名');
+      return false;
+    }
+		if(name.length>15)
+		{
+			 Showbo.Msg.alert('姓名太长!');
+			 return false;
+		}
+
+		if(!(/^1[3|4|5|7|8]\d{9}$/.test(tel)))
+		{
+			 Showbo.Msg.alert("您输入的手机号格式不对或填写号码不足11位");
+	          return false; 
+	    }
+		
+		 data = 'rest/'+encodeURI('{"id":"' + user.id + '","name":"'+ name +'","tel":"'+ tel +'","bent":"'+ bent +'"}');
+		    url = path_url+"index.php/Home/Interface/schadd/"+data;
+		    $.ajax({
+		        url:url,        //跨域到http://www.wp.com，另，http://test.com也算跨域
+		        type:'GET',             //jsonp 类型下只能使用GET,不能用POST,这里不写默认为GET
+		        dataType:'jsonp',                          //指定为jsonp类型
+		        jsonp:'callback',                          //服务器端获取回调函数名的key，对应后台有$_GET['callback']='getName';callback是默认值
+		        // jsonpCallback:'getName',                   //回调函数名
+		        success:function(t)
+		        {
+		            if(t == 1)
+		            {
+		            	 Showbo.Msg.alert("添加成功");
+                    location.reload();
+		            	$('#conutd').css('display','none');
+		           	   $('#student').css('display','block');
+		           	   $('#savezhu').css('display','none');
+		           	   $('#times').css('display','block');
+
+		            }else if(t ==2)
+		            {
+		            	 Showbo.Msg.alert("添加失败");
+		            }else
+		            {
+		            	Showbo.Msg.alert("电话号已存在");
+		            }
+		        },  
+		    });
+  }
+
+  function ssloge()//修改学生信息
+  {
+  	var  id = $('#shidd').val();
+  	var  name = $('#sname').val();
+  	var  mobile = $('#stel').val();
+  	var  note = $('#sbent').val();
+  	if(name.length>15)
+  	{
+  		 Showbo.Msg.alert('姓名太长!');
+  		 return false;
+  	}
+  	if(!(/^1[3|4|5|8][0-9]\d{8}$/.test(mobile)))
+  	{
+  		 Showbo.Msg.alert("您输入的手机号格式不对或填写号码不足11位");
+            return false; 
+      }
+  	 data = 'rest/'+encodeURI('{"id":"' + id + '","name":"'+ name +'","mobile":"'+ mobile +'","note":"'+ note +'"}');
+  	    url = path_url+"index.php/Home/Interface/marcia/"+data;
+  	    $.ajax({
+  	        url:url,        //跨域到http://www.wp.com，另，http://test.com也算跨域
+  	        type:'GET',             //jsonp 类型下只能使用GET,不能用POST,这里不写默认为GET
+  	        dataType:'jsonp',                          //指定为jsonp类型
+  	        jsonp:'callback',                          //服务器端获取回调函数名的key，对应后台有$_GET['callback']='getName';callback是默认值
+  	        // jsonpCallback:'getName',                   //回调函数名
+  	        success:function(t)
+  	        {
+  	            if(t == 1)
+  	            {
+  	            	 Showbo.Msg.alert("修改成功");
+  	            }else
+  	            {
+  	            	 Showbo.Msg.alert("修改失败");
+  	            }
+  	        },  
+  	    });
+  }
+  
+
+</script>
+
+<script>
+
+var data = {};
+var myDate = new Date();
+var m = myDate.getMonth()+1;
+var lnstr ="";
+var lyst ="";
+var lrstr ="";
+var nyr = myDate.getFullYear()+"-"+(myDate.getMonth()+1)+"-"+myDate.getDate();
+var tnst ="";
+var tystr ="";
+var trst ="";
+
+var y = new Date().getFullYear(); //当前年份
+
+$(document).ready(function($){
+
+    for (var i = (y-2); i < (y+1); i++) {
+        if(i==y){
+          lnstr += "<option selected='selected' value='"+i+"'>"+i+"年</option>";
+        }else{  
+          lnstr += "<option value='"+i+"'>"+i+"年</option>";
+        }
+        if(i==y){
+            tnst+="<option selected='selected' value='"+i+"'>"+i+"年</option>";
+        }else{  
+            tnst+="<option  value='"+i+"'>"+i+"年</option>";
+        }
+    }
+    $('#timeyear').append(lnstr); //前两年年份
+    $('#beforeyea').append(tnst); //今年年份
+
+/********************************年份赋值****************************************/
+
+    for (var i = 1; i < 13; i++)  
+    {  
+        if(i==m){
+          lyst += "<option selected='selected' value='" + i + "'> " + i + "月</option>"; 
+        }else{
+          lyst += "<option value='" + i + "'> " + i + "月</option>"; 
+        } 
+        if(i==m){
+            tystr+="<option selected='selected' value='"+i+"'>"+i+"月</option>";
+        }else{
+            tystr+="<option  value='"+i+"'>"+i+"月</option>";
+        } 
+    }  
+    $('#timemonth').append(lyst); //前两年月份
+    $('#datayear').append(tystr); //今年月份
+
+/********************************月份赋值****************************************/
+
+    for (var i = 1; i <= 31; i++)  
+    {  
+        lrstr += "<option value='" + i + "'> " + i + "日</option>"; 
+        if(i==myDate.getDate()){
+            trst+="<option selected='selected' value='"+i+"'>"+i+"日</option>";
+        }else{
+            trst+="<option  value='"+i+"'>"+i+"日</option>";
+        } 
+    }  
+    $('#timeday').append(lrstr); //前两年月份
+    $('#day').append(trst); //今年月份
+
+/********************************天数赋值****************************************/
+
+    var timeyear = $('#timeyear').val();
+    var timemonth = $('#timemonth').val();
+    var timeday = $('#timeday').val();
+    var beforeyea = $('#beforeyea').val();
+    var datayear = $('#datayear').val();
+    var day = $('#day').val();
+    taskList(timeyear,timemonth,timeday,beforeyea,datayear,day);
+
+});
+function taskList(timeyear,timemonth,timeday,beforeyea,datayear,day)
+{
+    if(timeyear == undefined && timemonth == undefined && timeday == undefined){
+      var timeyear = $('#timeyear').val();
+      var timemonth = $('#timemonth').val();
+      var timeday = $('#timeday').val();
+      var beforeyea = $('#beforeyea').val();
+      var datayear = $('#datayear').val();
+      var day = $('#day').val();
+    }
+    $('.yui_ul').show();
+    $('#addher,.info_center').hide();
+    data = 'rest/'+encodeURI('{"timeyear":"'+timeyear+'","timemonth":"'+timemonth+'","timeday":"'+timeday+'","beforeyea":"'+beforeyea+'","datayear":"'+datayear+'","day":"'+day+'","uid":"'+user.id+'"}');
+    url = path_url+"index.php/Home/Interface/homedata/"+data;
+    $.ajax({
+        url:url,        //跨域到http://www.wp.com，另，http://test.com也算跨域
+        type:'GET',             //jsonp 类型下只能使用GET,不能用POST,这里不写默认为GET
+        dataType:'jsonp',                          //指定为jsonp类型
+        jsonp:'callback',                          //服务器端获取回调函数名的key，对应后台有$_GET['callback']='getName';callback是默认值
+        success:function(t)
+        {
+            result = eval(t);
+            // console.log(result.res);
+            info = result.res;
+            studen = info.data;
+            var str = '';   //表格数据str
+            var strs = '';
+            strs +='<p>';
+            if(info.num == ''){
+                strs +='<span>学员:</span><span>0名</span></p><p>';
+            }else{
+                strs +='<span>学员:</span><span>'+info.num+'名</span></p><p>';
+            }
+            if(info.zje == ''){
+                strs +='<span>应发:0元</span>';
+            }else{
+                strs +='<span>应发:'+info.zje+'元</span>';
+            }        
+            if(info.yf == ''){
+                strs +='<span>已发:0元</span>';
+            }else{
+                strs +='<span>已发:'+info.yf+'元</span>';
+            }  
+            strs +='</p>';
+
+            strs +='<p>';
+            if(info.leafletstc == null){
+                strs +='<span>票:0元';
+            }else{
+                strs +='<span>票:'+info.leafletstc+'元';
+            }   
+            if(info.tc == null){
+                strs +='比例:0%</span>';
+            }else{
+                strs +='比例:'+info.tc+'%</span>';
+            }   
+            if(info.leafletscc == null){
+                strs +='<span>卡:0元 ';
+            }else{
+                strs +='<span>卡:'+info.leafletscc+'元 ';
+            }           
+            if(info.cc == null){
+                strs +='比例:0%</span>';
+            }else{
+                strs +='比例:'+info.cc+'%</span></p><p>';
+            }          
+            if(info.leafletsfc == null){
+                strs +='<span>朋友圈:0元';
+            }else{
+                strs +='<span>朋友圈:'+info.leafletsfc+'元';
+            }           
+            if(info.fc == null){
+                strs +='比例:0%</span>';
+            }else{
+                strs +='比例:'+info.fc+'%</span>';
+            }    
+            if(info.leafletsdc == null){
+                strs +='<span>弟子:0元';
+            }else{
+                strs +='<span>弟子:'+info.leafletsdc+'元';
+            }             
+            if(info.dc == null){
+                strs +='比例:0%</span>';
+            }else{
+                strs +='比例:'+info.dc+'%</span>';
+            } 
+            /*=========================九大规划start==================================*/
+            if(info.leafletsnc == null){
+                strs +='<span>九大规划:0元';
+            }else{
+                strs +='<span>九大规划:'+info.leafletsnc+'元';
+            }             
+            if(info.nc == null){
+                strs +='比例:0%</span>';
+            }else{
+                strs +='比例:'+info.nc+'%</span>';
+            }      
+            /*=========================九大规划end====================================*/
+            strs +='</p>';
+
+            for(i in studen){
+              if(studen[i].name == undefined && studen[i].mobile == undefined && studen[i].note == undefined)
+              {
+                  studen[i].name = '';
+                  studen[i].mobile = '';
+                  studen[i].note = '';
+              }
+              str +='<li class="mui-table-view-cell info_bottom_list"><div class="mui-content-padded more_logo"><input type="button" onclick="datename('+studen[i].id+')" /><p class="more_info"><span>姓名</span><span class="align_right">'+studen[i].name+'</span></p><p class="more_info"><span id="sid'+studen[i].id+'"> 电话</span><span class="align_right">'+studen[i].mobile+'</span></p><p class="more_info"><span id="stid'+studen[i].id+'" >备注</span><span class="align_right">'+studen[i].note+'</span></p>';
+              for(var j in studen[i]["pdata"]){
+                str +='</div><div class="info_bottom_secend"><p>　</p><p><span>'+studen[i]["pdata"][j].times+'</span><span>票:'+studen[i]["pdata"][j].ticket+'</span> <span>金额:'+studen[i]["pdata"][j].pmoney+'元</span><span>状态:'+studen[i]["pdata"][j].ptype +'</span></p>';
+               str +='<p><span></span><span>卡:'+studen[i]["pdata"][j].card+'</span>  <span>金额:'+studen[i]["pdata"][j].kmoney+'元</span><span>状态:'+studen[i]["pdata"][j].ctype +'</span></p>';
+               str +='<p><span></span><span>朋友圈:'+studen[i]["pdata"][j].friends+'</span> <span>金额:'+studen[i]["pdata"][j].qmoney+'元</span><span>状态:'+studen[i]["pdata"][j].ftype +'</span></p>';
+               str +='<p><span></span><span>弟子:'+studen[i]["pdata"][j].disciple+'</span> <span>金额:'+studen[i]["pdata"][j].dmoney+'元</span><span>状态:'+studen[i]["pdata"][j].dtype +'</span></p>';
+               /*=========================九大规划start====================================*/
+               str +='<p><span></span><span>九大规划:'+studen[i]["pdata"][j].planning+'</span> <span>金额:'+studen[i]["pdata"][j].nmoney+'元</span><span>状态:'+studen[i]["pdata"][j].ntype +'</span></p>';
+               /*=========================九大规划end====================================*/
+              }
+            
+            }
+            $("#conutd").empty();
+            $('#conutd').append(strs);
+            $("#student").empty();
+            $("#student").append(str);
+            
+        } 
+    });
+
+}
+function seove(){  
+    var timeyear = $('#timeyear').val();
+    var timemonth = $('#timemonth').val();
+    var timeday = $('#timeday').val();
+    var beforeyea = $('#beforeyea').val();
+    var datayear = $('#datayear').val();
+    var day = $('#day').val();
+    taskList(timeyear,timemonth,timeday,beforeyea,datayear,day);
+}
+function checkChangDate(obj,act){
+    var myDate = new Date();
+    var year = myDate.getFullYear();
+    var lrstrs = '';
+    var trsts = '';
+    var timeyear = $('#timeyear').val();//左侧年
+
+    var timemonth = $("#timemonth").val();//左侧月 
+
+    var timeday = $("#timeday").val();//左侧日
+
+    var beforeyea = $("#beforeyea").val();//右侧年
+
+    var datayear = $('#datayear').val();//右侧月
+
+    var day = $('#day').val();//右侧日
+
+    timeyear = parseInt(timeyear);
+    beforeyea = parseInt(beforeyea);
+    if(timeyear > beforeyea){
+        $("#beforeyea").val(timeyear);
+    }
+
+    timemonth = parseInt(timemonth);
+    datayear = parseInt(datayear);
+    if(timeyear == beforeyea){
+        if(timemonth > datayear){
+            $("#datayear").val(m);
+        }
+        if(timeyear == year){
+            if(timemonth >= m){
+                $("#timemonth").val(m);
+            }
+        }
+        if(beforeyea == year){
+            if(datayear >= m){
+                $("#datayear").val(m);
+            }
+        }
+    }
+
+    timemonth = $("#timemonth").val();
+    timemonth = parseInt(timemonth);
+
+    datayear = $("#datayear").val();
+    datayear = parseInt(datayear);
+
+    timeday = parseInt(timeday);
+    day = parseInt(day);
+    if(timeyear == beforeyea && timemonth == datayear){
+        if(timeday > day){
+            $("#day").val(timeday+1);
+        }
+        if(timeyear == year && timemonth == m){
+            if(timeday >= myDate.getDate()){
+                $("#timeday").val(myDate.getDate());
+            }      
+        }
+        if(beforeyea == year && datayear == m){
+            if(day >= myDate.getDate()){
+                $("#day").val(myDate.getDate());
+            }      
+        }
+    }
+
+    if(act == 1){
+        var mm = getDays(timeyear,timemonth);    //当左侧月改变时执行
+    }else if(act == 2){
+        var mm = getDays(beforeyea,datayear);    //当右侧月改变时执行
+    }
+
+    for (var i = 1 ; i <= mm ; i++)  
+    {  
+        if(act == 1){   
+            lrstrs += "<option value='" + i + "'> " + i + "日</option>"; 
+        }else if(act == 2){
+            if(i==myDate.getDate()){
+                trsts+="<option selected='selected' value='"+i+"'>"+i+"日</option>";
+            }else{
+                trsts+="<option  value='"+i+"'>"+i+"日</option>";
+            } 
+        }
+    } 
+    
+    if(act == 1){
+        $('#timeday').html(lrstrs); //左侧变化的天数
+    }else if(act == 2){
+        $('#day').empty();
+        $('#day').append(trsts); //右侧变化的天数
+    }
+    
+}
+
+function getDays(year,mouth){
+
+    //定义当月的天数；
+    var days ;
+     
+    //当月份为二月时，根据闰年还是非闰年判断天数
+    if(mouth == 2){
+        days= year % 4 == 0 ? 29 : 28;
+         
+    }
+    else if(mouth == 1 || mouth == 3 || mouth == 5 || mouth == 7 || mouth == 8 || mouth == 10 || mouth == 12){
+        //月份为：1,3,5,7,8,10,12 时，为大月.则天数为31；
+        days= 31;
+    }
+    else{
+        //其他月份，天数为：30.
+        days= 30;   
+    }
+    return days;
+}
+</script>

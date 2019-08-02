@@ -1,0 +1,610 @@
+  
+<include file="Public/header" />
+<style type="text/css">.container:first-child{ height: auto!important; padding-bottom:20px; }</style>
+<script type="text/javascript">
+  $(function(){
+   $('.shows').siblings('.hides').remove(); 
+   var winheight = $(window).height() - 269;
+   $('.yui_sorcl').css('height',winheight);
+  })
+</script>
+<div class="wrap">
+<select id="sec" onchange="division()"></select>
+
+ <div class="date"><span>从</span><span>
+
+ <div class="date"><span>从</span><span>
+            
+         
+<div class="container yui_sorcl">
+   <h3 name="001" id="001">讲师追踪</h3>
+   <div class="date"><span>
+                    <select  id="timeyear"  class="form-control" onchange="checkChangDate(this)"></select>
+                    <select id="timemonth"  class="form-control" onchange="checkChangDate(this,1)"></select>
+                    <select id="timeday"  class="form-control" onchange="checkChangDate(this)"></select>
+                    </span>
+                    <span>至</span> 
+                    <span>
+                    <select id="beforeyea"  class="form-control" onchange="checkChangDate(this)"></select>
+                    <select id="datayear"  class="form-control" onchange="checkChangDate(this,2)"></select>
+                    <select id="day"  class="form-control" onchange="checkChangDate(this)"></select> <span></span>
+                    <input type="text" id="lsor" />
+                    <input type="button" class="btn-default"  onclick ="seove()" value="搜索" />
+                    </span>
+            </div>
+
+    <div>
+    
+         <table class="table-one" width="1020" height="35">
+          <tr>
+            <td><span>caiwu1</span></td>
+            <td>联系电话<span>:17070007777</span></td>
+            <td>业绩<span>:50000.00元</span></td>
+            <td>提成<span>:5000.00元</span></td>
+            <td>已发<span>:2000.00元</span></td>
+            <td>未发<span>:3000.00元</span></td>
+            <div class="zhe" >折叠</div>
+           <div class="zhan">展开</div>
+           </tr> 
+
+
+        <table class="table-two" width="1140" height="400" border="3" cellspacing="0" cellpadding="0"  bordercolor="#2294d3">
+  <tr>
+    <td>学员ID/姓名&nbsp;</td>
+    <td>学员电话&nbsp;</td>
+    <td>备注&nbsp;</td>
+    <td>时间&nbsp;</td>
+    <td>分类&nbsp;</td>
+    <td>数量&nbsp;</td>
+    <td>金额&nbsp;</td>
+    <td>提成比&nbsp;</td>
+    <td>提成&nbsp;</td>
+    <td>状态&nbsp;</td>
+  </tr>
+  <tr>
+    <td rowspan="3">001<br/>张某某&nbsp;</td>
+    <td rowspan="3">18205458978&nbsp;</td>
+    <td rowspan="3">&nbsp;</td>
+    <td rowspan="3">2017-01-02&nbsp;</td>
+    <td>小票&nbsp;</td>
+    <td>1&nbsp;</td>
+    <td>3，000.00&nbsp;</td>
+    <td>0.1%&nbsp;</td>
+    <td>1,000.00&nbsp;</td>
+    <td>已发送&nbsp;</td>
+  </tr>
+  <tr>
+    <td>卡&nbsp;</td>
+    <td>2&nbsp;</td>
+    <td>3，000.00&nbsp;</td>
+    <td>0.2%&nbsp;</td>
+    <td>1,000.00&nbsp;</td>
+    <td>未发送&nbsp;</td>
+  </tr>
+  <tr>
+    <td>朋友圈&nbsp;</td>
+    <td>2&nbsp;</td>
+    <td>3，000.00&nbsp;</td>
+    <td>0.2%&nbsp;</td>
+    <td>1,000.00&nbsp;</td>
+    <td>已发送&nbsp;</td>
+  </tr>
+  <tr>
+    <td rowspan="3">002<br/>张某某&nbsp;</td>
+    <td rowspan="3">18205458978&nbsp;</td>
+    <td rowspan="3">&nbsp;</td>
+    <td rowspan="3">2017-01-02&nbsp;</td>
+    <td>小票&nbsp;</td>
+    <td>1&nbsp;</td>
+    <td>3,000.00&nbsp;</td>
+    <td>0.1%&nbsp;</td>
+    <td>1,000.00&nbsp;</td>
+    <td>已发送&nbsp;</td>
+  </tr>
+  <tr>
+    <td>卡&nbsp;</td>
+    <td>2&nbsp;</td>
+    <td>3,000.00&nbsp;</td>
+    <td>0.2%&nbsp;</td>
+    <td>1,000.00&nbsp;</td>
+    <td>未发送&nbsp;</td>
+  </tr>
+  <tr>
+    <td>朋友圈&nbsp;</td>
+    <td>2&nbsp;</td>
+    <td>3,000.00&nbsp;</td>
+    <td>0.2%&nbsp;</td>
+    <td>1，000.00&nbsp;</td>
+    <td>已发送&nbsp;</td>
+  </tr>
+  <tr>
+    <td rowspan="3">&nbsp;</td>
+    <td rowspan="3">&nbsp;</td>
+    <td rowspan="3">&nbsp;</td>
+    <td rowspan="3">&nbsp;</td>
+    <td rowspan="3">&nbsp;</td>
+    <td rowspan="3">&nbsp;</td>
+    <td rowspan="3">&nbsp;</td>
+    <td rowspan="3">&nbsp;</td>
+    <td rowspan="3">&nbsp;</td>
+    <td rowspan="3">&nbsp;</td>
+  </tr>
+</table>
+
+<script type="text/javascript"> 
+$(function(){
+    $(".table-two,.zhe").hide();
+    $(".zhan").click(function(){
+    $(".table-two,.zhe").show();
+    $(".zhan").hide();
+    });
+    $(".zhe").click(function(){
+    $(".table-two,.zhe").hide();
+    $(".zhan").show();
+    });
+});
+  </script>
+
+        </table>
+        
+    </div>
+    <div class="">
+        <input type="button" class="btn btn-success bornone" value="生成表格文档" onclick="excel(this)"> 
+        <input type="button" class="btn btn-success bornone" value="上传表格" onclick="uploadCate()"> 
+    </div>
+ <a href="#001" class="back_top icon-chevron-up"></a>
+  </div>
+</div>
+
+  <script>
+  $(function(){
+    usekl();
+  })
+  //下拉
+  function usekl(){
+    $.ajax({
+        url:'{:U("Home/Enterprise/usekl")}',
+        dataType:'json',
+        data:{},
+        type:'post',
+            success:function(data){
+                console.log(data)
+                str = '';
+                str += '<option>--请选择--</option>';
+                for(i in data){
+                    str += '<option value="'+data[i].id+'">'+data[i].Qyname+'</option>';
+                }
+                $('#sec').html(str);
+            }
+        })
+  }
+  function division(){
+        var eid =$('#sec').val();  
+        var timeyear = 0;  //开始年
+        var timemonth = 0; //开始月
+        var timeday = 0; //开始天 
+        var beforeyea = $('#beforeyea').val();  //结束年
+        var datayear = $('#datayear').val(); //结束月
+        var day = $('#day').val(); //结束天
+        var lsor = $('#lsor').val();
+       datearr(timeyear,timemonth,timeday,beforeyea,datayear,day,lsor,eid); 
+  }
+  
+    function excel(obj){
+      window.location.href="{:U('Home/Enterprise/report')}";
+    }
+    var data = {};
+    var myDate = new Date();
+    var m = myDate.getMonth()+1;
+    var lnstr ="";
+    var lyst ="";
+    var lrstr ="";
+    var nyr = myDate.getFullYear()+"-"+(myDate.getMonth()+1)+"-"+myDate.getDate();
+    var tnst ="";
+    var tystr ="";
+    var trst ="";
+
+    var y = new Date().getFullYear(); //当前年份
+
+    $(document).ready(function($){
+
+        for (var i = (y-2); i < (y+1); i++) {
+            lnstr += '<option value="'+i+'">'+i+'年</option>';
+            if(i==y){
+                tnst+="<option selected='selected' value='"+i+"'>"+i+"年</option>";
+            }else{  
+                tnst+="<option  value='"+i+"'>"+i+"年</option>";
+            }
+        }
+        $('#timeyear').append(lnstr); //前两年年份
+        $('#beforeyea').append(tnst); //今年年份
+
+    /********************************年份赋值****************************************/
+
+        for (var i = 1; i < 13; i++)  
+        {  
+            lyst += "<option value='" + i + "'> " + i + "月</option>"; 
+            if(i==m){
+                tystr+="<option selected='selected' value='"+i+"'>"+i+"月</option>";
+            }else{
+                tystr+="<option  value='"+i+"'>"+i+"月</option>";
+            } 
+        }  
+        $('#timemonth').append(lyst); //前两年月份
+        $('#datayear').append(tystr); //今年月份
+
+    /********************************月份赋值****************************************/
+
+        for (var i = 1; i <= 31; i++)  
+        {  
+            lrstr += "<option value='" + i + "'> " + i + "日</option>"; 
+            if(i==myDate.getDate()){
+                trst+="<option selected='selected' value='"+i+"'>"+i+"日</option>";
+            }else{
+                trst+="<option  value='"+i+"'>"+i+"日</option>";
+            } 
+        }  
+        $('#timeday').append(lrstr); //前两年月份
+        $('#day').append(trst); //今年月份
+
+    /********************************天数赋值****************************************/
+
+        var timeyear = $('#timeyear').val();
+        var timemonth = $('#timemonth').val();
+        var timeday = $('#timeday').val();
+        var beforeyea = $('#beforeyea').val();
+        var datayear = $('#datayear').val();
+        var day = $('#day').val();
+       
+
+    });
+   $(function()
+		   {
+	   var timeyear = 0;  //开始年
+	   var timemonth = 0; //开始月
+	   var timeday = 0; //开始天 
+	   var beforeyea = $('#beforeyea').val();  //结束年
+	   var datayear = $('#datayear').val(); //结束月
+	   var day = $('#day').val(); //结束天
+	   var lsor = $('#lsor').val();
+	   
+	   datearr(timeyear,timemonth,timeday,beforeyea,datayear,day,lsor);
+	   
+	   
+		   })
+    
+    function datearr(timeyear,timemonth,timeday,beforeyea,datayear,day,lsor,eid)
+    		{
+	   			var act = "";
+    
+   $.post('{:U("Home/Enterprise/dateindex")}',{timeyear:timeyear,timemonth:timemonth,timeday:timeday,beforeyea,datayear,day,lsor,eid},function(t)
+    			{
+    					
+    					str = "";
+    					act = "";
+    					act2 = "";
+    					act3 = "";
+    					act4 = "";
+    					act5 = "";
+    				// str +="<tr><td>姓名</td><td>联系电话</td><td>业绩</td><td>提成</td><td>已发</td><td>未发</td><td><table><tr><td>学员&nbsp;</td><td>学员电话&nbsp;</td><td>备注&nbsp;</td><td>时间&nbsp;</td><td>分类&nbsp;</td><td>数量&nbsp;</td><td>金额&nbsp;</td><td>提成比&nbsp;</td><td>提成</td><td>状态</td><td>操作</td></tr></table></td></tr>";
+    					 	
+    				for(i in t)
+    				{
+    					str += "<tr>"
+    					str += "<td>"+t[i].uname+"</td><td>"+t[i].umobile+"</td><td>"+t[i].yecount+"</td><td>"+t[i].ticount+"</td><td>"+t[i].y+"</td><td>"+t[i].w+"</td>"
+    					str+="<td><table>";
+    					for(n in t[i].count )
+    					{	
+    						
+    						str += "<tr><td>"+t[i].count[n].tname+"</td><td>"+t[i].count[n].tmobile+"</td><td>"+t[i].count[n].tnote+"</td><td>"+t[i].count[n].times+"</td></tr>";
+    						if(t[i].count[n].ticket != 0)
+    						{
+    							
+    						
+    						if(t[i].count[n].ptype  == 0)
+    						{	
+    							str += "<tr><td>票</td><td>"+t[i].count[n].ticket+"</td><td >"+t[i].count[n].ticketall+"</td><td>"+t[i].count[n].pil+"</td><td>"+t[i].count[n].pcount+"</td><td><select  class='sed' onchange='state(this,1,"+t[i].count[n].id+")'><option selected='selected' value='0'>取消</option><option  value='1'>已发</option><option  value='2'>未发</option></select></td></tr>";
+    						}else if(t[i].count[n].ptype  == 1)
+    						{
+    							str += "<tr><td>票</td><td>"+t[i].count[n].ticket+"</td><td >"+t[i].count[n].ticketall+"</td><td>"+t[i].count[n].pil+"</td><td>"+t[i].count[n].pcount+"</td><td><select  class='sed' onchange='state(this,1,"+t[i].count[n].id+")' ><option  value='0'>取消</option><option selected='selected'  value='1'>已发</option><option  value='2'>未发</option></select></td></tr>";
+    			    			
+    						}else
+    						{
+    							str += "<tr><td>票</td><td>"+t[i].count[n].ticket+"</td><td >"+t[i].count[n].ticketall+"</td><td>"+t[i].count[n].pil+"</td><td>"+t[i].count[n].pcount+"</td><td><select class='sed' onchange='state(this,1,"+t[i].count[n].id+")' ><option  value='0'>取消</option><option   value='1'>已发</option><option selected='selected'  value='2'>未发</option></select></td></tr>";
+    			    			
+    						}
+    						}
+    						if(t[i].count[n].planning != 0)
+    						{
+    							
+    						
+    						if(t[i].count[n].ntype  == 0)
+    						{
+    							str += "<tr><td>九大规划门票</td><td>"+t[i].count[n].planning+"</td><td >"+t[i].count[n].planningall+"</td><td>"+t[i].count[n].nil+"</td><td>"+t[i].count[n].ncount+"</td><td><select   class='sed' onchange='state(this,2,"+t[i].count[n].id+")'><option selected='selected' value='0'>取消</option><option  value='1'>已发</option><option  value='2'>未发</option></select></td></tr>";
+    	    					
+    						}else if(t[i].count[n].ntype  == 1)
+    						{
+    							str += "<tr><td>九大规划门票</td><td>"+t[i].count[n].planning+"</td><td >"+t[i].count[n].planningall+"</td><td>"+t[i].count[n].nil+"</td><td>"+t[i].count[n].ncount+"</td><td><select  class='sed' onchange='state(this,2,"+t[i].count[n].id+")'><option  value='0'>取消</option><option  selected='selected' value='1'>已发</option><option  value='2'>未发</option></select></td></tr>";
+    	    					
+    						}else
+    						{
+    							str += "<tr><td>九大规划门票</td><td>"+t[i].count[n].planning+"</td><td >"+t[i].count[n].planningall+"</td><td>"+t[i].count[n].nil+"</td><td>"+t[i].count[n].ncount+"</td><td><select  class='sed' onchange='state(this,2,"+t[i].count[n].id+")'><option  value='0'>取消</option><option   value='1'>已发</option><option selected='selected'   value='2'>未发</option></select></td></tr>";
+    	    					
+    						}
+    						}
+    						if(t[i].count[n].card != 0)
+    						{
+    							
+    						
+    						if(t[i].count[n].ctype  == 0)
+    						{
+    							str += "<tr><td>卡</td><td>"+t[i].count[n].card+"</td><td >"+t[i].count[n].cardall+"</td><td>"+t[i].count[n].kil+"</td><td>"+t[i].count[n].kcount+"</td><td><select  class='sed' onchange='state(this,3,"+t[i].count[n].id+")' ><option  selected='selected' value='0'>取消</option><option  value='1'>已发</option><option  value='2'>未发</option></select></td></tr>";
+    						}else if(t[i].count[n].ctype  == 1)
+    						{
+    							str += "<tr><td>卡</td><td>"+t[i].count[n].card+"</td><td >"+t[i].count[n].cardall+"</td><td>"+t[i].count[n].kil+"</td><td>"+t[i].count[n].kcount+"</td><td><select  class='sed' onchange='state(this,3,"+t[i].count[n].id+")' ><option  value='0'>取消</option><option  selected='selected'  value='1'>已发</option><option  value='2'>未发</option></select></td></tr>";
+    	    					
+    						}else
+    						{
+    							str += "<tr><td>卡</td><td>"+t[i].count[n].card+"</td><td >"+t[i].count[n].cardall+"</td><td>"+t[i].count[n].kil+"</td><td>"+t[i].count[n].kcount+"</td><td><select  class='sed' onchange='state(this,3,"+t[i].count[n].id+")' ><option  value='0'>取消</option><option    value='1'>已发</option><option selected='selected'  value='2'>未发</option></select></td></tr>";
+    	    					
+    						}
+    						}
+    						if(t[i].count[n].friends !=0)
+    						{
+    							
+    						
+    						if(t[i].count[n].ftype  == 0)
+    						{
+    							str += "<tr><td>朋友圈</td><td>"+t[i].count[n].friends+"</td><td >"+t[i].count[n].friendsall+"</td><td>"+t[i].count[n].qil+"</td><td>"+t[i].count[n].qcount+"</td><td><select  onchange='state(this,4,"+t[i].count[n].id+")'  class='sed' ><option selected='selected'  value='0'>取消</option><option    value='1'>已发</option><option   value='2'>未发</option></select></td></tr>";
+    		    				
+    						}else if(t[i].count[n].ftype  == 1)
+    						{
+    							str += "<tr><td>朋友圈</td><td>"+t[i].count[n].friends+"</td><td >"+t[i].count[n].friendsall+"</td><td>"+t[i].count[n].qil+"</td><td>"+t[i].count[n].qcount+"</td><td><select  onchange='state(this,4,"+t[i].count[n].id+")' class='sed' ><option   value='0'>取消</option><option selected='selected'   value='1'>已发</option><option   value='2'>未发</option></select></td></tr>";
+    		    				
+    						}else
+    						{
+    							str += "<tr><td>朋友圈</td><td>"+t[i].count[n].friends+"</td><td >"+t[i].count[n].friendsall+"</td><td>"+t[i].count[n].qil+"</td><td>"+t[i].count[n].qcount+"</td><td><select  onchange='state(this,4,"+t[i].count[n].id+")' class='sed' ><option   value='0'>取消</option><option    value='1'>已发</option><option  selected='selected' value='2'>未发</option></select></td></tr>";
+    		    				
+    						}
+    						}
+    						if(t[i].count[n].disciple !=0)
+    						{
+    							
+    						
+    						if(t[i].count[n].dtype  == 0)
+    						{
+    							str += "<tr><td>弟子</td><td>"+t[i].count[n].disciple+"</td><td >"+t[i].count[n].discipleall+"</td><td>"+t[i].count[n].dil+"</td><td>"+t[i].count[n].dcount+"</td><td><select tid="+t[i].count[n].id+" onchange='state(this,5)'  class='sed' ><option selected='selected'  value='0'>取消</option><option    value='1'>已发</option><option   value='2'>未发</option></select></td></tr>";
+    			    			
+    						}else  if(t[i].count[n].dtype  == 1)
+    						{
+    							str += "<tr><td>弟子</td><td>"+t[i].count[n].disciple+"</td><td >"+t[i].count[n].discipleall+"</td><td>"+t[i].count[n].dil+"</td><td>"+t[i].count[n].dcount+"</td><td><select tid="+t[i].count[n].id+" onchange='state(this,5)' class='sed' ><option   value='0'>取消</option><option selected='selected'   value='1'>已发</option><option   value='2'>未发</option></select></td></tr>";
+    			    			
+    							
+    						}else
+    						{
+    							str += "<tr><td>弟子</td><td>"+t[i].count[n].disciple+"</td><td >"+t[i].count[n].discipleall+"</td><td>"+t[i].count[n].dil+"</td><td>"+t[i].count[n].dcount+"</td><td><select tid="+t[i].count[n].id+" onchange='state(this,5)' class='sed' ><option   value='0'>取消</option><option   value='1'>已发</option><option selected='selected'   value='2'>未发</option></select></td></tr>";
+    			    				
+    						}
+    						}
+    						}
+    					str+="</table></td>";
+    					str += "</tr>"
+    				}
+    			
+    					
+    					$('#yeerborder').html(str);
+    			},'json')
+    	
+    			
+    			
+    	
+    		}
+    		
+ function state(obj,r,id)
+    {
+    	var dat = $(obj).val();
+    	 Showbo.Msg.confirm('确认修改?',function(a)
+    		        {	
+    		 			if(a == "yes")
+    		 			{
+    		 				 $.post("{:U('Home/Enterprise/adddat')}",{act:dat,id:id,r:r},function(t)
+    				 	    			{
+    				 	    				if(t !=1)
+    				 	    				{
+    				 	    					Showbo.Msg.alert('修改失败');
+    				 	    				}
+    				 	    		
+    				 	    		
+    				 	    			},'json')
+    		 			}
+		    	
+    		
+    		        })
+    
+    	
+    	
+    }
+    		
+    function getDays(year,mouth){
+
+        //定义当月的天数；
+        var days ;
+         
+        //当月份为二月时，根据闰年还是非闰年判断天数
+        if(mouth == 2){
+            days= year % 4 == 0 ? 29 : 28;
+             
+        }
+        else if(mouth == 1 || mouth == 3 || mouth == 5 || mouth == 7 || mouth == 8 || mouth == 10 || mouth == 12){
+            //月份为：1,3,5,7,8,10,12 时，为大月.则天数为31；
+            days= 31;
+        }
+        else{
+            //其他月份，天数为：30.
+            days= 30;   
+        }
+        return days;
+    }	
+    function checkChangDate(obj,act){
+        var myDate = new Date();
+        var year = myDate.getFullYear();
+        var lrstrs = '';
+        var trsts = '';
+        var timeyear = $('#timeyear').val();//左侧年
+
+        var timemonth = $("#timemonth").val();//左侧月 
+
+        var timeday = $("#timeday").val();//左侧日
+
+        var beforeyea = $("#beforeyea").val();//右侧年
+
+        var datayear = $('#datayear').val();//右侧月
+
+        var day = $('#day').val();//右侧日
+
+        timeyear = parseInt(timeyear);
+        beforeyea = parseInt(beforeyea);
+        if(timeyear > beforeyea){
+            $("#beforeyea").val(timeyear);
+        }
+
+        timemonth = parseInt(timemonth);
+        datayear = parseInt(datayear);
+        if(timeyear == beforeyea){
+            if(timemonth > datayear){
+                $("#datayear").val(m);
+            }
+            if(timeyear == year){
+                if(timemonth >= m){
+                    $("#timemonth").val(m);
+                }
+            }
+            if(beforeyea == year){
+                if(datayear >= m){
+                    $("#datayear").val(m);
+                }
+            }
+        }
+
+        timemonth = $("#timemonth").val();
+        timemonth = parseInt(timemonth);
+
+        datayear = $("#datayear").val();
+        datayear = parseInt(datayear);
+
+        timeday = parseInt(timeday);
+        day = parseInt(day);
+        if(timeyear == beforeyea && timemonth == datayear){
+            if(timeday > day){
+                $("#day").val(timeday+1);
+            }
+            if(timeyear == year && timemonth == m){
+                if(timeday >= myDate.getDate()){
+                    $("#timeday").val(myDate.getDate());
+                }      
+            }
+            if(beforeyea == year && datayear == m){
+                if(day >= myDate.getDate()){
+                    $("#day").val(myDate.getDate());
+                }      
+            }
+        }
+
+        if(act == 1){
+            var mm = getDays(timeyear,timemonth);    //当左侧月改变时执行
+        }else if(act == 2){
+            var mm = getDays(beforeyea,datayear);    //当右侧月改变时执行
+        }
+
+        for (var i = 1 ; i <= mm ; i++)  
+        {  
+            if(act == 1){   
+                lrstrs += "<option value='" + i + "'> " + i + "日</option>"; 
+            }else if(act == 2){
+                if(i==myDate.getDate()){
+                    trsts+="<option selected='selected' value='"+i+"'>"+i+"日</option>";
+                }else{
+                    trsts+="<option  value='"+i+"'>"+i+"日</option>";
+                } 
+            }
+        } 
+        
+        if(act == 1){
+            $('#timeday').html(lrstrs); //左侧变化的天数
+        }else if(act == 2){
+            $('#day').empty();
+            $('#day').append(trsts); //右侧变化的天数
+        }
+        
+    }
+    
+    
+    
+    function seove()
+    {
+    	var timeyear = $('#timeyear').val();  //开始年
+ 	   var timemonth = $('#timemonth').val(); //开始月
+ 	   var timeday = $('#timeday').val(); //开始天 
+ 	   var beforeyea = $('#beforeyea').val();  //结束年
+ 	   var datayear = $('#datayear').val(); //结束月
+ 	   var day = $('#day').val(); //结束天
+ 	   var lsor = $('#lsor').val();
+ 	   
+ 	   datearr(timeyear,timemonth,timeday,beforeyea,datayear,day,lsor);
+    	
+    }
+   
+    
+  </script>
+  <script>
+    function uploadCate() {
+        $.upload({
+                // 上传地址
+                url: '{:U('Home/Enterprise/uploadCate')}',
+                // 文件域名字
+                fileName: 'file',
+                // 其他表单数据
+                params: {},
+                // 上传完成后, 返回json, text
+                dataType: 'json',
+                // 上传之前回调,return true表示可继续上传
+                onSend: function(){
+                          return true;
+                },
+                // 上传之后回调
+                onComplate: function(data) {
+                    console.log(data);
+                    if(data.code == 1){
+                        uploadCategory(data.datalist);
+                    }else{
+                        alert(data.errmsg);
+                    }
+                }
+        });
+    }
+    function uploadCategory(datalist){
+
+        $.ajax({
+                // 上传地址
+                url: '{:U('Home/Enterprise/uploadCategory')}',
+                // 其他表单数据
+                data: {datalist:datalist},
+                // 上传完成后, 返回json, text
+                type: "post",
+
+                dataType:"json",
+
+                // 上传之后回调
+                success: function(data) {
+                    console.log(data);
+                    if(data.errcode == 1){
+                        alert(data.errmsg);
+                    }else{
+                        alert(data.errmsg);
+                    }
+                }
+        });
+    }
+  </script>
+</body>
+</html>

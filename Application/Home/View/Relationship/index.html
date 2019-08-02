@@ -1,0 +1,1958 @@
+
+<include file="Public/header_rela" />
+<link rel="stylesheet" href="__PUBLIC__/css/weiyan.css" />
+<link rel="stylesheet" href="__PUBLIC__/css/zhangweiyan.css" />
+<script type="text/javascript" src="__PUBLIC__/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/city.js"></script>
+<body>
+<input type="button" id="return" data-toggle="modal" style="display: none;" data-target="#myModalmovereason">
+<!-- 模态框（Modal） -->
+<div class="modal fade tianjiacss" id="myModalmovereason" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content" style="width:auto;">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">退回公海池的原因</h4>
+			</div>
+			<div class="modal-body">
+
+
+
+
+					<textarea name="reback001" id="reabkc001" placeholder="请填写退回公海池的原因"></textarea>
+					<div class="modal-footer">
+						<button class="btn form-submit" tid="" onclick="savesreson()" type="button" isaddcontact="0">保存</button>
+					</div>
+
+			</div>
+
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade tianjiacss" id="myModalmove" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:auto;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">移交给负责人</h4>
+            </div>
+            <div class="modal-body">
+
+				<div class="table123" style="height:300px; overflow-y:auto; padding-right: 2px; margin-top: 5px; ">
+					<div class="tjform">
+						<input type="text" id="yy" style="width: 75%;"><input type="button" onclick="sseach()" value="搜索">
+					</div>
+		            <table class="table table-striped table-hover table-bordered search_header_list widthfull" style="">
+		               
+		            </table>
+
+	            </div>
+				<div class="table456">
+					<div><input type="radio" name="others" value="1" placeholder="工作分配" onchange="statu(1)">工作分配</div>
+					<div> <input type="radio" name="others" value="2" placeholder="员工交接" onchange="statu(1)">员工交接</div>
+					<div><input type="radio" name="others" value="3" placeholder="其他" onchange="statu(0)">其他</div>
+					<textarea name="reback" id="reback" style="display:none"></textarea>
+				</div>
+	            <div class="tablebtn">
+	               
+	            </div>
+            </div>
+            
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade tianjiacss addbtn" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:640px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">新建客户</h4>
+            </div>
+            <div class="modal-body">
+                 <form name=form1>
+                 <table class="table table-striped table-bordered table-hover tableinput" >
+                     <tr>
+                        <td>选择分公司：</td>
+                        <td>
+                           <select name="uid" id="uid" <if condition="$uid neq 0"> disabled='disabled'</if> class="form-control" onchange="selectCompany()"  id="wthis"  >
+							  <if condition="$uid eq 0"><option value="0">--请选择分公司--</option></if>
+                              <foreach name="enterprise" item="vo">
+	                              <if condition="$uid eq $vo['id']">
+	                              <option value="{$vo.id}" selected = "selected" >{$vo.Qyname}</option>
+	                              <else/>
+	                              <option value="{$vo.id}">{$vo.Qyname}</option>
+	                              </if>                              
+                              </foreach>
+                           </select>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>客户名称：</td>
+                        <td><input name="name" id="name" autocomplete="off" validation-engine-tag="validate[required,maxSize[100]]" value="" class="form-control" placeholder="请输入客户名称" type="text" data-validation-engine="validate[required,maxSize[100]]" data-errormessage-value-missing="请输入!"></td>
+                     </tr>
+                        <tr>
+                        <td>客户生日：</td>
+                        <td><input name="name"  onclick="picker_one()" id="shri" autocomplete="off" validation-engine-tag="validate[required,maxSize[100]]" value="" class="form-control" placeholder="请输入客户生日" type="text" data-validation-engine="validate[required,maxSize[100]]" data-errormessage-value-missing="请输入!"></td>
+                     </tr>
+					 <if condition="$id eq 0">
+					 <tr>
+                        <td>负责人</td>
+                        <td>
+                           <select  name="name" id="raze" <if condition="$id neq 0"> disabled='disabled'</if>  class="form-control" >
+                            <option value="">--请选择--</option>
+                              <foreach name="salesman" item="vo">
+	                              <if condition="$id eq $vo[id]">
+	                              <option value="{$vo.id}" selected = "selected" >{$vo.name}</option>
+	                              <else/>
+	                              <option value="{$vo.id}">{$vo.name}</option>
+	                              </if>                              
+                              </foreach>
+                           </select>
+                        </td>
+                     </tr>
+					 </else>
+						 <input type="hidden" id="raze" value="0"/>
+					 </if>
+                     <tr>
+                        <td>联系人:</td>
+                        <td><input name="name" id="razecont" value=""   autocomplete="off" validation-engine-tag="validate[required,maxSize[100]]" value="" class="form-control" type="text" data-validation-engine="validate[required,maxSize[100]]" data-errormessage-value-missing="请输入!"></td>
+                     </tr>
+                     <tr>
+                        <td>联系电话：</td>
+                        <td><input name="name" id="num" autocomplete="off" validation-engine-tag="validate[required,maxSize[100]]" value="" class="form-control"  placeholder="请输入联系电话" type="text" data-validation-engine="validate[required,maxSize[100]]" data-errormessage-value-missing="请输入!"></td>
+                     </tr>
+                     <tr>
+                        <td>客户行业：</td>
+                        <td>
+                            <select class="form-control" name="industry" validation-engine-tag="validate[required]" id="industry" tabindex="1" data-errormessage-value-missing="请选择客户行业!">
+							<option value="0">筛选客户行业</option><option value="1">金融</option><option value="2">电信</option><option value="3">教育</option><option value="4">高科技</option><option value="5">政府</option><option value="6">制造业</option><option value="7">服务业</option><option value="8">能源</option><option value="9">零售</option><option value="10">媒体</option><option value="11">娱乐</option><option value="12">咨询</option><option value="13">非营利事业</option><option value="14">公用事业</option><option value="15">其他</option>
+						   </select>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>客户状态：</td>
+                        <td>
+                            <select class="form-control" validation-engine-tag="validate[required]" name="type" id="type" tabindex="1" data-errormessage-value-missing="请选择客户状态!">
+				       <option value="1">潜在客户</option><option value="2">初步接触</option><option value="3">持续跟进</option><option value="4">成交客户</option><option value="5">忠诚客户</option><option value="6">无效客户</option>
+				   </select>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>客户性质：</td>
+                        <td>
+                            <select class="form-control" validation-engine-tag="validate[required]" name="isIndividual" id="isIndividual" tabindex="1">
+							<option value="0" selected="selected">筛选客户性质</option><option value="1">企业客户</option><option value="2">个人客户</option><option value="3">政府事业单位</option>
+						   </select>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>客户类型：</td>
+                        <td>
+                           <select class="form-control" validation-engine-tag="validate[required]" name="genre" id="genre" tabindex="1" data-errormessage-value-missing="请选择客户类型!">
+							 <option value="0" selected="selected">筛选客户类型</option><option value="1">最终客户</option><option value="2">渠道客户</option><option value="3">竞争对手</option>
+						   </select>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>客户分级：</td>
+                        <td>
+                           <select class="form-control" validation-engine-tag="validate[required]" name="scale" id="scale" tabindex="1" data-errormessage-value-missing="请选择客户分级!">
+							<option value="0" selected="selected">筛选客户分级</option>
+							<option value="3">大型</option>
+							<option value="2">中型</option>
+							<option value="1">小型</option>	
+						 </select>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>客户星级：</td>
+                        <td class="xingji">
+                           <input type="hidden" id="xing">
+                           <div class="start" id="tanxgn"  style="float:left;"></div>
+                        </td>
+                     </tr>
+                     
+                     <tr>
+                        <td>详细地址：</td>
+                        <td><input name="name" id="zun" autocomplete="off" validation-engine-tag="validate[required,maxSize[100]]" value="" class="form-control" t0ype="text" data-validation-engine="validate[required,maxSize[100]]" data-errormessage-value-missing="请输入!"></td>
+                     </tr>
+                     <tr>
+                        <td>客户来源：</td>
+                        <td>
+                            <input name="source" id="source"  autocomplete="off" validation-engine-tag="validate[required,maxSize[100]]" value="" class="form-control" placeholder="请输入客户来源" type="text" data-validation-engine="validate[required,maxSize[100]]" data-errormessage-value-missing="请输入!">
+                        </td>
+                     </tr>
+                   
+                      <tr>
+                        <td>省份:</td>
+                        <td>
+                            <select id="province1" name="selectp" class="form-control" onChange="selectcityarea('selectp','selectc','form1');">
+                            <option value="0" selected>选择省份</option>
+                            </select>
+                        </td>
+                     </tr>
+                      <tr>
+                        <td>市:</td>
+                        <td>
+                            <select id="city1" name="selectc" class="form-control">
+                            <option value="0" selected>选择城市</option>
+                            </select>
+                        </td>
+                     </tr>
+                 
+
+                     <if condition="$list eq 'deal' and $finatype eq 1">
+                       <tr id="nonelet">
+                        <td>分红讲师</td>
+                        <td>
+                      
+                          <select  name="name" id="lectypes"   class="form-control" >
+                            <option value="">--请选择--</option>
+                           </select>
+                        </td>
+                     </tr>
+                     </if>
+                 </table>
+                 </form>
+				 <div class="modal-footer">
+					<button class="btn form-submit" id="addCustomerSave" tid="" onclick="saves(this)" type="button" isaddcontact="0">保存</button>
+				 </div>
+            </div>
+            
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<div class="warp">
+<div class="con-top">
+
+<div class="ralaname">{$relaname}</div>
+<if condition="$uid eq 0">
+<select name="uid" id="company" class="con-top-1" style="width:auto;" onchange="finfae(1,0,0,0,this.value)">
+   <option value="">全部分公司</option>
+   <foreach name="enterprise" item="vo">
+    <if condition="$comid eq $vo[id]">
+    <option value="{$vo.id}" selected = "selected" >{$vo.Qyname}</option>
+    <else/>
+    <option value="{$vo.id}">{$vo.Qyname}</option>
+    </if>                              
+   </foreach>
+</select>
+<else/>
+   <input type="hidden" id="company" value="{$uid}" />
+   <select class="con-top-1" name="client" id="client"  onchange="finfae(1,0,0,this.value)">
+		<option value="0">全部客户</option>
+		<option value="1">我所负责的客户</option>
+		<option value="2">下属所负责的客户</option>
+	</select>
+</if>
+<div class="con-top-2">	
+<select name="" id="tesarr">
+<option value="0">请选择</option>
+<option value="1">联系人</option>
+<option value="2">客户名称</option>
+<option value="3">负责人</option>
+<option value="4">联系电话</option>
+<input type="text" placeholder="通过员工或部门选择" id="tes" />
+<input type="button" value="搜索" class="button" onclick="selecy()">
+</select>
+</div>
+<div class="con-top-3">
+<input type="button" value="新建" onclick="news()" data-toggle="modal" data-target="#myModal" />
+<input type="button" value="导出" onclick="loca()" />
+<input type="button" value="导入" onclick="uploadCate()" />
+
+<input type="button" value="下载模板" onclick="window.location.href='{:U('/Home/Relationship/down')}'" />
+</div>
+</div>
+<div>
+
+
+
+<div class="Modinfo date" style=""><span>
+                 <select name="" id="s1">
+
+                   <option value="1">创建时间</option>
+                   <option value="2">最近联系时间</option>
+                 </select>
+                 <select id="timeyear" class="form-control" onchange="checkChangDate(this)"></select>
+                 <select id="timemonth" class="form-control" onchange="checkChangDate(this,1)"></select>
+                 <select id="timeday" class="form-control" onchange="checkChangDate(this)"></select>
+             </span> <span>至</span> 
+                 <span>
+                  <select id="beforeyea" class="form-control" onchange="checkChangDate(this)"></select>
+                  <select id="datayear" class="form-control" onchange="checkChangDate(this,2)"></select>
+                  <select id="day" class="form-control" onchange="checkChangDate(this)"></select>
+                       </span>
+                 <span class="searcinput1">
+             
+                  <input type="button" class="btn-default1" onclick="searove()" value="搜索">
+                 </span>
+                 
+         </div>
+
+<div class="con-con">
+<select  id="sele1"  onchange ="sele()">
+					 <option value="" selected="">重要程度</option>
+					 <option value="0">未设置</option>
+                     <option value="1">一星</option>
+                     <option value="2">二星</option>
+                     <option value="3">三星</option>
+                     <option value="4">四星</option>
+                     <option value="5">五星</option>
+</select>
+<select name="" id="sele2"  onchange ="sele()" >
+					<option value="">客户行业</option>
+				 	<option value="0">未设置</option>
+				    <option value="1">金融</option>
+				    <option value="2">电信</option>
+				    <option value="3">教育</option>
+				    <option value="4">高科技</option>
+				    <option value="5">政府</option>
+					<option value="6">制造业,</option>
+					<option value="7">服务业</option>
+					<option value="8">能源</option>
+					<option value="9">零售</option>
+					<option value="10">媒体</option>
+					<option value="11">娱乐</option>
+					<option value="12">咨询</option>
+					<option value="13">非盈利事业</option>
+					<option value="14">公用事业</option>
+					<option value="15">其他</option>
+</select>
+<select name="" id="sele3"  onchange ="sele()" >
+					<option value="">客户分级</option>
+				 	<option value="0">未设置</option>
+				    <option value="1">小型</option>
+				    <option value="2">中型</option>
+				    <option value="3">大型</option>
+
+</select>
+<select name="" id="sele4"  onchange ="sele()" >
+					<option value="">客户性质</option>
+				 	<option value="0">未设置</option>
+				    <option value="1">企业客户</option>
+				    <option value="2">个人客户</option>
+				    <option value="3">政府企业单位</option>
+
+</select>
+
+<select name="" id="sele5"  onchange ="sele()" >
+					<option value="">客户状态</option>
+				 	<option value="0">未设置</option>
+				    <option value="1">潜在客户</option>
+				    <option value="2">初步接触</option>
+				    <option value="3">持续跟进</option>
+				    <option value="4">成交客户</option>
+				    <option value="5">忠诚客户</option>
+				    <option value="6">无效客户</option>
+
+</select>
+
+
+
+
+<select name="" id="s2" onchange ="sele()">
+<option value="0">请选择联系状态</option>
+<option value="1">已联系</option>
+<option value="2">未联系</option>
+</select>
+
+
+
+</div>
+<div class="tableborder">
+	<div class="table table1">
+		 <table id="table" width="2080" cellspacing="0" cellpadding="0" border="1" bordercolor="#dddddd">
+		  
+		 </table>
+		 
+	</div>
+	<div class="TaskTable" id="pwdshow"></div>
+</div>
+
+
+
+   <div class="bottom-left">
+ <span class="foor" id="foor">已选客户(0)</span> 
+
+ <if condition="$list eq 'delete'">
+    <input class="button-sen " type="button" value="彻底删除" onclick="delemark(1,this)" />
+    <img src="__PUBLIC__/images/login-image/shu.jpg" alt="">
+    <input class="button-sen " type="button" value="还原" onclick="restore(this)"/>
+  <else />
+ <input class="button-sen" type="button" value="删除" onclick="delemark(0,this)" />
+	 <if condition="$move">
+		 <img src="__PUBLIC__/images/login-image/shu.jpg" alt="">
+		 <input type="hidden" id="movebtn" data-toggle="modal" data-target="#myModalmove">
+		 <input class="button-sen" type="button" value="移交"   onclick="overuser(this)" /><!-- onclick="overuser()"  -->
+	 </if>
+	 <if condition="$list neq 'public'">
+ <img src="__PUBLIC__/images/login-image/shu.jpg" alt="">
+ <input class="button-sen" type="button" value="退回公海池" onclick="backspacing(this)" />
+		 </if>
+ <img src="__PUBLIC__/images/login-image/shu.jpg" alt="">
+ </if>
+ 
+ </div>
+</div>
+<script>
+
+var data = {};
+var table = {};
+var myDate = new Date();
+var m = myDate.getMonth()+1;
+var lnstr ="";
+var lyst ="";
+var lrstr ="";
+
+var tnst ="";
+var tystr ="";
+var trst ="";
+
+var y = new Date().getFullYear(); //当前年份
+
+$(document).ready(function($){
+	var tabletop=$(".table1").offset().top;
+    var winheight=$(window).height();
+	if(winheight-tabletop-120<=261){
+		$(".table1").css("height","261px");
+	}else{
+		$(".table1").css("height",winheight-tabletop-120);
+	}
+
+
+	var myDate1 = new Date();
+	var m1 = myDate1.getMonth()+1;
+	$(".xingji .start").click(function(e){
+		var xing=$("#xing").val();
+
+		var pagex=e.pageX;
+		var xleft=$(this).offset().left;
+		var xingnum=Math.ceil((pagex-xleft)/33);
+		if(xing==xingnum){
+			xingnum--;
+		}
+		$(this).removeClass().addClass("start start"+xingnum);
+		$("#xing").val(xingnum);
+	});
+	
+	$('.loding').css('display','block');
+    for (var i = (y-2); i < (y+1); i++) {
+        if(i==y){
+            lnstr+="<option selected='selected' value='"+i+"'>"+i+"年</option>";
+        }else{  
+            lnstr += '<option value="'+i+'">'+i+'年</option>';
+        }
+        if(i==y){
+            tnst+="<option selected='selected' value='"+i+"'>"+i+"年</option>";
+        }else{  
+            tnst+="<option  value='"+i+"'>"+i+"年</option>";
+        }
+    }
+    $('#timeyear').append(lnstr); //前两年年份
+    $('#beforeyea').append(tnst); //今年年份
+
+/********************************年份赋值****************************************/
+
+    for (var i = 1; i < 13; i++)  
+    {  
+        if(i==m1){
+            lyst+="<option selected='selected' value='"+i+"'>"+i+"月</option>";
+        }else{
+            lyst += "<option value='" + i + "'> " + i + "月</option>";
+        } 
+        if(i==m1){
+            tystr+="<option selected='selected' value='"+i+"'>"+i+"月</option>";
+        }else{
+            tystr+="<option  value='"+i+"'>"+i+"月</option>";
+        } 
+    }  
+    $('#timemonth').append(lyst); //前两年月份
+    $('#datayear').append(tystr); //今年月份
+
+/********************************月份赋值****************************************/
+
+    for (var i = 1; i <= 31; i++)  
+    {  
+        lrstr += "<option value='" + i + "'> " + i + "日</option>"; 
+
+        if(i==myDate.getDate()){
+            trst+="<option selected='selected' value='"+i+"'>"+i+"日</option>";
+        }else{
+            trst+="<option  value='"+i+"'>"+i+"日</option>";
+        } 
+    }  
+
+    $('#timeday').append(lrstr); //前两年月份
+    $('#day').append(trst); //今年月份
+
+/********************************天数赋值****************************************/
+ 
+  
+   
+});
+
+
+$(function()
+{
+	$('.loding').css('display','none');
+	
+	finfae();
+	dateacount();
+	
+})
+
+function dateacount()
+{
+	var w2 = $('#timemonth').val();
+	var w1 = $('#datayear').val();
+
+    var day=new Date();
+
+	var ww2 = "";
+	var ww1 = "";
+	if(w2 == 2)
+	{
+		for(var i =1; i<=28;i++)
+		{
+			ww2 +='<option value="'+i+'">'+i+'日</option>';
+		}
+		$('#timeday').html(ww2);
+	}
+	if(w1 == 2)
+	{
+		for(var i =1; i<=28;i++)
+		{
+            if(i==day.getDate()){
+                ww1 +='<option value="'+i+'" selected>'+i+'日</option>';
+            }else{
+                ww1 +='<option value="'+i+'">'+i+'日</option>';
+            }
+			
+		}
+		$('#day').html(ww1);
+	}
+}
+function teamchange(element){
+    var tid=$(element).val();
+    $.ajax({
+		url:"__URL__/teamchange",
+		data:{id:tid},
+		type:"POST",
+		dataType:"json",
+		success:function(data){
+			var html='<tr><td>选择</td><td>负责人名称</td></tr>';
+			for(var i in data){
+				html+='<tr><td><input type="radio" name="fzname" value="'+data[i]["id"]+'"></td><td id="'+data[i]["id"]+'">'+data[i]["name"]+'</td></tr>';
+			}
+			$("#myModalmove .modal-body table").html(html);
+		}
+	});
+}
+
+function finfae(p,ipadc,yu,client,companyVal)
+{		
+
+	var tesarr = $('#tesarr').val();
+	var tes = $('#tes').val();
+	if(typeof yu =='undefined')
+	{
+		yu = 0;
+	}
+	if(typeof client =='undefined')
+	{
+		client = 0;
+	}
+	if(typeof ipadc =='undefined')
+	{
+		ipadc = 0;
+	}
+	
+	if(typeof companyVal =='undefined')
+	{
+		companyVal = $("#company").val();
+	}
+	if(p==undefined){
+        p = 1;
+	}
+	var kt=  $('#timeyear').val()+'-'+$('#timemonth').val()+'-'+$('#timeday').val();
+	var jt=  $('#beforeyea').val()+'-'+$('#datayear').val()+'-'+$('#day').val();
+	var s1 = $('#s1').val();
+	
+	var s2 = $('#s2').val();
+	
+	var sele1 = $('#sele1').val();
+	var sele2 = $('#sele2').val();
+	var sele3 = $('#sele3').val();
+	var sele4 = $('#sele4').val();
+	var sele5 = $('#sele5').val();
+																																																													
+	
+	var param=new Object();
+	param["yu"]=yu;
+	param["tesarr"]=tesarr;
+	param["tes"]=tes;
+	param["sele1"]=sele1;
+	param["sele2"]=sele2;
+	param["sele3"]=sele3;
+	param["sele4"]=sele4;
+	param["sele5"]=sele5;
+	param["client"]=client;
+	param["p"]=p;
+	param["kt"]=kt;
+	param["jt"]=jt;
+	param["ipadc"]=ipadc;
+	param["s1"]=s1;
+	param["s2"]=s2;
+	param["uid"]=companyVal;
+    param['list']="{$list}"; 
+    $(".loding").show();
+	$(".expend").remove();
+	$(document.body).attr("page",p);
+	$.post("{:U('Home/Relationship/actindex')}",param,function(t)
+			{
+			nums = t.count;
+			t = t.data;
+			str = "";
+			list="{$list}";
+			var personname="";
+			if(list=="delete"){
+				personname="前";
+			}
+			str +='<tr><td style="width:30px;"><input type="checkbox" id="chein" onclick="cheindata(this)" /></td><td style="width:120px;">'+personname+'负责人</td><td style="width:120px;">最近跟进记录</td><td style="width:120px;">客户名称</td><td style="width:120px;">所属分公司</td><td style="width:90px;">客户类型</td><td style="width:90px;">客户状态</td><td style="width:120px;">客户性质</td><td style="width:90px;">客户分级</td><td style="width:90px;">客户行业</td><td style="width:120px;">重要程度</td><td style="width:150px;">客户来源</td><td style="width:150px;">联系电话</td><td style="width:250px;">详细地址</td><td style="width:130px;">最后联系时间</td><td style="width:80px;">联系人</td><td style="width:120px;">客户生日</td><td style="width:120px;">省份</td><td style="width:120px;">市/县</td><td style="width:120px;">购买九大规划剩余时间</td><td style="width:50px;">操作</td></tr>'
+			for(i in t)
+			{
+				str +='<tr><td><input type="checkbox" class="cheinss" tid="'+t[i].id+'" onclick="unu(this)"  /></td>'
+				if(t[i].rwname==null){
+					str +='<td>&nbsp;</td>';
+				}else{
+					str +='<td>'+t[i].rwname+'</td>';
+				}				
+				str +='<td>';
+				if(t[i].rwname!=null) {
+					str += '<input type="button" value="跟进" class="button-td-1" onClick="followup(' + t[i].id + ')"/>';
+				}
+				str+='<input type="button" value="查看" class="button-td-2" onClick="follinfo('+t[i].id+',this)"/> <div class="expend" id="follow'+t[i].id+'" style="bottom: inherit; top: -42.5px"></div></td>'
+				str +='<td>'+t[i].name+'</td>'
+			
+			
+				str +='<td>'+t[i].uname+'</td>'
+				if(t[i].type == 1)
+				{
+					ttpe = '最终客户';			
+				}else if(t[i].type == 2)
+				{
+					ttpe = '渠道客户';
+				}else if(t[i].type == 3)
+				{
+					ttpe = '竞争对手';
+				}else
+				{
+					ttpe = '未设置';
+				}
+				
+				if(t[i].state  == 1)
+				{
+					tstate = '潜在客户';
+				}else if(t[i].state  == 2)
+				{
+					tstate = '初步接触';
+					
+				}
+				else if(t[i].state  == 3)
+				{
+					tstate = '持续跟进';
+					
+				}
+				else if(t[i].state  == 4)
+				{
+					tstate = '成交客户';
+					
+				}else if(t[i].state  == 5)
+				{
+					tstate = '忠诚客户';
+					
+				}else if(t[i].state  == 6)
+				{
+					
+					tstate = '无效客户';
+				}else
+				{
+					tstate = '未设置';
+				}
+				
+				if(t[i].nature == 1)
+				{
+					tnature = '企业客户';			
+				}else if(t[i].nature == 2)
+				{
+					tnature = '个人客户';
+				}else if(t[i].nature == 3)
+				{
+					tnature = '政府企业单位';
+				}else
+				{
+					tnature = '未设置';
+				}
+				
+				if(t[i].level == 1)
+				{
+					tlevel = '小型';			
+				}else if(t[i].level == 2)
+				{
+					tlevel = '中型';
+				}else if(t[i].level == 3)
+				{
+					tlevel = '大型';
+				}else
+				{
+					tlevel = '未设置';
+				}
+				
+			
+				if(t[i].industry == 1 )
+				{
+					tindustry = '金融';
+				}else if(t[i].industry == 2)
+				{
+					
+					tindustry = '电信';
+				}else if(t[i].industry == 3)
+				{
+					
+					tindustry = '教育';
+				}else if(t[i].industry == 4)
+				{
+					
+					tindustry = '高科技';
+				}else if(t[i].industry == 5)
+				{
+					
+					tindustry = '政府';
+				}else if(t[i].industry == 6)
+				{
+					
+					tindustry = '制造业';
+				}else if(t[i].industry == 7)
+				{
+					
+					tindustry = '服务业';
+				}else if(t[i].industry == 8)
+				{
+					
+					tindustry = '能源';
+				}else if(t[i].industry == 9)
+				{
+					
+					tindustry = '零售';
+				}else if(t[i].industry == 10)
+				{
+					
+					tindustry = '媒体';
+				}else if(t[i].industry == 11)
+				{
+					
+					tindustry = '娱乐';
+				}else if(t[i].industry == 12)
+				{
+					
+					tindustry = '咨询';
+				}else if(t[i].industry == 13)
+				{
+					
+					tindustry = '非盈利事业';
+				}else if(t[i].industry == 14)
+				{
+					
+					tindustry = '公用事业';
+				}else if(t[i].industry == 15)
+				{
+					
+					tindustry = '其他';
+				}else
+				{
+
+					tindustry = '未设置';
+				}
+				
+				
+				str +='<td>'+ttpe+'</td>'
+				str +='<td>'+tstate+'</td>'
+				str +='<td>'+tnature+'</td>'
+				str +='<td>'+tlevel+'</td>'
+				str +='<td>'+tindustry+'</td>'
+				str +='<td><div class="start start'+t[i].star+'"></div></td>'
+				str +='<td>'+t[i].source+'</td>'
+				str +='<td>'+t[i].tel+'</td>'
+				str +='<td>'+t[i].address+'</td>'
+				if(t[i].ztime1 ==false)
+				{
+					str +='<td><span style="color: red;">未联系</span></td>'
+				}else
+				{
+					str +='<td>'+t[i].ztime+'</td>'
+				}
+				if(t[i].contact == null)
+				{
+					t[i].contact = "";
+				}
+				str +='<td>'+t[i].contact+'</td>'
+				if(t[i].birthday == null || t[i].birthday=="0000-00-00")
+				{
+					str +='<td><span style="color: red;">未填写</span></td>'
+				}else
+				{
+					str +='<td>'+t[i].birthday+'</td>'
+				}
+
+                /*-------------------------省份-------------------------------*/
+                province=(t[i].province.split(":")[1]==undefined)?'':t[i].province.split(":")[1];
+                city=(t[i].city.split(":")[1]==undefined)?'':t[i].city.split(":")[1];
+
+                str +='<td>'+province+'</td>'
+
+                str +='<td>'+city+'</td>'
+                str +='<td>'+t[i].jdsyday+'</td>'
+
+               /*--------------------------------------------------------*/
+
+
+
+                // str+="<td></td>"; //省份
+                // str+="<td></td>"; //市
+				str +='<td><input type="button" value="修改" class="button-td-3" data-toggle="modal" data-target="#myModal" onclick="saveone('+t[i].id+')" /></td>'
+				str +='</tr>';
+                var dealist=t[i].dealist;
+				if(param['list']=='deal'){
+					str+="<tr><td colspan='18'>";
+                    str+="<table class='tableborderlist'>";
+					str+="<tr><td style='width:20%'>课程名称</td><td style='width:20%'>时间</td><td style='width:40%'>成交信息</td><td style='width:20%'>成交人</td></tr>";
+					if(dealist==null){
+                        str+="<tr><td colspan='4'><span>成交信息不存在</span></td></tr>";
+					}else{
+						for(var j in dealist){
+							var name= dealist[j]["name"];
+							for(var m in dealist[j]["comdorder"]){
+								var comdorder=dealist[j]["comdorder"][m];
+								str+="<tr><td>"+name+"</td><td>"+comdorder["time"]+"</td><td> 小票("+comdorder["ticket"]+") 九大规划门票("+comdorder["planning"]+") 卡会员("+comdorder["card"]+") 朋友圈("+comdorder["friends"]+") 弟子学员("+comdorder["disciple"]+")</td><td> "+comdorder["ridname"]+" </td></tr>";
+							}
+						}
+					}
+					str+="</table>";
+					str+="</td></tr>";
+				}
+
+			}
+			
+			$(".loding").hide();
+			$('#table').html(str);
+			page(p);
+            cheindata();
+			},'json')
+}
+
+//选择分公司
+function selectCompany(){
+	var uid=$('#uid').val();//分公司id
+	
+	$.ajax({
+		type:"POST",
+		url:"{:U('/Home/Relationship/selectcom')}",
+		data:{uid:uid},
+		dataType:"json",
+		success:function(data){
+			
+			var html="<option value='0'>--客户公海池--</option>";
+			for(var i in data){
+				html+="<option value='"+data[i]["id"]+"'>"+data[i]["name"]+"</option>";
+			}
+			$("#raze").html(html);
+		}
+	});
+}
+
+
+function news(){
+	//console.log();
+
+
+	selectCompany();
+	$("#myModal .modal-title").html("新建客户");
+	$('#name').val("");
+    $('#nonelet').html(" ");
+	$('#razecont').val("");
+	$('#num').val("");
+	$('#shri').val("");
+	$('#industry option').removeAttr('selected');
+	$("#addCustomerForm select option").removeAttr('selected');
+	$('#uid  option').removeAttr('selected');
+
+	$("#uid").find("option[value="+{$uid}+"]").attr("selected",true);
+
+	$('#type option').removeAttr('selected');
+	$('#isIndividual option').removeAttr('selected');
+	$('#genre option').removeAttr('selected');
+	$('#scale option').removeAttr('selected');
+	$('#raze option').removeAttr('selected');
+	$('#tanxgn').removeClass();
+	$('#tanxgn').addClass('start');
+    $('#xing').val("");
+    $('#zun').val("");
+    $('#source').val("");
+    $('#addCustomerSave').attr('tid',"");
+   var selectp = $("[name='selectp']").find("option:selected").val();//北京
+   var selectc = $("[name='selectc']").find("option:selected").val();//北京
+   // alert(selectp);
+   first("selectp","selectc","form1",0,0);
+   $("#city1 option:gt(0)").remove();
+}
+
+$(document).ready(function(){
+	$(".modal-header .close").click(function(){
+		$(".modal").hide();
+	});
+});
+ // var province = $('#province').val();//01
+ //    var city = $('#city').val();
+//first("selectp","selectc","form1",0,0);
+function saves(obj)
+{	
+	var tid = $(obj).attr('tid');
+	var uid=$("#uid").val();
+	var name = $('#name').val(); //客户名称
+	name=name.replace(/^\s\s*/, '');
+	var num = $('#num').val(); //联系电话
+	var industry = $('#industry').val(); //客户行业
+	var type = $('#type').val(); //客户状态
+	var isIndividual = $('#isIndividual').val(); //客户性质
+	var genre = $('#genre').val(); //客户类型
+	var scale = $('#scale').val(); //客户分级
+	var xing = $('#xing').val(); //客户星级
+	var shri = $('#shri').val();
+	var zun = $('#zun').val(); //详细地址
+	var source = $('#source').val(); //客户来源
+	var razecont = $('#razecont').val();
+	var rid = $('#raze').val();
+    var lid = $('#lectypes').val();
+    /*------------------------------省份------------------------------------------*/
+    var province = $('#province1').val();//01
+
+    var selectp1 = $("[name='selectp']").find("option:selected").text();//北京
+    var ps = province+":"+selectp1;
+
+    /*------------------------------市县------------------------------------------*/
+    var city = $('#city1').val();
+    var selectc1 = $("[name='selectc']").find("option:selected").text();//北京
+    var cs = city+":"+selectc1;
+
+
+    //var city = 0101:东城区
+	var page=$(document.body).attr("page");
+	if(uid == 0)
+	{
+		Showbo.Msg.alert('请选择分公司！');
+		return false;
+	}
+    if(province == "")
+    {
+        Showbo.Msg.alert('请填写省份!');
+        return false;
+    }
+    if(city == "")
+    {
+        Showbo.Msg.alert('请填写市/县!');
+        return false;
+    }
+	if(name == "")
+	{
+		Showbo.Msg.alert('客户姓名不能为空');
+		return false;
+	}
+
+	if(!(/^(?:(?!\s).){1,}$/.test(name))){ 
+        Showbo.Msg.alert("客户名称不能出现空格");      
+            return false; 
+     } 
+
+	if(!(/^1[34578]{1}\d{9}$/.test(num))){ 
+		Showbo.Msg.alert("手机号格式不正确");      
+	        return false; 
+	 } 
+
+	if(zun == "")
+	{
+		Showbo.Msg.alert('请填写地址');
+		return false;
+	}
+	if(lid == "")
+    {
+        Showbo.Msg.alert('请选择讲师');
+        return false;
+    }
+	$.post("{:U('Home/Relationship/rsase')}",{shri:shri,uid:uid,rid:rid,tid:tid,razecont:razecont,name:name,num:num,industry:industry,type:type,isIndividual:isIndividual,genre:genre,scale:scale,xing:xing,zun:zun,source:source,lid:lid,ps:ps,cs:cs},function(t)
+	{	
+		
+		if(t == 1)
+		{
+			Showbo.Msg.alert('操作成功');
+			finfae();
+		}else if(t==2){
+			Showbo.Msg.alert('操作成功');
+            finfae();
+			// return false;
+		}else{
+			Showbo.Msg.alert('客户名称重复');
+			return false;
+		}
+
+		finfae(page);
+	    $(".modal-header .close").click();
+		
+	},'json')
+	
+}
+function page(page)
+{
+	
+   
+
+    $(".tcdPageCode").remove();
+    $(".table1").after("<div class='tcdPageCode'></div>");
+    $(".tcdPageCode").createPage({
+          pageCount:nums,
+          current:page,
+          backFn:function(p)
+          {
+        	  finfae(p);
+          }
+     });
+}
+function sele()
+{
+
+	finfae();
+}
+
+function loca()
+{		
+	
+	var company3 = $('#company').val();
+	var s13 = $('#s1').val();
+	if(company3 == "")
+	{
+		company3 = 0;
+	}
+	var list="{$list}";
+	var kt=  $('#timeyear').val()+'-'+$('#timemonth').val()+'-'+$('#timeday').val();
+	var jt=  $('#beforeyea').val()+'-'+$('#datayear').val()+'-'+$('#day').val();//location.href
+	location.href="{:U('Home/Relationship/exdel/kt/"+kt+"/jt/"+jt+"/company/"+company3+"/s1/"+s13+"/list/"+list+"')}";
+}
+
+function getDays(year,mouth){
+
+    //定义当月的天数；
+    var days ;
+     
+    //当月份为二月时，根据闰年还是非闰年判断天数
+    if(mouth == 2){
+        days= year % 4 == 0 ? 29 : 28;
+         
+    }
+    else if(mouth == 1 || mouth == 3 || mouth == 5 || mouth == 7 || mouth == 8 || mouth == 10 || mouth == 12){
+        //月份为：1,3,5,7,8,10,12 时，为大月.则天数为31；
+        days= 31;
+    }
+    else{
+        //其他月份，天数为：30.
+        days= 30;   
+    }
+    return days;
+}
+
+function checkChangDate(obj,act){
+    var myDate = new Date();
+    var year = myDate.getFullYear();
+    var lrstrs = '';
+    var trsts = '';
+    var timeyear = $('#timeyear').val();//左侧年
+
+    var timemonth = $("#timemonth").val();//左侧月 
+
+    var timeday = $("#timeday").val();//左侧日
+
+    var beforeyea = $("#beforeyea").val();//右侧年
+
+    var datayear = $('#datayear').val();//右侧月
+
+    var day = $('#day').val();//右侧日
+
+    if(act == 1){
+        var mm = getDays(timeyear,timemonth);    //当左侧月改变时执行
+        
+    }else if(act == 2){
+        var mm = getDays(beforeyea,datayear);    //当右侧月改变时执行
+    }
+
+    for (var i = 1 ; i <= mm ; i++)  
+    {  
+        if(act == 1){   
+            lrstrs += "<option value='" + i + "'> " + i + "日</option>"; 
+        }else if(act == 2){
+            if(i==myDate.getDate()){
+                trsts+="<option selected='selected' value='"+i+"'>"+i+"日</option>";
+            }else{
+                trsts+="<option  value='"+i+"'>"+i+"日</option>";
+            } 
+        }
+    } 
+    
+    if(act == 1){
+        $('#timeday').html(lrstrs); //左侧变化的天数
+    }else if(act == 2){
+        $('#day').empty();
+        $('#day').append(trsts); //右侧变化的天数
+    }
+    
+}
+
+function searove()
+{
+	finfae(1,99);
+
+}
+
+function followup(id){
+	var str ='';
+	str +=' <div class="TaskTablecount"><div class="Task_header" id="newTask"><h3 id="add" act="add">跟进</h3><i class=" icon-remove close_task" id="close2" ></i></div><div style=" height:60px; width: 100%;"></div>';
+
+	str +='<div  class="Task_cont"><p><span>跟进内容</span><input  class="form-control" type="text" id="oldcent"></p><p><span>上传图片</span><input type="file" id="file" name="file" onchange="changecoy()"/></p><p style="text-align: center;"><div class="imgs" onclick="clickfile()" src="" alt="" style="margin:10px auto;width:200px;height:200px;overflow:hidden;text-overflow:ellipsis; white-space:nowrap;border: 1px solid #ccc;">选择上传图片</div></i></p><p><input type="button" class=" btn-info" onclick="addfow('+id+')" value="提交" /></p></div></div>';
+	$('#pwdshow').html(str).show();
+	$('.masker').fadeIn();
+	close_mask();
+}
+
+function close_mask(){
+  $('.close_task').click(function(){
+    $('.TaskTable,.masker').fadeOut();
+  })
+}
+
+
+function clickfile(){
+	$("#file").click();
+}
+
+function changecoy(){
+
+	ajaxFileUploadcoy()
+}
+function addfow(id)
+{
+	var info = $('#oldcent').val();
+	var img = $('.idimgs').attr('src');
+    if(info == ""){
+        Showbo.Msg.alert('跟进内容不能为空');
+        return false;
+    }
+     if(img == ""){
+        Showbo.Msg.alert('跟进图片不能为空');
+        return false;
+    }
+	$.ajax({
+         type:'post',
+         url:'__URL__/addfowwl',
+         data:{id:id,img:img,info:info},
+         dataType:'json',  
+         success:function(data)
+         {
+
+          if(data == 1)
+          {
+           Showbo.Msg.alert('跟进成功');
+           $('.TaskTable').hide();
+           $('.masker').hide();
+           finfae();
+           //finfa();
+          }
+       	  $(".loading").hide();
+         }
+         });
+
+}	
+function ajaxFileUploadcoy()
+{
+	$.ajaxFileUpload
+	(		
+	{
+		            url: "{:U('Home/Relationship/upadimg')}", //用于文件上传的服务器端请求地址
+		            secureuri: false, //是否需要安全协议，一般设置为false
+		            data: {},
+		            fileElementId: ["file"], //文件上传域的ID
+		            dataType: 'json', //返回值类型 一般设置为json
+		            success: function (data)  //服务器成功响应处理函数
+		            {
+
+		            	appimg = data.path;
+
+		            	var simg = data.path;
+		            	if(simg == 1)
+		            	{
+		            		Showbo.Msg.alert('错误');
+		            	}else
+		            	{
+		            		imgagess = data.srcimg;
+							$(".imgs").html($("<img>").addClass("idimgs").attr('src',"__PUBLIC__/Uploads/upapplon/"+simg));
+
+							//$('#imgs').prop('src',"__PUBLIC__/Uploads/upapplon/"+simg);
+		            	}
+		            }
+		        } 
+		        )  
+}
+function follinfo(id,element)
+{
+
+  var flelement=$(element).offset();
+
+  if($(".ex"+id).length>0){
+	  $(".expshow").remove();
+	  return false;
+  }
+
+  $.ajax({
+  	type:'post',
+  	url:'__URL__/nonefolw',
+  	data:{id:id},
+  	dataType:'json',
+  	success:function(data)
+  	{
+
+  		var str = '<i class="single1" style="bottom: inherit;top: 51.5px;"></i><i class="single2" style="bottom: inherit; top: 51.5px;"></i><p class="loading2" style="display: none;"></p><ul style="display: block;">';
+		if(data == '')
+		{
+			str+="<li>暂无跟进内容</li>";
+		}
+		for(i in data)
+  		{
+  			str+='<li id="tableeee"><h4><em>';
+			str+=(data[i]["name"]==null)?"未定义":data[i]["name"];
+			str+='</em><span>当面拜访</span></h4><p class="time">'+data[i]["ftime"]+'</p><p class="article" value="ghgh">'+data[i].info+'</p><p class="articlebtn clearfix"><img src="'+data[i].img+'" alt="" style="width:80px;height:80px;" /></p></li>';
+  		}
+  		str+='</ul>';
+  		$('.expend').hide();
+
+  		$('#follow'+id).html(str);
+		var ftop=flelement.top;
+		var fleft=flelement.left;
+
+		$(".expshow").remove();
+		$("<div>").addClass("expend expshow ex"+id).css({
+			"left":fleft+60,
+			"top":ftop-50
+		}).html(str).show().appendTo($(document.body));
+        //点击页面任意处取消查看内容
+       $('.expend').click(function(){
+            return false;
+        });
+  		$('body').click(function(){ 
+            if($(".ex").length==0){
+              $(".expshow").remove();
+              return;
+           }
+        });  
+  	}
+   })
+}
+
+
+function cheindata(obj)
+{
+	m= 0;
+	var ar = $(obj).prop('checked');
+	if(ar == true)
+	{
+		$('.cheinss').each(function()
+				{
+				$(this).prop('checked',true);
+					m++;
+			
+				})
+	}else
+	{
+		$('.cheinss').each(function()
+				{
+				$(this).prop('checked',false);
+				m = 0;
+			
+				})
+	}
+	$('#foor').html('已选客户('+m+')')
+	
+}
+
+
+m=0;
+function unu(obj)
+{
+		
+	if($(obj).prop('checked') == true)
+	{
+				m++;
+				
+	}else
+	{
+		m--;
+	}
+		
+		
+			
+	$('#foor').html('已选客户('+m+')')
+}
+function delemark(status,element)
+{	
+	var tid ="";
+	$('.cheinss').each(function()
+	{
+	if($(this).prop('checked') == true)
+	{
+		tid += $(this).attr('tid')+',';
+	}
+
+
+	})
+	if(tid == "")
+	{
+		Showbo.Msg.alert('请选择删除内容');
+		return false;
+	}
+
+	Showbo.Msg.confirm('确认删除?',function(a)
+		    {
+				if(a == 'yes'){
+					$(element).addClass("buttonclick").siblings().removeClass("buttonclick");
+					$.post("{:U('Home/Relationship/delewh')}",{tid:tid,status:status},function(t)
+					{
+						if(t.data == 1)
+						{
+							Showbo.Msg.alert('删除成功');
+							finfae();
+
+						}else
+						{
+							Showbo.Msg.alert('删除失败');
+							finfae();
+
+						}
+
+					},'json')
+				}
+		    })		
+}
+//移交
+function overuser(element){
+	var tid ="";
+	var company=$("#company").val();
+	$('.cheinss').each(function(){
+			if($(this).prop('checked') == true){
+				tid += $(this).attr('tid')+',';	
+			}
+	})
+
+	if(company==""){
+		Showbo.Msg.alert('需要选择一个分公司');
+		return false;
+	}else if(tid==""){
+		Showbo.Msg.alert('请选择需要移交的客户');
+		return false;
+	}else{
+		Showbo.Msg.confirm('确认移交这'+m+'个客户?',function(a){
+			if(a == 'yes'){
+				  $(element).addClass("buttonclick").siblings().removeClass("buttonclick");
+				  $("#movebtn").click();
+				  var param=new Object();
+				  param["company"]=company;
+				  moveclientajax(param);
+				  var btn='<input type="button" onclick="btnmove(\''+tid+'\')" value="确定" id="savebtnmove">';
+				  btn+='<input type="button" onclick="btnnext()" value="下一步" id="nextbtnmove">';
+				  $(".table456,#savebtnmove").hide();
+				  $(".table123,#nextbtnmove").show();
+				  $(".tablebtn").html(btn);
+
+			      //location.href = "{:U('Home/Relationship/listover')}?tid="+tid;
+			      
+			}
+		})
+	}
+}
+
+function btnnext(){
+	var fzname=$("input[name=fzname]:checked").val();
+
+	if(fzname==undefined){
+		Showbo.Msg.alert('请选择移交人');
+		return false;
+	}
+
+	$(".table456,#savebtnmove").show();
+	$(".table123,#nextbtnmove").hide();
+
+}
+
+function statu(val){
+    if(val == 0){
+        $("#reback").css('display','block');
+    }else{
+        $("#reback").css('display','none');
+    }
+}
+
+function sseach(){
+	var company=$("#company").val();
+	var yy=$("#yy").val();
+	var tid=$("#teamall").val();
+
+	var param=new Object();
+	param["company"]=company;
+	param["name"]=yy;
+	if(tid!=""){
+		param["tid"]=tid;
+	}
+
+	moveclientajax(param);
+}
+
+function moveclientajax(param){
+	$(".loding").show();
+	$.ajax({
+	  type:"POST",
+	  url:"{:U('/Home/Relationship/moveclient')}",
+	  data:param,
+	  dataType:"json",
+	  success:function(t){
+		  team=t.team;
+		  data=t.salesman;
+		  $(".loding").hide();
+//          var str='<option value="">--选择团队--</option>';
+//		  for(var i in team){
+//			  str+='<option value="'+team[i]["id"]+'">'+team[i]["tname"]+'</option>';
+//		  }
+//
+//		  $("#teamall").html(str);
+		  var html='<tr><td>选择</td><td>负责人名称</td></tr>';
+		  for(var i in data){
+
+			  html+='<tr><td><input type="radio" name="fzname" value="'+data[i]["id"]+'"></td><td id="'+data[i]["id"]+'">'+data[i]["name"]+'</td></tr>';
+		  }
+		  $("#myModalmove .modal-body table").html(html);
+		 
+	  }
+  });
+}
+
+
+function btnmove(tid){
+
+	var rid=$("input[name=fzname]:checked").val();//现负责人，tid客户id
+    var otherval=$("input[name=others]:checked").val();
+    if(rid == undefined){
+        Showbo.Msg.alert('请选择负责人名称');
+            return false;
+    }
+    if(otherval == 3){
+        var reason = $("#reback").val();
+        if(reason == ''){
+            Showbo.Msg.alert('其他内容不能为空');
+            return false;
+        } 
+    }else if(otherval == undefined){
+        Showbo.Msg.alert('请选择类型');
+        return false;
+    }
+
+	$.ajax({
+	  	type:'post',
+	  	url:"{:U('Home/Relationship/savemoveclient')}",
+	  	data:{tid:tid,rid:rid,otherval:otherval,reason:reason},
+	  	dataType:'json',
+	  	success:function(data)
+	  	{
+	  		Showbo.Msg.alert(data.msg);
+	  		if(data.error==0){
+	  			$("#myModalmove .close").click();
+	  			$("#dvMsgBtns .btn").click(function(){
+	  				finfae();
+	  			});
+	  		}
+	  		
+	  	}
+	}); 	
+}
+
+function saveone(id)
+{
+
+    $(".loding").show();
+	$.ajax({
+	  	type:'post',
+	  	url:"{:U('Home/Relationship/savewhere')}",
+	  	data:{id:id},
+	  	dataType:'json',
+	  	success:function(data)
+	  	{
+            //console.log(data);
+			$(".loding").hide();
+	  		act = data.fin;
+            user = data.letype;
+	  		data = data.act;
+            
+	  		var strass = "";
+            var str = "";
+             str +='<option value="">--请选择讲师--</option>';
+
+            for(i in user)
+            {
+                if(data.profitid==user[i].id){
+                    str +='<option value="'+user[i].id+'" selected>'+user[i].name+'</option>';
+                }else{
+                    str +='<option value="'+user[i].id+'">'+user[i].name+'</option>';
+                }
+                
+                
+            }
+            $("#lectypes").html(str);
+	  		$('#name').val(data.name);
+	  		$('#razecont').val(data.contact);
+	  		$('#num').val(data.tel);
+	  		$('#uid').find("option[value="+data.uid+"]").attr('selected',true);
+
+	  		strass += '<option value="">--客户公海池--</option>'
+	  		for(i in act)
+	  		{		
+	  			
+	  			if(data.rid == act[i].id)
+	  			{
+	  				strass += '<option selected="selected" value="'+act[i].id+'">'+act[i].name+'</option>';
+	  			}else
+	  			{
+	  				strass += '<option value="'+act[i].id+'">'+act[i].name+'</option>';
+		  			
+	  			}
+	  			
+	  		}
+
+
+	  		$("#myModal .modal-title").html("编辑客户");
+	  		$('#raze').html(strass);
+	  		$('#industry').find("option[value="+data.industry+"]").attr('selected',true);
+	  		$('#type').find("option[value="+data.state+"]").attr('selected',true);
+	  		$('#isIndividual').find("option[value="+data.nature+"]").attr('selected',true);
+	  		$('#genre').find("option[value="+data.type+"]").attr('selected',true);
+	  		$('#scale').find("option[value="+data.level+"]").attr('selected',true);
+
+	  		$('#tanxgn').removeClass();
+	  		$('#tanxgn').addClass('start');
+	  		$('#tanxgn').addClass('start'+data.star);
+			$('#xing').val(data.star);
+	  		$('#zun').val(data.address);
+	  		if(data.birthday == "0000-00-00")
+	  		{
+	  			$('#shri').val('');
+	  		}else
+	  		{
+	  			$('#shri').val(data.birthday);
+	  		}
+           
+	  		$('#source').val(data.source);
+	  		$('#addCustomerSave').attr('tid',data.id);
+            //console.log(data.province.split(":")[0]);
+            //console.log(data.city.split(":")[0]);
+            //var p = $("[name='selectp']").find("option:selected").text(data.province);//北京
+            //var c = $("[name='selectc']").find("option:selected").text(data.city);//北京
+            var p=data.province.split(":")[0];
+            var c=data.city.split(":")[0];
+            //console.log(typeof p.toString());
+            first("selectp","selectc","form1",p.toString(),c.toString());
+	  	}
+    })
+			
+			
+	//$(".modal").show();
+}
+
+function backspacing(element){
+    $("#reabkc001").val("").focus();
+
+	var tid ="";
+	$('.cheinss').each(function(){
+			if($(this).prop('checked') == true){
+				tid += $(this).attr('tid')+',';	
+			}
+	})
+	if(tid == ""){
+		Showbo.Msg.alert('请选择需要退回的客户');
+		return false;
+	}else{
+
+
+
+		Showbo.Msg.confirm('确认退回这'+m+'个客户?',function(a){
+			if(a == 'yes'){
+				$(element).addClass("buttonclick").siblings().removeClass("buttonclick");
+				$("#return").click();
+
+			}
+		})
+
+	}
+}
+
+function savesreson(){
+	var reabkc001=$("#reabkc001").val();
+	var tid ="";
+	$('.cheinss').each(function(){
+		if($(this).prop('checked') == true){
+			tid += $(this).attr('tid')+',';
+		}
+	})
+	if(reabkc001==""){
+		Showbo.Msg.alert('请填写退回公海池的原因');
+		return false;
+	}
+	$.ajax({
+		url:'{:U("Home/Relationship/backspacing")}',
+		dataType:'json',
+		data:{tid:tid,reason:reabkc001},
+		type:'post',
+		success:function(data){
+
+			if(data == 1){
+				Showbo.Msg.alert('退回成功');
+				$("#myModalmovereason .close").click();
+
+				finfae();
+			}
+		}
+	})
+}
+
+
+function selecy()
+{
+	
+	finfae();
+	
+}
+</script>
+<script>
+	function uploadCate() {
+        first("selectp","selectc","form1",0,0);
+
+        if(isIE()){
+			Showbo.Msg.alert("当前浏览器不支持此项功能，请升级浏览器后，或更换其他浏览器使用此项功能");
+			return false;
+		}
+	    if($("#company").val()==""){
+		  Showbo.Msg.alert("请选择分公司");
+		  return false;
+	    }
+        var company=$("#company option:selected").text();
+		Showbo.Msg.confirm('确认上传到'+company+'?',function(a) {
+			if (a == 'yes') {
+
+				    $.upload({
+						// 上传地址
+						url: '{:U('Home/Relationship/uploadCate')}',
+						// 文件域名字
+						fileName: 'file',
+						type:'POST',
+						// 其他表单数据
+						params: {"uid":$("#company").val()},
+						// 上传完成后, 返回json, text
+						dataType: 'json',
+						// 上传之前回调,return true表示可继续上传
+						onSend: function(){
+							return true;
+						},
+						// 上传之后回调
+						onComplate: function(data) {
+                            //通过市找到 省份
+                            var province='';
+                            var city='';
+
+
+                            if(data.error==1){
+								Showbo.Msg.alert(data.errormsg);
+							}else if(data.code == 1){
+
+								$(".bb,.cc").show();
+								var msg=data.msg;  //errmsg
+								var errmsg=data.errmsg;  //errmsg
+
+                                for(var d in data.datalist){
+                                    var cityTEXT=data.datalist[d]["city"];
+
+                                    for(var i=0;i<35;i++){
+                                        for(var j in cityareaname[i]){
+                                            if(cityareaname[i][j]==cityTEXT){
+                                                var se1name=document.getElementById("province1").options[i+1].innerHTML;
+                                                cityid=cityareacode[i][j]; // 这个是 市的id  该市的id 是已知的
+                                                data.datalist[d]["provincetext"]=(i+1)+":"+se1name;
+                                                data.datalist[d]["citytext"]=cityid+":"+cityTEXT; // 城市
+                                            }
+                                        }
+                                    }
+
+                                    if(data.datalist[d]["provincetext"]==undefined || data.datalist[d]["citytext"]==undefined){
+                                        var errlength=errmsg.length;
+                                        errmsg[errlength]="行数："+data.datalist[d]["hang"]+" 省或者市不存在";
+                                        data.datalist[d]["error"]=1;
+                                    }
+                                }
+
+
+								var msghtml='';
+
+								for(var i in msg){
+									msghtml+=msg[i]+'<br/>';
+
+								}
+								var errmsghtml='';
+
+								for(var i in errmsg){
+									errmsghtml+=errmsg[i]+'<br/>';
+
+								}
+
+								msghtml=(msghtml=="")?"提示消息0条":msghtml;
+								errmsghtml=(errmsghtml=="")?"报错消息0条":errmsghtml;
+								$(".tishi").html(msghtml);
+								$(".baocuo").html(errmsghtml);
+								$(".shagnchuan").click(function(){
+									uploadCategory(data.datalist);
+								});
+								$(".quxiaoshangchuan").click(function(){
+									$(".bb,.cc").hide();
+								});
+								$(".cc ul li").eq(0).find("img").click(function(){
+									$(".bb,.cc").hide();
+								});
+							}else{
+								Showbo.Msg.alert(data.errmsg);
+							}
+						}
+					});
+			}
+		});
+
+	}
+	function uploadCategory(datalist){
+	    $.ajax({
+	            // 上传地址
+	            url: '{:U('Home/Relationship/uploadCategory')}',
+	            // 其他表单数据
+	            data: {datalist:datalist,uid:$("#company").val()},
+	            // 上传完成后, 返回json, text
+	            type: "post",
+
+	            dataType:"json",
+
+	            // 上传之后回调
+	            success: function(data) {
+	               	
+	            	if(data.errcode == 1){
+	            		
+	            		$(".bb,.cc").hide();
+	            		Showbo.Msg.alert(data.errmsg);
+	            		
+	            		/* $('.loding').css('display','none'); */
+	            	}else{
+	            		Showbo.Msg.alert(data.errmsg);
+	            		/* $('.loding').css('display','none'); */
+	            	}
+	            	$("#dvMsgBtns input").click(function(){
+	            	 	finfae();
+	            	});
+	            }
+	    });
+	}
+
+//还原
+    function restore(element){
+            var tid ="";
+        $('.cheinss').each(function(){
+                if($(this).prop('checked') == true){
+                    tid += $(this).attr('tid')+','; 
+                }
+            })
+            if(tid == ''){
+                Showbo.Msg.alert('请选择还原的客户');
+                 return false;
+            }   
+        Showbo.Msg.confirm('确认还原?',function(a) {
+            if (a == 'yes') {
+				$(element).addClass("buttonclick").siblings().removeClass("buttonclick");
+				$.ajax({
+						url:'{:U("Home/Relationship/restore")}',
+						dataType:'json',
+						data:{tid:tid},
+						type:'post',
+						success:function(data){
+							if(data == 1){
+								Showbo.Msg.alert('还原成功！！！');
+								finfae();
+								cheindata();
+							}
+						}
+					})
+            }
+        })
+
+    }
+
+    function isIE(){
+		if(navigator.userAgent.indexOf("MSIE")>0)
+		{
+			flag = false;
+			if(navigator.userAgent.indexOf("MSIE 6.0")>0)
+			{
+				flag = true;
+			}
+			if(navigator.userAgent.indexOf("MSIE 7.0")>0)
+			{
+				flag = true;
+			}
+			if(navigator.userAgent.indexOf("MSIE 8.0")>0)
+			{
+				flag =true;
+			}
+
+		}else
+		{
+			flag = false;
+		}
+		return flag;
+	}
+    
+    
+	function picker_one(){
+		//WdatePicker({minDate: '%y-%M-#{%d+1}' })
+		WdatePicker({onpicking:function(dp){cs1(dp.cal.newdate.y,dp.cal.newdate.M,dp.cal.newdate.d)} })
+		old_etime = $('#shri').val(); 
+	 	$('#shri').empty();
+		$('#shri').html('<input readonly="readonly" type="text" id="etime" onclick="picker()" value="" />'); 
+	}
+
+	
+	function cs1(y,m,d) {
+		
+		tx = '';
+		if(m<9)
+		{
+			m = '0'+m;
+		}
+		if(d<9)
+		{
+			d = '0'+d;
+		}
+		tx = y+'-'+m+'-'+d;
+		//tx = $('#stime').val();
+		if(old_etime == '')
+		{
+			if($('#stime').val() == '')
+			{
+				tx1 = $('#stime').val();
+			}else
+			{
+				tx1 = $('#etime').val();
+			}
+		}else
+		{
+			a = new Date(tx);
+			b = new Date(old_etime);
+			if(b>a)
+			{
+				tx1 = old_etime;
+			}else
+			{
+				tx1 = tx;
+			}
+			old_etime = '';
+		}
+		$('#etime').val(tx1);
+	}
+
+
+
+</script>
+<style>
+.modal{
+   background:rgba(0,0,0,0.6);
+   display:none;
+} 
+.modal-content{
+	 width: 640px;
+	
+}
+.form-group .control-label {
+    width: 120px;
+    float: left;
+    margin-left: 20px;
+    text-align: left;
+    position: relative;
+}
+#customerInfo .control-con,#customerInfo .control-con .form-control {
+    width: 421px;
+    display: inline-block;
+    text-align: left;
+}
+</style>
+<!-- 添加客户开始 -->
+ 
+<div class="modal fade in" id="addCustomer" style="z-index: 150;" aria-hidden="false">
+	<div class="modal-dialog addKe">
+		<div class="modal-content">
+					
+			<div class="modal-header">
+				<button aria-hidden="true" class="close" data-dismiss="modal" type="button">×</button>
+				<h4 class="modal-title" id="mtitle">添加客户</h4>
+			</div>
+			<input type="hidden" id="pageType" value="index">
+			<div class="modal-body">
+               
+			</div>
+			
+		</div>
+	</div>
+</div> 
+
+<!-- 添加客户结束 -->
+<div class="bb" style="display:none;"></div> 
+<div class="cc" style="display:none;">
+  <ul>
+    <li><p>上传报表检查报告<img src="__PUBLIC__/images/login-image/tanchuang1.jpg" alt=""></p></li>
+    <li>
+        <div>
+        <img src="__PUBLIC__/images/login-image/tanchuang2.jpg" alt="">
+	        <span class="tishi">
+	        
+	              
+	        </span>
+        </div>
+        <div>
+        <img src="__PUBLIC__/images/login-image/tanchuang3.jpg" alt="">
+	        <span class="baocuo">
+	            
+	        </span>
+        </div>
+    </li>
+    <li><a href="javascript:;" class="shagnchuan">确认上传</a><a href="javascript:;" class="quxiaoshangchuan">取消上传</a></li>
+  </ul>
+
+</div>
+
+
+</body>
+</html>

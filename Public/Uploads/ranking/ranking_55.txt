@@ -1,0 +1,1 @@
+[{"id":"4","Qyname":"gs21","phone":"","tc":"72","cc":"771000000","fc":"371","nc":"157","dc":"47","leafletstc":"50000","leafletscc":"50000","leafletsfc":"50000","leafletsdc":"1000000","leafletsnc":"10000000","aid":"187","uid":"4","aaid":"0","time":"2017-02-17","houston":"40000","count":"55012","riskfee":1100.24,"numk":1}]

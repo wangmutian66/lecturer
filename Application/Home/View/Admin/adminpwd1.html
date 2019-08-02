@@ -1,0 +1,68 @@
+<include file="Public/header" />
+<style>
+	.Task_cont p:first-child input {
+		width: auto;
+	}
+</style>
+<div class="wrap" id="data">
+	
+</div>
+<include file="Public/footer" />
+<script type="text/javascript">
+$(function(){
+	savepwd();
+})
+ function savepwd(){
+ 	var str ='';
+	 //<div class="Task_header" id="newTask"><h3 id="add" act="add">修改密码</h3></div>
+	str +=' <div class="TaskTablecount"><div style=" height:60px; width: 100%;"></div><div  class="Task_cont"><p><span>旧密码</span><input  class="form-control" type="password" id="oldpwd"></p><p><span>请输入新密码</span><input  class="form-control" type="password" id="newpwd"></p><p><span>再次确认新密码</span><input  class="form-control" type="password" id="townewpwd" /><input type="hidden" id="adyid" value="" /></p><p><input type="button" class=" btn-info" onclick="editpwd()" value="提交" /></p></div></div>';
+	$('#data').html(str).show();
+ }
+
+function editpwd(){
+	var oldpwd = $('#oldpwd').val();
+	var newpwd = $('#newpwd').val();
+	var townewpwd = $('#townewpwd').val();
+	if(oldpwd == ""){
+		Showbo.Msg.alert('旧密码不能为空,请重新输入');
+		return false;
+	}if(newpwd == ""){
+		Showbo.Msg.alert('新密码不能为空,请重新输入');
+		return false;
+	}
+	if(newpwd != townewpwd){
+		Showbo.Msg.alert('两次密码输入不一致,请重新输入');
+		return false;
+	}
+	if(oldpwd == newpwd ){
+		Showbo.Msg.alert('新旧密码一致,请重新输入');
+		return false;
+	}
+	if(oldpwd == townewpwd ){
+		Showbo.Msg.alert('新旧密码一致,请重新输入');
+		return false;
+	}
+	$.ajax({
+ 		    url:'{:U("Home/Admin/editpwd1")}',
+			dataType:'json',
+			data:{oldpwd:oldpwd,newpwd:newpwd},
+			type:'post',
+			success:function(data){
+				if(data.errcode == 1){
+					Showbo.Msg.alert(data.errmsg);
+					$('#oldpwd').val("");
+					$('#newpwd').val("");
+					$('#townewpwd').val("");
+				}else if(data.errcode == 3){
+					Showbo.Msg.alert(data.errmsg);
+				}else if(data.errcode == 8){
+					// Showbo.Msg.alert(data.errmsg);
+					window.location.href = '{:U("Home/Setsail/division")}';
+				}
+				
+			}
+		})
+
+}
+
+ </script>

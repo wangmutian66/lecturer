@@ -1,0 +1,308 @@
+<!-- <link rel="stylesheet" href="__PUBLIC__/css/weiyan.css" /> -->
+
+<!-- 首页：搜索页 -->
+<div class="image">
+  <img src="__PUBLIC__/images/login-image/shouye.jpg" alt="">
+  <div class="image1">
+  <input type="text" placeholder="请在输入框中输入您想要搜索的内容">
+  <button>搜索</button>
+  <ul>
+    <li>综合</li>
+    <li>成交</li>
+    <li>会员</li>
+    <li>财务</li>
+    <li>公司</li>
+  </ul>
+  <!-- <div class="image2"></div> -->
+ </div>
+</div>
+
+
+
+
+<style>
+*{padding: 0;margin: 0;}
+.image{width: 100%;height: 844px;position: relative; }
+.image1{position:absolute;top: 333px;left: 596px;}
+.image1 input{float: left;width: 540px;height: 50px;font-size: 18px;padding-left: 10px;font-weight: 500;border:1px solid #c4c4c4;}
+.image1 button{width: 133px;height: 50px;background-color: #f5a100;color: white;font-size: 18px;font-weight: 600;border: none;}
+.image1 ul{clear: both;width: 270px;height: 30px;}
+.image1 ul li{list-style:none;float: left;width: 20%;color: white;text-align: center;line-height: 30px;font-weight: 600;font-size: 18px;}
+.image1 ul li:hover{background-color: #009e4a;}
+/*.image2{width: 540px;height: 200px;border: 1px solid #0b79a1;box-shadow: #0b79a1 1px 1px 2px;background-color: white;position: absolute;top: 50px}*/
+</style>
+
+
+
+<!-- 弹窗1 -->  
+<div class="con"></div>   
+   <div class="content"> 
+    <div class="content1">
+     <span>添加成交信息</span>
+     <img src="__PUBLIC__/images/login-image/tan1.jpg" alt="">
+   </div>
+   <table cellspacing="0" cellpadding="0" border="1" align="center" bordercolor="#c6c6c6">
+     <tr>
+       <td>类型</td>
+       <td>数量</td>
+       <td>操作</td>
+     </tr>
+     <tr>
+       <td>小票</td>
+       <td>1</td>
+       <td>
+         <p>编辑</p>
+         <p>删除</p>
+       </td>
+     </tr>
+     <tr>
+       <td></td>
+       <td></td>
+       <td>
+       <a>添加</a>
+       </td>
+     </tr>
+   </table>
+   <input class="content2" type="button" value="确定">
+
+ </div>
+
+
+<style>
+*{padding: 0;margin:0; }
+.con{width: 100%;height: 100%;opacity: 0.5; background-color:#000;position: fixed;top: 0;left: 0;}
+.content{
+  width: 413px;
+  height: 343px;
+  background-color: white;
+  text-align: center;
+  position: fixed;
+  top:0;
+}
+.content1{width: 100%;height: 60px;background-color: #0588ce;}
+.content1 span{display: block;line-height: 60px;float: left;margin-left: 20px;
+               color: white;font-weight: 500px;font-size: 20px;}
+.content img{display: block;float: right;margin:20px auto;margin-right: 10px;}
+.content tr td{color:#9d9d9d;font-size: 20px;text-shadow:#000 1px 0 0;}
+.content table{text-align: center;margin:20px 0 0 31px;}
+.content table tr td:first-child{width: 94px;height: 60px;}
+.content table tr td:nth-child(2){width: 100px;height: 60px;}
+.content table tr td:last-child{width: 150px;height: 60px;}
+.content table tr td p{
+  display: block;
+  float: left;
+  width: 56px;
+  height: 35px;
+  background-color: #f5a100;
+  border-radius: 3px;
+  color: white;
+  text-align: center;
+  line-height: 35px;
+  margin-left: 13px;
+}
+.content table tr td p:last-child{background-color: #e33209;}
+.content table tr td a{
+  display: block;
+  width: 110px;
+  height: 35px;
+  background-color: #f5a100;
+  border-radius: 3px;
+  text-align: center;
+  line-height: 35px;
+  margin-left: 20px;
+  color: white;
+}
+.content .content2{
+  width: 110px;
+  height: 35px;
+  text-align: center;
+  line-height: 35px;
+  background-color: #0588ce;
+  border-radius: 3px;
+  margin:22px auto;
+  color: white;
+}
+</style>
+
+
+<!-- 弹窗2 -->
+<div class="tan"> 
+  <div class="tan1">
+    <span>批量选择企业</span>
+    <img src="__PUBLIC__/images/login-image/tan1.jpg" alt="">
+  </div>
+  <div class="tan2">
+  <input type="text">
+  <input type="button" value="搜索企业">
+  </div>
+  <div class="tablediv">
+    <table width="347" height="335" cellspacing="0" cellpadding="0" border="1" align="center" bordercolor="#c6c6c6">
+      <tr>
+        <td>选择</td>
+        <td>企业名称</td>
+      </tr>
+      <tr>
+        <td><input type="checkbox"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td colspan="2" rowspan="2">
+          
+        </td>
+      </tr>
+      <tr>
+      </tr>
+    </table>
+ </div>
+   <input type="button" class="tan3" value="确定">
+</div>
+
+<style>
+.tablediv{
+    height: 338px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 90%;
+}
+.tan{
+  width: 413px;
+  height: 547px;
+  background-color: white;
+  text-align: center;
+  position: fixed;
+  top: 350px;
+}
+.tan1{width: 100%;height: 60px;background-color: #0588ce;}
+.tan1 span{display: block;line-height: 60px;float: left;margin-left: 20px;
+               color: white;font-weight: 500px;font-size: 20px;}
+.tan1 img{display: block;float: right;margin:20px auto;margin-right: 10px;}
+.tan2{margin:15px 0 10px 20px; overflow: hidden;}
+.tan2 input{float: left;}
+.tan2 input:first-child{width: 247px;height: 35px;border:1px solid #a0a0a0;border-radius: 3px;}
+.tan2 input:last-child{
+  width: 92px;
+  height: 35px;
+  text-align: center;
+  line-height: 35px;
+  border: 1px solid #0787ce;
+  border-radius: 3px;
+  background-color: white;
+  margin-left: 8px;
+  color:#0787ce;
+  font-size: 16px;
+}
+.tan table{text-align: center;margin-left:20px;}
+.tan table input{width: 20px;height: 20px;}
+.tan table tr td{height: 40px;}
+.tan table tr td:first-child{width: 75px;}
+.tan3{
+  width: 110px;
+  height: 35px;
+  text-align: center;
+  line-height: 35px;
+  background-color: #0588ce;
+  border-radius: 3px;
+  margin:22px auto;
+  color: white;
+}
+</style>
+
+
+<!-- 弹窗3 -->
+<div class="kecheng">  
+ <div class="kecheng1">
+    <span>课程管理</span>
+    <img src="__PUBLIC__/images/login-image/tan1.jpg" alt="">
+  </div>
+    <ul class="kecheng2">
+     <li>
+    <span>课程名称</span>
+    <select>  
+  <option >营销课程</option>  
+  <option ></option>  
+  <option ></option>  
+  <option ></option>  
+    </select>
+     </li>
+     <li>
+    <span style="letter-spacing: 17px">讲师</span>
+    <select>  
+  <option >张某某</option>  
+  <option ></option>  
+  <option ></option>  
+  <option ></option>  
+    </select>
+     </li>
+     <li>
+    <span style="letter-spacing: 5px">分公司</span>
+    <select>  
+  <option >哈尔滨分公司</option>  
+  <option ></option>  
+  <option ></option>  
+  <option ></option>  
+    </select>
+     </li>
+     <li>
+    <span style="letter-spacing: 17px">地点</span>
+    <input type="text">
+     </li>
+     <li>
+    <span style="letter-spacing: 17px">人数</span>
+    <input type="text">
+     </li> 
+    </ul>
+    <input type="button" class="kecheng3" value="确定">
+</div>
+
+<style>
+ *{padding:0;margin: 0;}
+ .kecheng{
+  width: 412px;
+  height: 395px;
+  background-color: white;
+  text-align: center;
+  position: fixed;
+  top:100px;
+  left: 500px;
+}
+.kecheng1{width: 100%;height: 60px;background-color: #0588ce;}
+.kecheng1 span{display: block;line-height: 60px;float: left;margin-left: 20px;
+               color: white;font-weight: 500px;font-size: 20px;}
+.kecheng1 img{display: block;float: right;margin:20px auto;margin-right: 10px;}
+.kecheng2{width: 348px;height: 230px;border: 1px solid #cacaca;margin-top: 20px;margin-left: 30px;}
+.kecheng2 li{list-style:none; float: left;width: 300px;height: 20%;margin-left: 24px;}
+.kecheng2 li span,select,input{margin-top: 8px;}
+.kecheng2 li select,input{width: 130px;height: 30px;border: 1px solid #a0a0a0;color: #afafaf;font-size: 17px;font-weight:500; }
+.kecheng2 li span{margin-right: 70px;font-size: 17px;font-weight:600;}
+.kecheng3{
+  width: 110px;
+  height: 35px;
+  text-align: center;
+  line-height: 35px;
+  background-color: #0588ce;
+  border-radius: 3px;
+  margin:22px auto;
+  color: white;
+  border: none;
+}
+</style> 

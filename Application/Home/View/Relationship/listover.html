@@ -1,0 +1,120 @@
+<include file="Public/header_rela" />
+	<table id="data1" class="table content table-striped account_manage">
+
+		
+	</table>
+<div id="over"></div>
+	<script type="text/javascript">
+	function getParameter(tid)
+{
+var query = window.location.search;
+var iLen = tid.length;
+var iStart = query.indexOf(tid);
+if (iStart == -1)
+　return "";
+iStart += iLen + 1;
+var iEnd = query.indexOf("&", iStart);
+if (iEnd == -1)
+　return query.substring(iStart);
+return query.substring(iStart, iEnd);
+}
+var tid = getParameter("tid");
+$(function(){
+	listover();
+	overname();
+	eid = 0;
+	 	$('.loding').css('display','none');
+
+})
+
+	function listover(){
+		$.ajax({
+ 		        url:'{:U("Home/Relationship/listname")}',
+				dataType:'json',
+				data:{tid:tid},
+				type:'post',
+				success:function(data){
+				console.log(data)
+				str = '';
+				for(i in data){
+					// console.log(data[i].fname)
+					str += '<tr><td>'+data[i].name+'</td><td>'+data[i].fname+'</td><td>待移交</td></tr>';
+				}
+					$('#data1').html(str);
+					$('#data1').prepend('<tr><td>客户名称</td><td>当前负责人</td><td>是否移交成功</td></tr>');		
+			}
+
+		})
+	}
+
+
+function overname(){
+	$.ajax({
+	            url:'{:U("Home/Relationship/overname")}',
+				dataType:'json',
+				data:{},
+				type:'post',
+				success:function(data){
+					console.log(data);
+					str = '';
+					str += '选择交换人:<input type="text" id="xuan"><input type="button" value="确认" onclick="queren()">';
+					for(i in data){
+						str += '<p><input type="button" value="'+data[i].name+'" id="checke'+data[i].id+'" onclick="quju('+data[i].id+')"/></p>';
+					}
+					str += '<input value="确认移交" type="button" onclick="checkedname()">'
+					$('#over').html(str);
+				}
+			})
+}
+function quju(id) {
+	eid = id; 
+}
+function queren(){
+	val = $('#xuan').val();
+	if(val == ''){
+		Showbo.Msg.alert('请输入交换人');
+		return false;
+	}
+	$.ajax({
+	            url:'{:U("Home/Relationship/overname")}',
+				dataType:'json',
+				data:{type:1,val:val},
+				type:'post',
+				success:function(data){
+					console.log(data);
+					str = '';
+					str += '选择交换人:<input type="text" id="xuan"><input type="button" value="确认" onclick="queren()">';
+					for(i in data){
+						str += '<p><input type="button" value="'+data[i].name+'" id="checke'+data[i].id+'" onclick="quju('+data[i].id+')"/></p>';
+					}
+					str += '<input value="确认移交" type="button" onclick="checkedname()">'
+					$('#over').html(str);
+				}
+			})
+}
+	//选择人之后做修改
+	////负责人id tid客户id
+	function checkedname(){
+		if(eid == 0) {
+			Showbo.Msg.alert('请选择交换人');
+			return false;
+		}
+		Showbo.Msg.confirm('是否移交客户？',function(a){
+			if(a == 'yes'){
+			$.ajax({
+	 		        url:'{:U("Home/Relationship/checkedname")}',
+					dataType:'json',
+					data:{id:eid,tid:tid},
+					type:'post',
+					success:function(data){
+						console.log(data)
+						if(data == 1){
+							// Showbo.Msg.alert('移交成功');
+							location.href = "{:U('Home/Relationship/index')}";
+						}
+					}
+				})
+		}
+	})
+}
+	</script>

@@ -1,0 +1,312 @@
+
+<!DOCTYPE HTML>
+<html lang="en" >
+  <head>
+      <title>企航教育</title>
+        <!-- agreement -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="ptagma" content="no-cache"><!-- 清除缓存 -->
+      <meta name="description" content="">
+      <meta name="author" content="templatemo">
+      <meta name="applicable-device" content="mobile" />
+      <meta name="format-detection" content="telephone=no" />
+      <meta http-equiv="X-UA-Compatible"content="IE=9; IE=8; IE=7; IE=EDGE">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <!--   css -->
+      <!--[if IE]> <link href="__PUBLIC__/css/IE.css" rel="stylesheet" type="text/css" /> <![endif]-->
+       <link rel="shortcut icon" href="__PUBLIC__/images/login-image/title.png">
+      <link href="__PUBLIC__/css/bootstrap.min.css"  rel="stylesheet" >
+      <link href="__PUBLIC__/css/lecturer.css" rel="stylesheet">
+      <link href="__PUBLIC__/fonts/css/font-awesome.min.css" rel="stylesheet">
+      <link href="__PUBLIC__/fonts/css/font-awesome-ie7.min.css" rel="stylesheet">
+
+
+        <!-- JS -->
+     <script type="text/javascript" src="__PUBLIC__/js/jquery-1.11.2.min.js"></script>
+     <script type="text/javascript" src="__PUBLIC__/js/jquery.page.js"></script>
+     <script type="text/javascript" src="__PUBLIC__/js/bootstrap.min.js"></script>
+     <script type="text/javascript" src="__PUBLIC__/js/showBo.js"></script>
+     <script type="text/javascript" src="__PUBLIC__/js/laydate/laydate.js"></script>
+     <script type="text/javascript" src="__PUBLIC__/js/myslideup.js"></script>
+     <script type="text/javascript">
+         $(document).ready(function(){
+             var window=$(document.body).width();
+
+             if(window<=1400){  //1080
+                 $(".Modinfo span").eq(0).addClass("span1");
+                 $(".Modinfo span").eq(1).addClass("span2");
+                 $(".Modinfo span").eq(2).addClass("span3");
+                 $(".Modinfo span").eq(3).addClass("span4");
+             }
+             if(window<=1080){
+                 $(document.body).addClass("minwidth");
+             }
+
+
+
+         });
+
+
+     </script>
+
+    </head>
+<body>
+<div class="contment">
+  <div class="masker"></div>
+  <div class="top"></div>
+  <div class="header"><i></i>
+
+    <if condition="($Think.session.id neq '') ">
+      <div class="headernav">
+      <input type="button" value="综合搜索" <if condition="($Think.session.nav eq 'index') ">class="focuse"</if> onclick="window.location.href='{:U('/Home/Index/index')}'">
+      <input  type="button" value="企航课程" <if condition="($Think.session.nav eq 'course') ">class="focuse"</if> onclick="window.location.href='{:U('/Home/Course/index')}'"/>
+      <input type="button" value="客户关系管理"    onclick="window.location.href='{:U('/Home/Relationship')}'"/>
+
+      <?php if($_SESSION['type']!=C('SALES_POWER_SESSION')){ ?>
+      <?php if($_SESSION['yid']=='admin'){ ?>
+      <input  type="button" value="财务系统" <if condition="($Think.session.nav eq 'biy') ">class="focuse"</if> onclick="window.location.href='{:U('Home/Admin/branch')}'"/>
+      <?php }else{ ?>
+      <input  type="button" value="财务系统" <if condition="($Think.session.nav eq 'biy') ">class="focuse"</if> onclick="window.location.href='{:U('Home/Setsail/biy')}'"/>
+      <?php }} ?>
+
+      <?php if($_SESSION['type']!=C('SALES_POWER_SESSION')){ ?>
+      <input  type="button" value="讲师追踪" <if condition="($Think.session.nav eq 'fold') ">class="focuse"</if> onclick="window.location.href='{:U('/Home/Leunfold')}'">
+      <?php }else{ ?>
+       <input  type="button" value="讲师追踪" <if condition="($Think.session.nav eq 'fold') ">class="focuse"</if> onclick="authority()">
+       <?php } ?>
+
+      <?php if($_SESSION['type']==C('SALES_POWER_SESSION')){ ?>
+       <?php }else{ ?>
+
+      <div class="button <?php if($_SESSION["nav"]=='message'){ ?>focuse<?php } ?>"   onclick="window.location.href='{:U('/Home/message')}'">消息通知<em class="messageweidu{$Think.session.message}"></em></div>
+      <?php } ?>
+
+
+      <?php if($_SESSION['type']==C('SALES_POWER_SESSION')){ ?>
+
+        <input  type="button" value="系统设置" <if condition="($Think.session.nav eq 'branch') ">class="focuse"</if> onclick="window.location.href='{:U('/Home/Admin/adminpwd1')}'">
+
+      <?php }else{ ?>
+          <?php if($_SESSION['yid']=='admin'){ ?>
+          <input  type="button" value="系统设置" <if condition="($Think.session.nav eq 'branch') ">class="focuse"</if>  onclick="window.location.href='{:U('/Home/Admin/admininfo')}'">
+          <?php }else{ ?>
+             <?php if(($_SESSION['type']==13)||$_SESSION['type']==12){ ?>
+                   <input  type="button" value="系统设置" <if condition="($Think.session.nav eq 'branch') ">class="focuse"</if>   onclick="window.location.href='{:U('/Home/Admin/adminceo')}'">
+             <?php }else if($_SESSION['type']==11){ ?>
+                   <input  type="button" value="系统设置" <if condition="($Think.session.nav eq 'branch') ">class="focuse"</if>   onclick="window.location.href='{:U('/Home/Setsail/management')}'">
+             <?php }else if($_SESSION['type']==10&&$_SESSION["yid"]!=1){ ?>
+                   <input  type="button" value="系统设置" <if condition="($Think.session.nav eq 'branch') ">class="focuse"</if>   onclick="window.location.href='{:U('/Home/Setsail/manager')}'">
+             <?php }else{ ?>
+                   <input  type="button" value="系统设置" <if condition="($Think.session.nav eq 'branch') ">class="focuse"</if>   onclick="window.location.href='{:U('/Home/Setsail/division')}'">
+             <?php } ?>
+
+          <?php } ?>
+       <?php } ?>
+      </div>
+      <span>{$Think.session.name} <em onclick="location.href='{:U("Home/Login/login")}'">退出</em></span>
+    <else/>
+      <input  class="but1" type="button" id="login" value="登录"  onclick="login()"  />
+      <!--<input  class="but2" type="button" id="" value="下载APP" onclick="" />-->
+      <h3>企航集团</h3>
+
+    </if>
+  </div>
+
+ <div class="menu" <?php if($_SESSION['nav']=='branch' || $_SESSION['nav']=='course'){ ?><?php }else{ ?>style="display:none;"<?php } ?>>
+    <ul>
+      <li>菜单</li>
+      <if condition="($Think.session.nav  eq 'course')">
+            <li>
+                <a href="{:U('/Home/Course/index')}">
+                    <span><i class="icon-home icon-large"></i></span><span>企航课程</span>
+                </a>
+            </li>
+            <li>
+                <a href="{:U('/Home/client')}">
+                  <span><i class="icon-home icon-large"></i></span><span>客户课程</span>
+                </a>
+            </li>
+      </if>
+      <?php if($_SESSION["id"]!=1){ ?>
+      <if condition="($Think.session.nav  neq 'branch' or $Think.session.nav  neq 'course')">
+         <!--
+         <li>
+            <a href="{:U('Home/Setsail/biy')}">
+            <span><i class="icon-home icon-large"></i></span><span>业绩排行</span>
+            </a>
+        </li>
+        -->
+        <else/>
+        <?php if(($_SESSION['type']==10&&$_SESSION["yid"]==1)||$_SESSION["type"]==12||$_SESSION["type"]==13){ ?>
+        <li <if condition="($Think.session.rightnav eq 'ceo') ">class="hover"</if>>
+            <a href="{:U('Home/Admin/adminceo')}">
+            <span><img src="__PUBLIC__/images/nav/ceo.png"></span><span>企业CEO</span>
+            </a>
+        </li>
+        <?php } ?>
+        <?php if(($_SESSION['type']==13)){ ?>
+        <li <if condition="($Think.session.rightnav eq 'adminnub') ">class="hover"</if>>
+            <a href="{:U('Home/Admin/adminnub')}">
+            <span><img src="__PUBLIC__/images/nav/setsail.png"></span><span>企业管理员</span>
+            </a>
+        </li>
+        <?php } ?>
+
+
+      </if>
+      <?php }else{ ?>
+        <if condition="($Think.session.nav  neq 'branch')">
+        <li>
+            <a href="{:U('Home/Admin/branch')}">
+            <span><i class="icon-home icon-large"></i></span><span>业绩排行</span>
+            </a>
+        </li>
+        <else/>
+        <li>
+            <a href="{:U('Home/Admin/admininfo')}">
+            <span><i class="icon-home icon-large"></i></span><span> 企业管理</span>
+            </a>
+        </li>
+
+        </if>
+      <?php } ?>
+
+
+      <if condition="($Think.session.admin eq 1)">
+          <li>
+          <a href="{:U('Home/Admin/index')}"> <span><i class="icon-info-sign icon-large"></i></span><span>企业信息</span></a>
+          </li>
+      </if>
+      <if condition="($Think.session.nav eq 'Enterprise')">
+  <!--      <li>
+         <a href="{:U('Home/Alsystem/sysaddschol')}">
+         <span><i class="icon-plus-sign icon-large"></i></span><span>添加学员</span></a>
+       </li> -->
+      </if>
+
+      <if condition="($Think.session.enterprise eq 1)">
+        <li><a href="{:U('Home/Enterprise/lecturer')}"><span><i class="icon-dashboard icon-large"></i></span><span>讲师数据</span></a></li>
+        <li><a href="{:U('Home/Enterprise/account')}"><span><i class="icon-wrench icon-large"></i></span><span>账号管理</span></a></li>
+      </if>
+
+
+
+      <if condition="($Think.session.nav eq 'branch')">
+
+         <?php if($_SESSION['yid']!='admin'): ?>
+         <if condition="($Think.session.type gt 9)">
+          <?php if($_SESSION['type']>10||($_SESSION["yid"]=='admin')){ ?>
+          <li <?php if($_SESSION["rightnav"]=='management'){ ?>class="hover"<?php } ?> >
+              <a href="{:U('Home/Setsail/management')}">
+              <span><img src="__PUBLIC__/images/nav/g1.png"></span><span>企业财务总监</span></a>
+          </li>
+          <?php } ?>
+           <li <?php if($_SESSION["rightnav"]=='manager'){ ?>class="hover"<?php } ?>>
+              <a href="{:U('Home/Setsail/manager')}">
+              <span><img src="__PUBLIC__/images/nav/g3.png"></span><span>大区总裁管理</span></a>
+          </li>
+
+          </if>
+          <li <if condition="($Think.session.rightnav eq 'branch') ">class="hover"</if>>
+          <a href="{:U('Home/Setsail/division')}">
+              <span><img src="__PUBLIC__/images/nav/company.png"></span><span>公司管理</span>
+          </a>
+          </li>
+          <if condition="($Think.session.type gt 8) ">
+           <li <?php if($_SESSION["rightnav"]=='vicezong8'){ ?>class="hover"<?php } ?>>
+              <a href="{:U('Home/Enterprise/vicezong/role/8')}">
+              <span><img src="__PUBLIC__/images/nav/g2.png"></span><span>分公司总经理</span></a>
+          </li>
+          </if>
+          <if condition="($Think.session.type gt 7) ">
+           <li  <?php if($_SESSION["rightnav"]=='vicezong7'){ ?>class="hover"<?php } ?>>
+              <a href="{:U('Home/Enterprise/vicezong/role/7')}">
+              <span><img src="__PUBLIC__/images/nav/g4.png"></span><span>分公司副总经理</span></a>
+          </li>
+          </if>
+          <if condition="($Think.session.type gt 6) ">
+          <li  <?php if($_SESSION["rightnav"]=='vicezong6'){ ?>class="hover"<?php } ?>>
+              <a href="{:U('Home/Enterprise/vicezong/role/6')}">
+              <span><img src="__PUBLIC__/images/nav/g5.png"></span><span>业务总监</span></a>
+          </li>
+          </if>
+          <if condition="($Think.session.type gt 5) ">
+          <li  <?php if($_SESSION["rightnav"]=='vicezong5'){ ?>class="hover"<?php } ?>>
+              <a href="{:U('Home/Enterprise/vicezong/role/5')}">
+              <span><img src="__PUBLIC__/images/nav/g6.png"></span><span>业务副总监</span></a>
+          </li>
+          </if>
+
+          <li <?php if($_SESSION["rightnav"]=='salesman'){ ?>class="hover"<?php } ?>>
+              <a href="{:U('/Home/salesman/index')}">
+              <span><img src="__PUBLIC__/images/nav/salesman.png"></span><span>销售人员管理</span></a>
+          </li>
+          <if condition="($Think.session.type gt 8)">
+
+            <li  <?php if($_SESSION["rightnav"]=='branchindex'){ ?>class="hover"<?php } ?>>
+              <a href="{:U('Home/Setsail/branch')}">
+              <span><img src="__PUBLIC__/images/nav/branch.png"></span><span>提成比例</span></a>
+            </li>
+
+          </if>
+          <if condition="(($Think.session.type eq 11) or ($Think.session.type eq 12) or ($Think.session.type eq 13))">
+            <li <?php if($_SESSION["rightnav"]=='money'){ ?>class="hover"<?php } ?>>
+              <a href="{:U('Home/Setsail/money')}">
+              <span><img src="__PUBLIC__/images/nav/money.png"></span><span>产品售价</span></a>
+          </li>
+         </if>
+          <li  <?php if($_SESSION["rightnav"]=='adminpwd1'){ ?>class="hover"<?php } ?>><a href="{:U('Home/Admin/adminpwd1')}"><span><img src="__PUBLIC__/images/nav/password.png"></span><span>修改密码</span></a>
+          <li><a href="{:U('Home/Login/login')}"><span><i class="icon-signin icon-large"></i></span><span>退出登录</span></a>
+          </li>
+           <!--  <li>
+              <a href="{:U('Home/Alsystem/sysprivacy')}">
+              <span><i class="icon-user icon-large"></i></span><span>业务经理</span></a>
+          </li>
+            <li>
+              <a href="{:U('Home/Alsystem/sysprivacy')}">
+              <span><i class="icon-user icon-large"></i></span><span>业务副经理</span></a>
+          </li>
+           <li>
+              <a href="{:U('Home/Alsystem/sysprivacy')}">
+              <span><i class="icon-user icon-large"></i></span><span>业务主管</span></a>
+          </li>
+           <li>
+              <a href="{:U('Home/Alsystem/sysprivacy')}">
+              <span><i class="icon-user icon-large"></i></span><span>业务副主管</span></a>
+          </li>
+           <li>
+              <a href="{:U('Home/Alsystem/sysprivacy')}">
+              <span><i class="icon-user icon-large"></i></span><span>业务员</span></a>
+          </li> -->
+
+
+          </if>
+          <?php endif; ?>
+
+    </ul>
+  </div>
+  <script>
+  /*
+  function url1()
+  {
+     location.href = "{:U('Home/Enterprise/index')}";
+  }
+  function url2()
+  {
+     location.href = "{:U('Home/Setsail/biy')}";
+  }
+  */
+  function authority(){
+    Showbo.Msg.alert("你的权限不够");
+  }
+  </script>
+
+<div class="loding" style="display: none;"> <!-- style="display: none;" 背景 -->
+  <div class="mask-conrment">
+    <h3>提示</h3>
+    <p><i class="icon-spinner icon-spin"></i></p>
+    <p style="font-size: 1em;"><span>加载中...</span></p>
+    <p id="upnotice"></p>
+  </div>
+</div>

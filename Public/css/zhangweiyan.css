@@ -1,0 +1,142 @@
+.aa tr{
+	height: 58px;
+}
+
+.aa img{
+	float: left;
+	margin-left: 30px;
+	margin-top: 5px;
+}
+.aa span{
+	display: block;
+	float: left;
+	color: #0588ce;
+	font-size: 18px;
+	margin-left: 30px;
+}
+.aa span a{
+	display: block;
+	font-size: 16px;
+	text-decoration:none;
+	color: black;
+}
+.aa p{
+	display: block;
+	float: right;
+	width: 82px;
+	height: 30px;
+	text-align: center;
+	line-height: 30px;
+	border-radius: 3px;
+	background-color: #f5a100;
+	color: white;
+	margin-right: 35px;
+	margin-top: 7px;
+	cursor: pointer;
+}
+
+.aa tr:nth-child(even){
+    background-color: #f0f0f0;
+    border:1px solid #ebebeb;
+}
+
+.aa td{border:solid #e8e8e8 2px; border-width:2px 1px 1px 0px;}
+
+.bb{
+	width: 100%;
+	height: 100%;
+	background-color:#5a6165;
+    background: rgba(0,0,0,0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+ }
+
+.cc{
+	width: 580px;
+	height: 320px;
+	border-radius: 5px;
+	background-color: white;
+	position: fixed;
+	top: 112px;
+	left: 50%;
+	margin-left: -290px;
+	z-index: 111;
+ }
+
+.cc ul li{
+	width: 100%;
+	display: block;
+	float: left;
+	list-style:none ; 
+}
+.cc ul li p,.cc ul li span,.cc ul li img,.cc ul li a{
+	display: block;
+}
+
+.cc ul li p{
+	width: 100%;
+	height: 60px;
+	line-height: 60px;
+	padding-left: 17px;
+	border-bottom: 1px solid #eef0f1;
+	color: #3c3c3c;
+	font-size: 20px;
+}
+.cc p img{
+	float: right;
+	margin-right: 17px;
+	margin-top: 22px;
+}
+.cc ul li div{
+	width: 50%;
+	height: 210px;
+	float: left;
+	border-bottom: 1px solid #eef0f1;
+}
+.cc ul li div:first-child{
+	color: #eec20f;
+	font-size: 16px;
+	border-right: 1px solid #eef0f1;
+}
+.cc ul li div:last-child{
+	color: #e33019;
+	font-size: 16px;
+}
+
+.cc ul li div img{
+	margin: 6px auto;
+}
+
+.cc ul li div span{
+	width: 91%;
+	line-height: 26px;
+	margin-left: 22px;
+	height: 152px;
+    overflow-y: auto;
+}
+
+.cc ul li a{
+	width: 93px;
+	height: 31px;
+	border-radius: 3px;
+	float: left;
+	color: white;
+	text-align: center;
+	line-height: 31px;
+	text-decoration:none;
+	margin-top: 9px; 
+}
+.cc ul li a:first-child{
+	background-color: #0485cb;
+	margin-left: 350px;
+
+}
+.cc ul li a:last-child{
+	background-color: #00669c;
+	margin-left: 22px;
+}
+
+
+
+

@@ -1,0 +1,26 @@
+@charset "utf-8";
+/* CSS Document */
+.alt_box{ width:590px; height:237px; position:absolute;z-index:99;top:50%; left:50%; margin-left:-296px; margin-top:-119px; border:#999 1px solid; border-radius:15px 15px 15px 15px;-moz-box-shadow:2px 2px 10px #302d22; -webkit-box-shadow:2px 2px 10px #302d22; box-shadow:2px 2px 10px #302d22;}
+.alt_box1{ width:590px; height:237px; position:absolute;z-index:99;top:50%; left:50%; margin-left:-296px; margin-top:-119px; border:#999 1px solid; border-radius:15px 15px 15px 15px;-moz-box-shadow:2px 2px 10px #302d22; -webkit-box-shadow:2px 2px 10px #302d22; box-shadow:2px 2px 10px #302d22;}
+.alt_top{ background-color:#4480d8; width:590px; height:44px; border-radius:15px 15px 0 0;}
+.alt_top span{ float:left; height:44px; line-height:44px; margin-left:20px; font-family:"黑体"; font-size:21px; font-weight:bold;color:#ffffff;}
+.alt_conter{ width:590px; height:136px; background-color:#FFF;}
+.alt_conter span{ float:left; font-family:"宋体"; font-size:20px; line-height:40px; width:353px; height:76px; margin:30px 0 30px 0;margin-left:20px;overflow:hidden;}
+.alt_bottom{ background-color:#f6f6e7; width:590px; height:57px; border-radius:0 0 15px 15px;}
+.alt_x{ width:52px; height:44px; float:right;}
+.alt_x:hover{ background-color:#d33f26; border-radius:0 14px 0 0;}
+.alt_x_img{background-image:url(images/x-tis_04.png); width:52px; height:44px;}
+.alt_img_box{ width:87px; height:102px; margin-left:20px; float:left;}
+.alt_img_url1{background-image:url(images/tisi02_07.png); width:87px; height:102px;}
+.alt_img_url2{background-image:url(images/tis01_04_07.png); width:87px; height:102px;}
+.alt_close{ background-image:url(images/qx-qd_11.png); width:113px; height:57px; float:right;}
+.alt_close:hover{ background-image:url(images/qr-qx_11.png);}
+.alt_confirm{ background-image:url(images/qr-qx_12.png); width:119px; height:57px; float:right;}
+.alt_confirm:hover{ background-image:url(images/qx-qd_12.png);}
+
+.confirm_options{ background-image:url(images/qx-qd_11.png); width:113px; height:57px; margin-left:239px;}
+.confirm_options:hover{ background-image:url(images/qr-qx_11.png);}
+
+/*==========*/
+.droppable{border:solid 1px #c9e7f2;background:#c9e7f2;border-radius:5px;-webkit-border-radius:5px;}
+.stynone{border:none;background:none;}

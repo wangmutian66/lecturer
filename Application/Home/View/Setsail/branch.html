@@ -1,0 +1,386 @@
+<include file="Public/header" />
+
+<div class="wrap">
+
+     <div class="container"> <!-- 导航↓ -->
+
+		<div id="selename">
+			
+		</div>
+
+		    <div class="tablerangborder table"><table  style=" margin: 0; padding: 0"  class="table content table-striped account_manage" id="data"></table></div>
+
+		 <div class="TaskTable" id="pwdshow">
+		</div>
+		 <div class="TaskTable" id="addm">
+		</div>
+		 <div class="">
+			 <div class="tablerangborder table" id="comlist">
+				 <table   style=" margin: 0; padding: 0"  class="table content table-striped account_manage" id="datalist" ></table>
+			 </div>
+		 </div>
+     </div>
+</div>
+<script>
+	getcomlist();
+	function getcomlist(page){
+		if(page==undefined){
+			page=1;
+		}
+		$(".loding").show();
+		$.ajax({
+			url:"__URL__/getcomlist",
+			type:"POST",
+			data:{page:page},
+			dataType:"json",
+			success:function(data){
+				$(".loding").hide();
+				var nums=data.currpage;
+				var data=data.comlist;
+				str = '';
+				for(i in data){
+					str += '<tr><td>'+data[i].Qyname+'</td><td><input id="tname_'+data[i].id+'" value="'+data[i].tc+'" type="text" style="width:70px;">%</td><td><input id="cname_'+data[i].id+'" value="'+data[i].cc+'" type="text"  style="width:70px;">%</td><td><input id="fname_'+data[i].id+'" value="'+data[i].fc+'" type="text"  style="width:70px;">%</td><td><input id="dname_'+data[i].id+'" value="'+data[i].dc+'" type="text"  style="width:70px;">%</td><td><input id="nname_'+data[i].id+'" value="'+data[i].nc+'" type="text"  style="width:70px;">%</td><td><input type="button" value="修改" onclick="savtcedit('+data[i].id+')" class="btn btn-info"></td></tr>'
+				}
+
+				$('#datalist').html(str);
+				$('#datalist').prepend('<tr><td>分公司名称</td><td>单张票提成比例</td><td>卡提成比例</td><td>朋友圈提成比例</td><td>弟子提成比例</td><td>九大规划门票金额</td><td>操作</td></tr>');
+				$(".tcdPageCode").remove();
+				$("#comlist").after("<div class='tcdPageCode'></div>");
+				$(".tcdPageCode").createPage({
+					pageCount:nums,
+					current:page,
+					backFn:function(p)
+					{
+						getcomlist(p);
+					}
+				});
+				$('.loding').css('display','none');
+			}
+		});
+	}
+
+
+	function savtcedit(id){
+		var param=new Object();
+		param["id"]=id;
+		param["tc"]=$("#tname_"+id).val();
+		param["cc"]=$("#cname_"+id).val();
+		param["fc"]=$("#fname_"+id).val();
+		param["nc"]=$("#nname_"+id).val();
+		param["dc"]=$("#dname_"+id).val();
+
+		$.ajax({
+			url:"__URL__/savtcom",
+			type:"POST",
+			data:param,
+			dataType:"json",
+			success:function(data){
+				Showbo.Msg.alert(data.msg);
+			}
+		})
+
+
+	}
+
+	function savepropr(id)
+	{
+
+	   var val = $('#proportionid').val();
+	   var reg = /^\d+(\.\d{0,2})?$/;
+
+	 	if(!reg.test(val))
+	 	{
+	 		Showbo.Msg.alert('请输入正确数值');
+	 		return false;
+	 	}
+	    if(/^0+(\d+)/.test(val))
+	    {
+
+	    	val=val.replace(/^0+(\d+)/g, "$1");
+	    	Showbo.Msg.alert('请填写正确格式');
+	    	$("#proportionid"+id).val(val);
+	    	return false;
+	    
+	    }
+	   
+	   
+	    $(".loding").show();
+		$.ajax({
+ 		url:'{:U("Home/Setsail/savefee")}',
+			dataType:'json',
+			data:{id:id,val:val},
+			type:'post',
+			success:function(data){
+				if(data == 1)
+				{
+					Showbo.Msg.alert('修改完毕');
+				}
+				$(".loding").hide();
+			}
+		})
+
+	}
+
+</script>
+<script type="text/javascript">
+$(function(){
+ 	lised();
+ })
+ //列表展示
+ // function lised(p){
+ // 	$('#data').show();
+	// $('#data3').hide();
+	// $('#data2').hide();
+ // 	if(p==undefined){
+ //             p = 1;
+ //             // page(p);
+ //  		   }
+ // 	$.ajax({
+ // 		    url:'{:U("Home/Setsail/branch1")}',
+	// 		dataType:'json',
+	// 		data:{page:p},
+	// 		type:'post',
+	// 		success:function(data){
+				
+	// 			str = '';
+	// 		for(i in data){
+	// 			str += '<tr><td>'+data[i].Qyname+'</td><td><input id="tname'+data[i].id+'" value="'+data[i].tc+'" type="text" style="width:70px;"><input type="button" value="确认" onclick="savtc('+data[i].id+')" class="btn btn-info"></td><td><input id="cname'+data[i].id+'" value="'+data[i].cc+'" type="text"  style="width:70px;"><input type="button" value="确认" onclick="savcc('+data[i].id+')" class="btn btn-info"></td><td><input id="fname'+data[i].id+'" value="'+data[i].fc+'" type="text"  style="width:70px;"><input type="button" value="确认" onclick="savfc('+data[i].id+')" class="btn btn-info"></td><td><input id="dname'+data[i].id+'" value="'+data[i].dc+'" type="text"  style="width:70px;"><input type="button" value="确认" onclick="savdc('+data[i].id+')" class="btn btn-info"></td><td><input id="nname'+data[i].id+'" value="'+data[i].nc+'" type="text"  style="width:70px;"><input type="button" value="确认" onclick="savnc('+data[i].id+')" class="btn btn-info"></td></tr>'
+	// 		}	
+				
+	// 		$('#data').html(str);
+	// 		$('#data').prepend('<tr><td>公司名称</td><td>单张票提成比例</td><td>卡提成比例</td><td>朋友圈提成比例</td><td>弟子提成比例</td><td>九大规划门票比例</td></tr>');
+	// 	}
+ // 	})
+ // }
+  function lised(p){
+ 	$('#data').show();
+	$('#data3').hide();
+	$('#data2').hide();
+ 	if(p==undefined){
+             p = 1;
+           
+  		   }
+ 	$('.loding').css('display','block');
+ 	$.ajax({
+ 		    url:'{:U("Home/Setsail/branchdata")}',
+			dataType:'json',
+			data:{page:p},
+			type:'post',
+			success:function(data){
+				
+				str = '';
+				for(i in data){
+					str += '<tr><td>'+data[i].qyname+'</td><td><input id="tname'+data[i].id+'" value="'+data[i].tc+'" type="text" style="width:70px;">%<input type="button" value="批量修改" onclick="savtc('+data[i].id+')" class="btn btn-info"></td><td><input id="cname'+data[i].id+'" value="'+data[i].cc+'" type="text"  style="width:70px;">%<input type="button" value="批量修改" onclick="savcc('+data[i].id+')" class="btn btn-info"></td><td><input id="fname'+data[i].id+'" value="'+data[i].fc+'" type="text"  style="width:70px;">%<input type="button" value="批量修改" onclick="savfc('+data[i].id+')" class="btn btn-info"></td><td><input id="dname'+data[i].id+'" value="'+data[i].dc+'" type="text"  style="width:70px;">%<input type="button" value="批量修改" onclick="savdc('+data[i].id+')" class="btn btn-info"></td><td><input id="nname'+data[i].id+'" value="'+data[i].nc+'" type="text"  style="width:70px;">%<input type="button" value="批量修改" onclick="savnc('+data[i].id+')" class="btn btn-info"></td></tr>'
+				}
+
+				$('#data').html(str);
+				$('#data').prepend('<tr><td>公司名称</td><td>单张票提成比例</td><td>卡提成比例</td><td>朋友圈提成比例</td><td>弟子提成比例</td><td>九大规划门票比例</td></tr>');
+				$('.loding').css('display','none');
+		}
+ 	})
+ }
+
+ //添加
+function deputy(){
+	
+}
+ function close_mask(){
+  $('.close_task').click(function(){
+    $('.TaskTable,.masker').fadeOut();
+  })
+}
+  //删除
+  function delacc(id){
+  	$.ajax({
+ 		    url:'{:U("Home/Setsail/delacc1")}',
+			dataType:'json',
+			data:{id:id},
+			type:'post',
+			success:function(data){
+				if(data.errcode == 1){
+					Showbo.Msg.alert(data.errmsg);
+					lised(p);
+				}else if(data.errcode == 3){
+					Showbo.Msg.alert(data.errmsg);
+				}
+			}
+ 	})
+  }
+ //修改企业账号
+ function savname(id){
+ 	var val = $("#qname"+id).val();
+ 	var reg = /^\d+(\.\d{0,2})?$/;
+ 	if(!reg.test(val))
+ 	{
+ 		Showbo.Msg.alert('请输入正确数值');
+ 		return false;
+ 	}
+ 	$.ajax({
+ 		    url:'{:U("Home/Setsail/savname1")}',
+			dataType:'json',
+			data:{id:id,val:val},
+			type:'post',
+			success:function(data){
+				if(data.errcode == 1){
+					Showbo.Msg.alert(data.errmsg);
+					lised(p);
+				}else if(data.errcode == 3){
+					Showbo.Msg.alert(data.errmsg);
+				}
+			}
+ 	})
+ }
+
+ //修改单张票提成比例
+ function savtc(id){
+ 	var val = $("#tname"+id).val();
+ 	var reg = /^\d+(\.\d{0,2})?$/;
+ 	if(!reg.test(val))
+ 	{
+ 		Showbo.Msg.alert('请输入正确数值');
+ 		return false;
+ 	}
+    if(/^0+(\d+)/.test(val))
+    {
+    	val=val.replace(/^0+(\d+)/g, "$1")
+    }
+    $("#tname"+id).val(val);
+ 	$.ajax({
+ 		    url:'{:U("Home/Setsail/savtc1")}',
+			dataType:'json',
+			data:{id:id,val:val},
+			type:'post',
+			success:function(data){
+				if(data.errcode == 1){
+					Showbo.Msg.alert(data.errmsg);
+					lised(p);
+				}else if(data.errcode == 3){
+					Showbo.Msg.alert(data.errmsg);
+				}
+			}
+ 	})
+ }
+
+//修改卡提成比例
+ function savcc(id){
+ 	var val = $("#cname"+id).val();
+ 	var reg = /^\d+(\.\d{0,2})?$/;
+ 	if(!reg.test(val))
+ 	{
+ 		Showbo.Msg.alert('请输入正确数值');
+ 		return false;
+ 	}
+ 		 if(/^0+(\d+)/.test(val))
+    {
+    	val=val.replace(/^0+(\d+)/g, "$1")
+    }
+    $("#cname"+id).val(val);
+ 	$.ajax({
+ 		    url:'{:U("Home/Setsail/savcc1")}',
+			dataType:'json',
+			data:{id:id,val:val},
+			type:'post',
+			success:function(data){
+				if(data.errcode == 1){
+					Showbo.Msg.alert(data.errmsg);
+					lised();
+				}else if(data.errcode == 3){
+					Showbo.Msg.alert(data.errmsg);
+				}
+			}
+ 	})
+ }
+
+//修改朋友圈提成比例
+ function savfc(id){
+ 	var val = $("#fname"+id).val();
+ 	var reg = /^\d+(\.\d{0,2})?$/;
+ 	if(!reg.test(val))
+ 	{
+ 		Showbo.Msg.alert('请输入正确数值');
+ 		return false;
+ 	}
+ 	 if(/^0+(\d+)/.test(val))
+    {
+    	val=val.replace(/^0+(\d+)/g, "$1")
+    }
+    $("#fname"+id).val(val);
+ 	$.ajax({
+ 		    url:'{:U("Home/Setsail/savfc1")}',
+			dataType:'json',
+			data:{id:id,val:val},
+			type:'post',
+			success:function(data){
+				if(data.errcode == 1){
+					Showbo.Msg.alert(data.errmsg);
+					lised();
+				}else if(data.errcode == 3){
+					Showbo.Msg.alert(data.errmsg);
+				}
+			}
+ 	})
+ }
+
+ //修改弟子提成比例
+ function savdc(id){
+ 	var val = $("#dname"+id).val();
+ 	var reg = /^\d+(\.\d{0,2})?$/;
+ 	if(!reg.test(val))
+ 	{
+ 		Showbo.Msg.alert('请输入正确数值');
+ 		return false;
+ 	}
+	 if(/^0+(\d+)/.test(val))
+    {
+    	val=val.replace(/^0+(\d+)/g, "$1")
+    }
+    $("#dname"+id).val(val);
+ 	$.ajax({
+ 		    url:'{:U("Home/Setsail/savdc1")}',
+			dataType:'json',
+			data:{id:id,val:val},
+			type:'post',
+			success:function(data){
+				if(data.errcode == 1){
+					Showbo.Msg.alert(data.errmsg);
+					lised();
+				}else if(data.errcode == 3){
+					Showbo.Msg.alert(data.errmsg);
+				}
+			}
+ 	})
+ }
+
+//修改九大规划门票比例
+ function savnc(id){
+ 	var val = $("#nname"+id).val();
+ 	var reg = /^\d+(\.\d{0,2})?$/;
+ 	if(!reg.test(val))
+ 	{
+ 		Showbo.Msg.alert('请输入正确数值');
+ 		return false;
+ 	}
+ 	 if(/^0+(\d+)/.test(val))
+    {
+    	val=val.replace(/^0+(\d+)/g, "$1")
+    }
+    $("#nname"+id).val(val);
+ 	$.ajax({
+ 		    url:'{:U("Home/Setsail/savnc1")}',
+			dataType:'json',
+			data:{id:id,val:val},
+			type:'post',
+			success:function(data){
+				if(data.errcode == 1){
+					Showbo.Msg.alert(data.errmsg);
+					lised();
+				}else if(data.errcode == 3){
+					Showbo.Msg.alert(data.errmsg);
+				}
+			}
+ 	})
+ }
+
+
+ </script>
+

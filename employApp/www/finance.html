@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>助企六脉神剑管理系统</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" href="font/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <link rel="stylesheet" type="text/css" href="css/mui.min.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="css/style.css" /> -->
+      <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/jquery.2.1.1.min.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/appframework.ui.min.js"></script>
+    <script type="text/javascript" src="js/Url.js"></script>
+    <script type="text/javascript" src="js/mui.min.js"></script>
+    <script type="text/javascript" src="js/showalert.js"></script>
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+        headerios();
+        $(window).load(function(){
+            $(".pullDown").css("display","block");
+             // $("#chart").css({"top":"40px","padding-bottom":"60px"});
+        });
+    });
+    function upimg(){
+          $('.masked2,.masked').on("tap",function(){
+                  return false;
+          });
+          $('.uploadimgp,.uploadimg').on("tap",function(){
+            $('.alert_backgroung,.revise-img-header').show();
+         })
+
+          $('#closepicture').on("tap",function(){
+              $('.revise-img-header,.alert_backgroung').hide();
+          })
+
+    }
+
+
+    </script>
+
+
+   <body onload="">
+    <!-- <body> -->
+
+    <div class="view yui-main" id="mainview">
+    <!-- HEADER BEGIN-->
+    <header>
+    <DIV class="header_menu">
+    <li><a  id='back' style="display:none" ontouchstart="back()"><i class="iconleft go_home"></i></a>
+<!--     <a href="javascript:;" data-left-menu="left" data-transition="push"><span class="iconmenu" onclick="grade()"></a> --></li>
+    <li id="head"><h1 id="biaoti" mark="basicsystem">一线讲师追踪系统</h1></li>
+    <li class='select-all'></li>
+    </DIV>
+    </header>
+    <div class="panel" id="wrapper">
+<!--     <div id="pullrefresh" class="mui-content mui-scroll-wrapper mtscroll">
+
+
+
+           <div id="checks" ></div>
+           <div id="orde"></div>
+
+    </div>  -->
+         <div id="pullrefresh" class="mui-content Finance-content">
+            <ul id="checks" class="mui-table-view mui-table-view-chevron one_index"> 
+              
+            </ul>
+
+             <ul id="list" class="mui-table-view mui-table-view-chevron"> 
+              <li class="mui-table-view-cell">
+                 <div id="orde" >
+                   
+                 </div>
+              </li>
+            </ul>
+        </div>
+
+
+    </div>
+
+        <footer class="tab yui_footer">
+            <a href="javascript:;" class="list1 pressed" aid="task" data-transition="slide" onclick="pershow()"  >
+              <i class="one"></i>  <span> </span></a>
+            <a href="javascript:;" class="list2 " aid="cfee" data-transition="slide" onclick="showst()"  id="show" >
+             <i class="two"></i><span></span></a>
+            <a href="javascript:;" class="list3  " aid="audit" data-transition="slide" onclick="appper()" id="appper">
+            <i class="three"></i><span></span></a>
+        </footer>
+        <!-- FOOT END-->
+
+</div>          
+        
+</body>
+<script>
+  $(function(){
+    $('.yui_footer a i').click(function(){
+      $('.yui_footer a').removeClass('pressed');
+     $(this).parent('a').addClass('pressed');
+    })
+  })
+</script>
+<script>
+
+ //财务主页
+ $(function(){
+ 	pershow();
+ })
+ function back()
+ {
+    pershow();
+  }
+</script>
+<script type="text/javascript">
+     // var path_url = "http://123.56.206.58/";
+ // var path_url = "http://192.168.0.107/";
+   //var path_url = "http://prof.zhuqiyun.com/";
+   var path_url="http://192.168.0.250:8082/";
+
+</script>
+<script>
+//个人中心
+var user = getUser();
+// console.log(user)
+uid = user.uid;
+id = user.id;
+qid = user.qid;
+// alert(uid)
+function finds()
+{
+
+   var con = $('#findkey').val();
+   if(con == ''){
+     pershow();
+   }
+   data = 'rest/'+encodeURI('{"uid":"'+uid+'","con":"' + con + '"}');
+    url = path_url+"index.php/Home/Interface/search/"+data;
+  $.ajax({
+    url:url,        //跨域到http://www.wp.com，另，http://test.com也算跨域
+    type:'GET',             //jsonp 类型下只能使用GET,不能用POST,这里不写默认为GET
+    dataType:'jsonp',                          //指定为jsonp类型
+    jsonp:'callback',                          //服务器端获取回调函数名的key，对应后台有$_GET['callback']='getName';callback是默认值
+    jsonpCallback:'getName',                   //回调函数名
+    success: function(result)
+    {
+              var res = eval(result)
+              var str = '';
+              // console.log(res);
+      for(i in res)
+      {
+          var id = res[i].id;
+          var name = res[i].sname;
+          var note = res[i].note;
+          var mobile = res[i].smobile;
+
+           str +='<li class="mui-table-view-cell"><div class="mui-content-padded top_content more_logo"><p><span>姓名</span><span>'+name+'</span></p><p><span>电话</span><span>'+mobile+'</span></p><p><span>备注</span><span id='+id+' >'+note+'</span></p><input  type="button" onclick="saname('+id+')"></div>';
+    
+       var t  = res[i].datas;
+        for(ii in t){
+          if(t[ii].ptype == 1)
+          {
+            t[ii].ptype = "已发";
+          }else if(t[ii].ptype == 0)
+          {
+            t[ii].ptype="取消";
+          }else{
+            t[ii].ptype = "未发";
+          }
+          if(t[ii].ctype == 1)
+          {
+            t[ii].ctype = "已发";
+          }else if(t[ii].ctype == 0)
+          {
+            t[ii].ctype="取消";
+          }else{
+            t[ii].ctype = "未发";
+          }
+    
+          if(t[ii].ftype == 1)
+          {
+            t[ii].ftype = "已发";
+          }else if(t[ii].ftype == 0)
+          {
+            t[ii].ftype="取消";
+          }else{
+            t[ii].ftype = "未发";
+          }
+
+          if(t[ii].dtype == 1)
+          {
+            t[ii].dtype = "已发";
+          }else if(t[ii].dtype == 0)
+          {
+            t[ii].dtype="取消";
+          }else{
+            t[ii].dtype = "未发";
+          }
+
+          if(t[ii].ntype == 1)
+          {
+            t[ii].ntype = "已发";
+          }else if(t[ii].ntype == 0)
+          {
+            t[ii].ntype="取消";
+          }else{
+            t[ii].ntype = "未发";
+          }
+
+
+        str +='<li class="mui-table-view-cell margin0"><div class="mui-content-padded  bottom_content"><div class=""><p>详情</p><p class="more_blue" ><span>'+t[ii].times+'</span><span>票:'+t[ii].ticket+'</span><span>状态:'+t[ii].ptype +'';
+          if(t[ii].ptype == "未发")
+          {
+            str += '<input type="button" onclick="orderinfo('+id+')"></span></p>';
+          }
+        str +='<p class="more_blue" ><span></span><span>卡:'+t[ii].card+'</span><span>状态:'+t[ii].ctype +'';
+          if(t[ii].ctype == "未发")
+          {
+            str += '<input type="button" onclick="orderinfo('+id+')"></span></p>';
+          }
+        str +='<p class="more_blue" ><span></span><span>朋友圈:'+t[ii].friends+'</span><span>状态:'+t[ii].ftype +'';
+          if(t[ii].ftype == "未发"){
+            str += '<input type="button" onclick="orderinfo('+id+')"></span></p>';
+          }
+        str +='<p class="more_blue" ><span></span><span>弟子:'+t[ii].disciple+'</span><span>状态:'+t[ii].dtype +'';
+          if(t[ii].dtype == "未发")
+          {
+           str +='<input type="button" onclick="orderinfo('+id+')"></span></p></div></div></li>';
+          }
+        str +='<p class="more_blue" ><span></span><span>九大规划:'+t[ii].planning+'</span><span>状态:'+t[ii].ntype +'';
+          if(t[ii].ntype == "未发")
+          {
+           str +='<input type="button" onclick="orderinfo('+id+')"></span></p></div></div></li>';
+          }
+     }
+   }
+       $('#back').hide();
+       $('#checks').html(str);
+        $('#checks').prepend('<div class="find_info"><input type="text" placeholder="请输入学员姓名" id="findkey" ><input onclick="finds()" type="button" value="搜索"></div>');
+    }
+
+   });
+}
+
+function pershow()
+{
+	// alert(uid)
+  data = 'rest/'+encodeURI('{"uid":"' + uid + '"}');
+  url = path_url+"index.php/Home/Interface/homeper/"+data;
+  $.ajax({
+    url:url,        //跨域到http://www.wp.com，另，http://test.com也算跨域
+    type:'GET',             //jsonp 类型下只能使用GET,不能用POST,这里不写默认为GET
+    dataType:'jsonp',                          //指定为jsonp类型
+    jsonp:'callback',                          //服务器端获取回调函数名的key，对应后台有$_GET['callback']='getName';callback是默认值
+    jsonpCallback:'getName',                   //回调函数名
+    success: function(result)
+    {
+              var res = eval(result)
+              var str = '';
+              console.log(res);
+      for(i in res)
+      {
+          var id = res[i].id;
+         
+          var name = res[i].sname;
+          var note = res[i].note;
+          var mobile = res[i].smobile;
+          // alert(oid)
+
+           str +='<li class="mui-table-view-cell"><div class="mui-content-padded top_content more_logo"><p><span>姓名</span><span>'+name+'</span></p><p><span>电话</span><span>'+mobile+'</span></p><p><span>备注</span><span id='+id+' >'+note+'</span></p><input  type="button" onclick="saname('+id+')"></div>';
+    
+       var t  = res[i].datas;
+        for(ii in t){
+          // console.log(t[ii].oid);
+          if(t[ii].ptype == 1)
+          {
+            t[ii].ptype = "已发";
+          }else if(t[ii].ptype == 0)
+          {
+            t[ii].ptype="取消";
+          }else{
+            t[ii].ptype = "未发";
+          }
+          if(t[ii].ctype == 1)
+          {
+            t[ii].ctype = "已发";
+          }else if(t[ii].ctype == 0)
+          {
+            t[ii].ctype="取消";
+          }else{
+            t[ii].ctype = "未发";
+          }
+    
+          if(t[ii].ftype == 1)
+          {
+            t[ii].ftype = "已发";
+          }else if(t[ii].ftype == 0)
+          {
+            t[ii].ftype="取消";
+          }else{
+            t[ii].ftype = "未发";
+          }
+
+          if(t[ii].dtype == 1)
+          {
+            t[ii].dtype = "已发";
+          }else if(t[ii].dtype == 0)
+          {
+            t[ii].dtype="取消";
+          }else{
+            t[ii].dtype = "未发";
+          }
+
+          if(t[ii].ntype == 1)
+          {
+            t[ii].ntype = "已发";
+          }else if(t[ii].ntype == 0)
+          {
+            t[ii].ntype="取消";
+          }else{
+            t[ii].ntype = "未发";
+          }
+
+
+        str +='<li class="mui-table-view-cell margin0"><div class="mui-content-padded  bottom_content"><div class=""><p>详情</p><p class="more_blue" ><span>'+t[ii].times+'</span><span>票:'+t[ii].ticket+'</span><span>状态:'+t[ii].ptype +'';
+          if(t[ii].ptype == "未发")
+          {
+            str += '<input type="button" onclick="orderinfo('+t[ii].oid+')"></span></p>';
+          }
+        str +='<p class="more_blue" ><span></span><span>卡:'+t[ii].card+'</span><span>状态:'+t[ii].ctype +'';
+          if(t[ii].ctype == "未发")
+          {
+            str += '<input type="button" onclick="orderinfo('+t[ii].oid+')"></span></p>';
+          }
+        str +='<p class="more_blue" ><span></span><span>朋友圈:'+t[ii].friends+'</span><span>状态:'+t[ii].ftype +'';
+          if(t[ii].ftype == "未发"){
+            str += '<input type="button" onclick="orderinfo('+t[ii].oid+')"></span></p>';
+          }
+        str +='<p class="more_blue" ><span></span><span>弟子:'+t[ii].disciple+'</span><span>状态:'+t[ii].dtype +'';
+          if(t[ii].dtype == "未发")
+          {
+           str +='<input type="button" onclick="orderinfo('+t[ii].oid+')"></span></p></div></div></li>';
+          }
+        str +='<p class="more_blue" ><span></span><span>九大规划:'+t[ii].planning+'</span><span>状态:'+t[ii].ntype +'';
+          if(t[ii].ntype == "未发")
+          {
+           str +='<input type="button" onclick="orderinfo('+t[ii].oid+')"></span></p></div></div></li>';
+          }
+     }
+   }
+       $('#back').hide();
+       $('#checks').html(str);
+       $('#checks').prepend('<div class="find_info"><input type="text" placeholder="请输入学员姓名" id="findkey" ><input onclick="finds()" type="button" value="搜索"></div>');
+
+
+    }
+
+   });
+}
+function saname(id)
+{
+      data = 'rest/'+encodeURI('{"id":"' + id + '"}');
+      url = path_url+"index.php/Home/Interface/saname/"+data;
+      $.ajax({
+      url:url,        //跨域到http://www.wp.com，另，http://test.com也算跨域
+      type:'GET',             //jsonp 类型下只能使用GET,不能用POST,这里不写默认为GET
+      dataType:'jsonp',                          //指定为jsonp类型
+      jsonp:'callback',                          //服务器端获取回调函数名的key，对应后台有$_GET['callback']='getName';callback是默认值                 /
+      success: function(data)
+      {
+       var str = '';
+       //修改主信息
+          str +='<li class="mui-table-view-cell"><div class="mui-content-padded"><form class="mui-input-group add_form"><div class="mui-input-row"><label>学员姓名</label><input type="text" placeholder="请输入学员姓名" id="sname" value="'+data.name+'"></div><div class="mui-input-row"><label>联系电话</label><input type="text" placeholder="请输入联系方式" id="smobile" value="'+data.mobile+'"></div><div class="mui-input-row"><label>备　　注</label><input type="text" placeholder="请输入备注信息" id="snote" value="'+data.note+'"></div><br><div class="mui-button-row"><button type="button" class="mui-btn mui-btn-primary" onclick="sav('+data.id+')">提交</button></div></form></div></li>';
+          $('#checks').html(str);
+          $('#back').show();
+
+        
+      }
+      })
+}
+function sav(id)
+{
+    var sname =  $('#sname').val();
+    var mobiles = $('#smobile').val();
+    var snote = $('#snote').val();
+    // alert(snote)
+    data = 'rest/'+encodeURI('{"id":"' + id + '","sname":"'+sname+'","mobiles":"'+mobiles+'","snote":"'+snote+'"}');
+    url = path_url+"index.php/Home/Interface/sav/"+data;
+    $.ajax({
+      url:url,        //跨域到http://www.wp.com，另，http://test.com也算跨域
+      type:'GET',             //jsonp 类型下只能使用GET,不能用POST,这里不写默认为GET
+      dataType:'jsonp',                          //指定为jsonp类型
+      jsonp:'callback',                          //服务器端获取回调函数名的key，对应后台有$_GET['callback']='getName';callback是默认值                 /
+      success: function(result)
+        {
+            if(result['code'] == 1){
+              Showbo.Msg.alert('修改成功');
+              pershow();
+            }
+        }
+    })
+
+
+
+
+}
+function orderinfo(id)
+ {
+  // alert(id)
+      data = 'rest/'+encodeURI('{"id":"' + id + '"}');
+      url = path_url+"index.php/Home/Interface/info/"+data;
+      $.ajax({
+      url:url,        //跨域到http://www.wp.com，另，http://test.com也算跨域
+      type:'GET',             //jsonp 类型下只能使用GET,不能用POST,这里不写默认为GET
+      dataType:'jsonp',                          //指定为jsonp类型
+      jsonp:'callback',                          //服务器端获取回调函数名的key，对应后台有$_GET['callback']='getName';callback是默认值                 /
+      success: function(data)
+      {
+      
+        var p = data.ptype;
+        var k = data.ctype;
+        var f = data.ftype;
+        var d = data.dtype;
+        var g = data.ntype;
+
+       var str = '';
+       if(data.ptype == 0)
+        {
+          data.ptype = '取消';
+        }
+        else if(data.ptype == 1)
+        {
+          data.ptype = '已发';
+        }
+        else
+        {
+          data.ptype = '未发';
+        }
+        if(data.ctype == 0)
+        {
+          data.ctype = '取消';
+        }
+        else if(data.ctype == 1)
+        {
+          data.ctype = '已发';
+        }
+        else
+        {
+          data.ctype = '未发';
+        }
+       if(data.ftype == 0)
+        {
+          data.ftype = '取消';
+        }
+        else if(data.ftype == 1)
+        {
+          data.ftype = '已发';
+        }
+        else
+        {
+          data.ftype = '未发';
+        }
+        if(data.dtype == 0)
+        {
+          data.dtype = '取消';
+        }
+        else if(data.dtype == 1)
+        {
+          data.dtype = '已发';
+        }
+        else
+        {
+          data.dtype = '未发';
+        }
+        if(data.ntype == 0)
+        {
+          data.ntype = '取消';
+        }
+        else if(data.ntype == 1)
+        {
+          data.ntype = '已发';
+        }
+        else
+        {
+          data.ntype = '未发';
+        }
+
+        //修改票数
+         str +=' <li class="mui-table-view-cell"> <div class="mui-content-padded"><form class="mui-input-group add_form"  id="folg"><div class="mui-input-row"><label>学员姓名</label><input type="text" placeholder="请输入学员姓名" id="name" value="'+data.name+'""></div><div class="mui-input-row"><label>联系电话</label><input type="text" placeholder="请输入联系方式" id="mobile" value="'+data.mobile+'"></div><div class="mui-input-row"><label>备　　注</label><input type="text" placeholder="请输入备注信息" id="note" value="'+data.note+'"></div><div class="mui-input-row"><label>讲　　师</label><input type="text" placeholder="请输入备注信息" id="teache" value="'+data.uname+'" disabled></div><div class="mui-input-row"><label>票　　数</label><input id="pp" type="text" value="'+data.ticket+'"><select id="tp'+data.id+'" value="'+p+'" >';
+         if(p == '1')
+         {
+           str += '<option value="'+p+'" selected="selected">'+data.ptype+'</option><option value="2">未发</option><option value="0">取消</option>';
+         }
+         else if(p == '2')
+         {
+          str += '<option value="'+p+'" selected="selected">'+data.ptype+'</option><option value="1" >已发</option><option value="0">取消</option>';
+
+         }else{
+           str += '<option value="'+p+'" selected="selected">'+data.ptype+'</option><option value="1" >已发</option><option value="2">未发</option>';
+         }
+         // str += '<option value="'+p+'">'+data.ptype+'</option><option value="1" >已发</option><option value="2">未发</option><option value="0">取消</option>';
+     
+         str += '</select></div><div class="mui-input-row"><label>卡　　数</label><input id="kk" type="text" value="'+data.card+'"><select id="tk'+data.id+'" value="'+k+'" >';
+
+          if(k == '1')
+         {
+           str += '<option value="'+k+'" selected="selected">'+data.ctype+'</option><option value="2">未发</option><option value="0">取消</option>';
+         }
+         else if(k == '2')
+         {
+          str += '<option value="'+k+'" selected="selected">'+data.ctype+'</option><option value="1" >已发</option><option value="0">取消</option>';
+
+         }else{
+           str += '<option value="'+k+'" selected="selected">'+data.ctype+'</option><option value="1" >已发</option><option value="2">未发</option>';
+         }
+
+         str += '</select></div><div class="mui-input-row"><label>朋 友 圈</label><input id="ff" type="text" value="'+data.friends+'"><select id="tf'+data.id+'" value="'+f+'">';
+
+
+        if(f == '1')
+         {
+           str += '<option value="'+f+'" selected="selected">'+data.ftype+'</option><option value="2">未发</option><option value="0">取消</option>';
+         }
+         else if(f == '2')
+         {
+          str += '<option value="'+f+'" selected="selected">'+data.ftype+'</option><option value="1" >已发</option><option value="0">取消</option>';
+
+         }else{
+           str += '<option value="'+f+'" selected="selected">'+data.ftype+'</option><option value="1" >已发</option><option value="2">未发</option>';
+         }
+
+         str += '</select></div><div class="mui-input-row"><label>弟　　子</label><input type="text" id="dd" value="'+data.disciple+'"><select id="td'+data.id+'" value="'+d+'" > ';
+
+       if(d == '1')
+         {
+           str += '<option value="'+d+'" selected="selected">'+data.dtype+'</option><option value="2">未发</option><option value="0">取消</option>';
+         }
+         else if(d == '2')
+         {
+          str += '<option value="'+d+'" selected="selected">'+data.dtype+'</option><option value="1" >已发</option><option value="0">取消</option>';
+
+         }else{
+           str += '<option value="'+d+'" selected="selected">'+data.dtype+'</option><option value="1" >已发</option><option value="2">未发</option>';
+         }
+
+          str += '</select></div><div class="mui-input-row"><label>九大规划</label><input type="text" id="gd" value="'+data.planning+'"><select id="tg'+data.id+'" value="'+d+'" > ';
+
+       if(g == '1')
+         {
+           str += '<option value="'+g+'" selected="selected">'+data.ntype+'</option><option value="2">未发</option><option value="0">取消</option>';
+         }
+         else if(g == '2')
+         {
+          str += '<option value="'+g+'" selected="selected">'+data.ntype+'</option><option value="1" >已发</option><option value="0">取消</option>';
+
+         }else{
+           str += '<option value="'+g+'" selected="selected">'+data.ntype+'</option><option value="1" >已发</option><option value="2">未发</option>';
+         }
+       str += '</select></div><br><div class="mui-button-row"><button type="button" class="mui-btn mui-btn-primary" onclick="order_info('+data.id+')" >提交</button></div></form></div><li>';
+          $('#checks').html(str);
+          $('#back').show();
+
+      }
+      })
+ }
+  
+
+ function order_info(id)
+ {
+
+  var tp = $('#tp'+id).val();
+  var tk =$('#tk'+id).val();
+  var tf = $('#tf'+id).val();
+    var td = $('#td'+id).val();
+    var tg = $('#tg'+id).val();
+
+   var name = $('#name').val();
+   var mobile = $('#mobile').val();
+   var note = $('#note').val();
+   var pp = $('#pp').val();
+   var kk =$('#kk').val();
+   var ff = $('#ff').val();
+   var dd = $('#dd').val();
+   var gd = $('#gd').val();
+   // alert(tp)
+   // alert(tk)
+   // alert(tf)
+   // alert(td)
+   // return false;
+   
+
+   var data = 'rest/'+encodeURI('{"id":"' + id + '","name":"'+name+'","mobile":"'+mobile+'","note":"'+note+'","pp":"'+pp+'","kk":"'+kk+'","ff":"'+ff+'","dd":"'+dd+'","tf":"'+tf+'","tk":"'+tk+'","tp":"'+tp+'","gd":"'+gd+'","tg":"'+tg+'","td":"'+td+'"}');
+      url = path_url+"index.php/Home/Interface/order_info/"+data;
+      $.ajax({
+      url:url,        //跨域到http://www.wp.com，另，http://test.com也算跨域
+      type:'GET',             //jsonp 类型下只能使用GET,不能用POST,这里不写默认为GET
+      dataType:'jsonp',                          //指定为jsonp类型
+      jsonp:'callback',                          //服务器端获取回调函数名的key，对应后台有$_GET['callback']='getName';callback是默认值                 /
+      success: function(result)
+        {
+          if(result['code'] == 1)
+          {
+            Showbo.Msg.alert('修改成功');
+            pershow();
+
+          }
+        }
+      })
+
+ }
+function showst()
+{ 
+    //学员添加
+    var str = 'rest/'+encodeURI('{"uid":"' + uid + '"}');
+    $.ajax({
+    url:path_url+"index.php/Home/Interface/show/"+str,         //跨域到http://www.wp.com，另，http://test.com也算跨域
+    type:'GET',             //jsonp 类型下只能使用GET,不能用POST,这里不写默认为GET
+    dataType:'jsonp',                          //指定为jsonp类型
+    jsonp:'callback',                          //服务器端获取回调函数名的key，对应后台有$_GET['callback']='getName';callback是默认值
+    jsonpCallback:'getName',                   //回调函数名
+    success:function(result){
+        var data = eval(result);
+        // console.log(data);
+        var str = '';
+        str +='<li class="mui-table-view-cell"> <div class="mui-content-padded"><form class="mui-input-group add_form"><div class="mui-input-row"><label>学员姓名</label><input type="text" placeholder="请输入学员姓名" id="namest" ></div><div class="mui-input-row"><label>联系电话</label><input type="text" placeholder="请输入联系方式" id="mobilest"></div><div class="mui-input-row"><label>备　　注</label><input type="text" placeholder="请输入备注信息" id="note" ></div><div class="mui-input-row"><label>讲　　师</label><select id="teachers"><option value="">请选择讲师</option>';
+    for(i in data){
+        str += '<option value="'+data[i].id+'">'+data[i].name+'</option>';
+      }
+          str += '</select></div><div class="mui-input-row"><label>票　　数</label><input id="ticket" type="text" placeholder="请输入整数"><select id="pt"><option value="">状态</option><option value="1">已发</option><option value="2">未发</option><option value="0">取消</option></select></div><div class="mui-input-row"><label>卡　　数</label><input id="card" type="text" placeholder="请输入整数"><select id="kt"><option value="">状态</option><option value="1">已发</option><option value="2">未发</option><option value="0">取消</option></select></div><div class="mui-input-row"><label>朋 友 圈</label><input id="friends" type="text" placeholder="请输入整数"><select id="ft"><option value="">状态</option><option value="1">已发</option><option value="2">未发</option><option value="0">取消</option></select></div><div class="mui-input-row"><label>弟　　子</label><input id="disciple" type="text" placeholder="请输入整数"><select id="dt"><option value="">状态</option><option value="1">已发</option><option value="2">未发</option><option value="0">取消</option></select></div><div class="mui-input-row"><label>九大规划</label><input id="planning" type="text" placeholder="请输入整数"><select id="gt"><option value="">状态</option><option value="1">已发</option><option value="2">未发</option><option value="0">取消</option></select></div><br><div class="mui-button-row"><button type="button" class="mui-btn mui-btn-primary btn-lg active" style="width:100px;" ontouchstart="addfe()" >确认</button></div></form></div></li>';
+        $('#checks').html(str);
+
+       
+
+       
+    },
+});
+   
+}
+function addfe()
+{
+
+	var name = $('#namest').val();
+	var mobile = $('#mobilest').val();
+	var note = $('#note').val();
+	var teacher = $('#teachers').val();
+	var pt = $('#pt').val();
+	var kt = $('#kt').val();
+	var ft = $('#ft').val();
+	var dt = $('#dt').val();
+  var gt = $('#gt').val();
+
+  var ticket = $('#ticket').val();
+   var card = $('#card').val();
+    var friends = $('#friends').val();
+     var disciple = $('#disciple').val();
+     var disciple = $('#planning').val();
+      if(name == '')
+    {
+      Showbo.Msg.alert('姓名不能为空');
+      return false;
+    }
+    if(mobile == '')
+    {
+      Showbo.Msg.alert('联系电话不能为空');
+      return false;
+    }
+    if(note == '')
+    {
+      Showbo.Msg.alert('备注不能为空');
+      return false;
+    }
+    if(!(/^1[3|4|5|7|8]\d{9}$/.test(mobile)))
+    {
+       Showbo.Msg.alert("您输入的手机号格式不对或填写号码不足11位");
+            return false; 
+    }
+    // if(ticket == '')
+    // {
+    //   Showbo.Msg.alert('票不能为空');
+    //   return false;
+    // }
+
+    // if(card == '')
+    // {
+    //   Showbo.Msg.alert('卡不能为空');
+    //   return false;
+    // }
+    // if(friends == '')
+    // {
+    //   Showbo.Msg.alert('朋友圈不能为空');
+    //   return false;
+    // }
+    //  if(disciple == '')
+    // {
+    //   Showbo.Msg.alert('弟子不能为空');
+    //   return false;
+    // }
+
+  // alert(note)
+  // alert(teacher)
+  // console.log(mobilest);
+	var data = 'rest/'+encodeURI('{"uid":"' + uid + '","name":"'+name+'","mobile":"'+mobile+'","note":"'+note+'","teacher":"'+teacher+'","pt":"'+pt+'","kt":"'+kt+'","ft":"'+ft+'","gt":"'+gt+'","planning":"'+planning+'","disciple":"'+disciple+'","friends":"'+friends+'","card":"'+card+'","dt":"'+dt+'","ticket":"'+ticket+'","id":"'+id+'"}');
+	
+	var str = '';
+	$.ajax({
+		    type:'GET',             //jsonp 类型下只能使用GET,不能用POST,这里不写默认为GET
+	        url:path_url+"index.php/Home/Interface/addper/"+data,
+	        dataType:'jsonp',                          //指定为jsonp类型
+	        jsonp:'callback',                          //服务器端获取回调函数名的key，对应后台有$_GET['callback']='getName';callback是默认值
+	        success:function(result)
+	        {
+	        	if(result == 1)
+            {
+              Showbo.Msg.alert('添加成功');
+              pershow();
+            }else{
+              alert('添加失败');
+            }
+	        }
+	})
+
+}
+function appper()
+{
+  // alert(id)
+     var data = 'rest/'+encodeURI('{"id":"' + id + '"}'); 
+     var str = '';
+    $.ajax({
+        type:'GET',             //jsonp 类型下只能使用GET,不能用POST,这里不写默认为GET
+        url:path_url+"index.php/Home/Interface/personal/"+data,
+        dataType:'jsonp',                          //指定为jsonp类型
+        jsonp:'callback',                          //服务器端获取回调函数名的key，对应后台有$_GET['callback']='getName';callback是默认值
+        success:function(result)
+        {
+          var user = result.user;
+          // console.log(user);
+          if(result.code == 1)
+          {
+          	// alert(1)
+            str += '<li class="mui-table-view-cell people_info"><span>财务姓名</span><span>'+user.name+'</span></li>';
+            str += '<li class="mui-table-view-cell people_info"><span>所属公司</span><span>'+user.qyname+'</span></li>';
+            str += '<li class="mui-table-view-cell people_info"><span>手机号码</span><span>'+user.mobile+'</span></li>';
+            str += '<li class="mui-table-view-cell people_info" style=" text-align:center"  onclick="out()">退出登录</li>';
+            $('#checks').html(str)
+          }
+
+        }
+    });
+}
+function out()
+{ 
+         window.localStorage['phone'] = ""; //本地存值
+         window.localStorage['company'] = ""; //本地存值
+         window.localStorage['userpwd'] = ""; //本地存值
+        locationUrl('index.html',user);
+}
+
+
+
+</script>
+
+<script>
+</script>

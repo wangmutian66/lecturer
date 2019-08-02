@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+    <title>助企软件一线讲师追踪系统</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!--<link rel="stylesheet" type="text/css" href="css/icons.min.css" />-->
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+
+    <!--<link rel="stylesheet" type="text/css" href="css/af.ui.css" />-->
+
+    <script type="text/javascript" charset="utf-8" src="js/jquery.2.1.1.min.js"></script>
+    <script type="text/javascript" src="js/fastclick.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            FastClick.attach(document.body);
+        });
+    </script>
+    <script type="text/javascript" charset="utf-8" src="js/appframework.ui.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
+    <!--<script type="text/javascript" src="js/file.js"></script>-->
+    <script type="text/javascript" src="js/Url.js"></script>
+    <script type="text/javascript" src="js/showalert.js"></script>
+    <!-- <script type="text/javascript" src="http://192.168.0.207:8080/target/target-script-min.js#anonymous"></script> -->
+    <link href="css/mui.min.css" rel="stylesheet"/>
+
+    <script src="js/mui.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        mui.init();
+    </script>
+    <!-- <script type="text/javascript" src="http://localhost:8080/client/#anonymous"></script> -->
+    <script>
+    $.afui.useOSThemes=false;
+    $.afui.loadDefaultHash=true ;
+    $.afui.autoLaunch=false;
+
+    //check search
+    var search=document.location.search.toLowerCase().replace("?","");
+    if(search.length>0)
+    {
+
+       $.afui.useOSThemes=true;
+        if(search=="win8")
+            $.os.ie=true;
+        else if(search=="firefox")
+            $.os.fennec="true"
+        $.afui.ready(function(){
+            $(document.body).get(0).className=(search);
+        });
+    }
+
+    $(document).ready(function(){
+        $.afui.launch();
+
+      //获取焦点事件
+        $("input[type=number],input[type=password],select").focusout(function(){
+        		 $("#loginForm").css("top","46%");
+       	         $(".footertext,.card img").show();
+       	         $(".input-group").removeClass("bg0796FF");
+                $('.bg-content-17').css('background','');
+
+        });
+
+        $("input[type=number],input[type=password]").focusin(function(){
+
+           $("#loginForm").css("top","20%");
+           $(".footertext,.card img").hide();
+           $(".input-group").addClass("bg0796FF");
+           $('.bg-content-17').css('background','none');
+        });
+
+
+
+
+        setTimeout(function(){
+            $(".huojian img").css("top","5px");
+        },2000);
+        windowHeight();
+        /*
+		$('select').focus(function(){
+			$("#loginForm").css("top","40%");
+	        $(".footertext,.card img").show();
+	        $(".input-group").removeClass("bg0796FF");
+
+	        $(window).resize(function(){
+	        	$("#loginForm").css("top","20%");
+	            $(".footertext,.card img").hide();
+	            $(".input-group").addClass("bg0796FF");
+	        });
+		});
+
+		*/
+    });
+
+
+    function windowHeight(){
+    	ww= $(window).height();
+		$(window).resize(function(){
+		  ww1=$(this).height();
+
+		  if((ww-ww1)<=0){
+			 //$("#loginForm").css("top","40%");
+			 $(".footertext,.card img").show();
+			 $(".input-group").removeClass("bg0796FF");
+		  }else{
+			 //$("#loginForm").css("top","20%");
+	         $(".footertext,.card img").hide();
+	         $(".input-group").addClass("bg0796FF");
+		  }
+		});
+    }
+
+    //云彩移动
+    $(document).ready(function(){
+        var yunlist=$(".yunlist").html();
+        $(".yunlist").html(yunlist+yunlist);
+        var wwidth=$(window).width();
+        $(".yunlist img").css("width",wwidth);
+        $(".yunlist img").eq(0).css("left",-wwidth);
+
+        var i =0;
+        setInterval(function (){
+            if(i>=wwidth){
+                i=0;
+            }else{
+                i++;
+            }
+            $(".yunlist").css("left",i+"px");
+        },50);
+
+    });
+    //if($.os.ios)
+        $.afui.animateHeader(true);
+
+    //.card img{ width: 90px;}
+	//#loginForm{ top:30%;}
+    </script>
+<!-- <style>.yanzheng-number{position:fixed; width: 100%; height: 100%; z-index: 9999; opacity: 0.8; background: #000000;}</style> -->
+<style>
+    /*.panel{background: #1f93dc!important;}*/
+</style>
+</head>
+<body>
+    <div class="loading1">
+        <div class="loader-inner ball-clip-rotate-multiple">
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <div class="yun">
+        <div class="yunlist">
+           <img src="img/bgyun.png">
+        </div>
+    </div>
+    <div class="view" id="loginView">
+        <div class="pages">
+            <div class="panel" id="login">
+<!--BEGIN YU-->
+                <div class="bg-content-17">
+   				 <div class="card"><IMG src="img/mobiellog_03.png   "></div>
+                <form id="loginForm" method="post" action="">
+                            <div class="input-group">
+                                <div class="account">
+                                    <input  type="text" id="mobile"  placeholder="请输入账号">
+                                </div>
+                                <div class="account">
+                                    <input type="password" id="password" name="vip_pass" placeholder="请输入密码">
+                                </div>
+                                <div align="center">
+                                  <input class="Signin" type="button" id="submit" style="margin:0px;border:none;"  value="登 录" onclick="load()"/>
+                                </div>
+                            </div>
+                    </form>
+                    <div class="huojian">
+                         <div class="rqq"></div>
+                         <img src="img/huojian_03.png">
+                    </div>
+                </div>
+    <!-- end YU -->
+            </div>
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript">
+         //var path_url = "http://192.168.0.223:8086/";
+         var path_url="http://192.168.0.250:8082/";
+//         var path_url = "http://192.168.0.160/lecturer/";
+</script>
+<script type="text/javascript">
+var user = getUser();
+var mobile= window.localStorage.getItem('mobile');
+var password= window.localStorage.getItem('password');
+
+$(document).ready(function(){
+    if(mobile&&password){
+        $("#mobile").val(mobile);
+        $("#password").val(password);
+        load();
+    }
+});
+function load()
+{
+    $(".loading").show();
+    var mobile = $('#mobile').val();
+    var password = $('#password').val();
+    window.localStorage['mobile'] = mobile; //本地存值
+    window.localStorage['password'] = password; //本地存值
+    if(mobile == '')
+    {
+        Showbo.Msg.alert('账号不能为空');
+        return false;
+    }
+    if(password == '')
+    {
+        Showbo.Msg.alert('请输入密码');
+        return false;
+    }
+    var data = {mobile:mobile,password:password};
+    //data = 'rest/'+encodeURI('{"mobile":"' + mobile + '","password":"' + password + '"}');
+    url = path_url+"index.php/Home/Interface/login/";
+    var str = '';
+    $.ajax({
+        url:url,        //跨域到http://www.wp.com，另，http://test.com也算跨域
+        type:'POST',             //jsonp 类型下只能使用GET,不能用POST,这里不写默认为GET
+        dataType:'json',  
+        data:data,                        //指定为jsonp类型
+        // jsonp:'callback',                          //服务器端获取回调函数名的key，对应后台有$_GET['callback']='getName';callback是默认值
+        // jsonpCallback:'getName',                   //回调函数名
+        success:function(result)
+        {
+            var data = eval(result);
+
+
+             if(data.errcode == "1"){
+                Showbo.Msg.alert(data.errmsg); //修改失败  旧密码不正确
+            }else{
+                window.localStorage['jid'] = data['jid']; //本地存值
+                window.localStorage['uid'] = data['uid']; //本地存值
+                //Showbo.Msg.alert(data.errmsg); //成功跳转
+                locationUrl('applist.html',data);
+                
+            }
+        } 
+
+    });
+
+
+}
+
+
+</script>
+<style>
+</style>
+</html>
